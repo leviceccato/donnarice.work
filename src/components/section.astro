@@ -1,0 +1,14 @@
+<div class="section" data-scene>
+<slot />
+</div>
+
+<style lang="scss">
+@use '../styles/utilities' as *;
+
+.section {
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+    @include fluid(padding-top padding-bottom, 64px, 128px);
+}
+</style>

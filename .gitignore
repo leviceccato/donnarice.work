@@ -1,0 +1,9 @@
+# OS
+Icon
+[Tt]humbs.db
+.DS_Store
+
+# Astro
+node_modules/
+.snowpack/
+dist

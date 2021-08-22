@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donna Rice</title>
+    <meta name="description" content="The work of Donna Rice, a draftsperson and senior PA from Newcastle, Australia">
+
+    <meta property="og:title" content="Donna Rice">
+    <meta property="og:description" content="The work of Donna Rice, a draftsperson and senior PA from Newcastle, Australia">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://donnarice.work">
+    <meta property="og:image" content="/theme/image.png">
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/theme/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/theme/favicon-32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/theme/apple-touch-icon.png">
+</head>
+<body>
+    <slot />
+</body>
+</html>
+
+<style lang="scss" global>
+@use 'modern-normalize/modern-normalize.css';
+@use '../styles/base.scss';
+
+@font-face {
+    font-family: 'Clash Display';
+    src: url('/fonts/clash-display-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+html {
+    --font-display: 'Clash Display', sans-serif;
+    --font-copy: 'Inter', sans-serif;
+    --line-height: 1.4;
+    --col-fg-r: 22;
+    --col-fg-g: 92;
+    --col-fg-b: 29;
+    --col-fg: rgb(var(--col-fg-r), var(--col-fg-g), var(--col-fg-b));
+    --col-fg-fade-1: rgba(var(--col-fg-r), var(--col-fg-g), var(--col-fg-b), 0.6);
+    --col-bg-r: 255;
+    --col-bg-g: 250;
+    --col-bg-b: 202;
+    --col-bg: rgb(var(--col-bg-r), var(--col-bg-g), var(--col-bg-b));
+}
+body {
+    line-height: var(--line-height);
+    font-family: var(--font-display);
+    color: var(--col-fg);
+    background-color: var(--col-bg);
+}
+::-webkit-scrollbar {
+    width: 9px;
+    &-thumb { 
+        border: solid 4px transparent;
+        box-shadow: inset 0 0 0 1px var(--col-fg);
+    }
+}
+::-moz-selection {
+    background-color: var(--col-fg-fade-1);
+}
+::selection {
+    background-color: var(--col-fg-fade-1);
+}
+::before::selection {
+    background-color: var(--col-fg-fade-1);
+}
+::after::selection {
+    background-color: var(--col-fg-fade-1);
+}
+</style>

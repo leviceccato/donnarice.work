@@ -1,0 +1,47 @@
+---
+import VisuallyHidden from '../components/visually-hidden.astro'
+import IconEmail from '../components/icon-email.vue'
+import Year from '../components/year.vue'
+---
+
+<footer class="footer">
+<span class="copyright">
+    © Donna Rice <Year client:load />
+</span>
+<a class="email" href="mailto:mail@donnarice.work">
+    <VisuallyHidden isFocusable>
+        mail@donnarice.work
+    </VisuallyHidden>
+    <IconEmail class="icon-email" client:load />
+</a>
+</footer>
+
+<style lang="scss">
+@use '../styles/utilities' as *;
+
+.footer {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 1;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    pointer-events: none;
+    @include fluid(padding, 8px, 15px);
+}
+.copyright {
+    pointer-events: all;
+    @include fluid(font-size, 12px, 24px);
+}
+.email {
+    display: flex;
+    pointer-events: all;
+    @include fluid(margin-right, 5px, 15px);
+    @include fluid(margin-bottom, 10px, 20px);
+}
+.icon-email {
+    @include fluid(width height, 60px, 128px);
+}
+</style>

@@ -1,0 +1,89 @@
+@use 'sass:math';
+
+// Return the number without it's unit
+@function strip-unit($number) {
+    @return math.div($number, $number * 0 + 1);
+}
+
+// Simple string replace http://www.sassmeister.com/gist/1b4f2da5527830088e4d
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}
+
+// Encode an SVG for use in CSS
+$encoding-reference: (
+    ('<', '%3C'),
+    ('>', '%3E'),
+    ('"', '\''),
+    ('#', '%23'),
+    ('&', '%26'),
+);
+@function svg-encode($svg) {
+    @each $char, $encoded in $encoding-reference {
+        $svg: str-replace($svg, $char, $encoded);
+    }
+    @return 'data:image/svg+xml,' + $svg;
+}
+
+// Crop the extra space above text that line-height adds.
+// A good $text-height value will vary from font to font.
+@mixin lh-crop($line-height, $text-height: 0.9) {
+    line-height: $line-height;
+    &::before {
+        content: '';
+        display: block;
+        height: 0;
+        width: 0;
+        margin-top: calc((#{$text-height} - #{$line-height}) * 0.5em);
+    }
+}
+
+// Define global breakpoints
+$breakpoints: (
+    xs: 320px,
+    xl: 1000px,
+    figure: 900px,
+);
+
+// Generic, mobile-first media query generator
+@mixin media($breakpoint) {
+    @media (min-width: #{map-get($breakpoints, $breakpoint)}) {
+        @content;
+    }
+}
+
+// Apply same value to multiple properties
+@mixin props($props, $value) {
+    @each $prop in $props {
+        #{$prop}: $value;
+    }
+}
+
+// Generate a fluid value that will clamp between a min and max at the given breakpoints
+@mixin fluid($props, $min-value, $max-value, $min-bp: 'xs', $max-bp: 'xl') {
+    // Allow passing breakpoint key or a custom value
+    $min-vw: if(map-has-key($breakpoints, $min-bp), map-get($breakpoints, $min-bp), $min-bp);
+    $max-vw: if(map-has-key($breakpoints, $max-bp), map-get($breakpoints, $max-bp), $max-bp);
+
+    // Calculate the clamped fluid value
+    $slope: math.div(strip-unit($min-value) - strip-unit($max-value), strip-unit($min-vw) - strip-unit($max-vw));
+    $base: strip-unit($max-value) - $slope * strip-unit($max-vw);
+    $calc-value: calc(#{$base + unit($min-value)} + #{(100 * $slope) + unquote('vw')});
+    
+    // Assuming mobile first, set min value
+    @include props($props, $min-value);
+
+    // From min bp on, set clamped fluid value
+    @media (min-width: $min-vw) {
+        @include props($props, $calc-value);
+    }
+
+    // From max bp on, set max value
+    @media (min-width: $max-vw) {
+        @include props($props, $max-value);
+    }
+}

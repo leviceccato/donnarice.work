@@ -1,0 +1,76 @@
+<header class="header">
+<nav class="nav">
+    <!-- Abuse flex order and adjacent selectors to create custom hover effects -->
+    <a
+        class="link"
+        href="#intro"
+        style="order: 1">
+        Intro
+    </a>
+    <span class="separator after" style="order: 2" />
+    <a
+        class="link"
+        href="#work"
+        style="order: 4">
+        Work
+    </a>
+    <span class="separator before" style="order: 3" />
+    <span class="separator after" style="order: 5" />
+    <a
+        class="link"
+        href="#testimonials"
+        style="order: 7">
+        Testimonials
+    </a>
+    <span class="separator before" style="order: 6" />
+    <span class="separator after" style="order: 8" />
+    <a
+        class="link"
+        href="#resume"
+        style="order: 10">
+        Résumé
+    </a>
+    <span class="separator before" style="order: 9" />
+</nav>
+</header>
+
+<style lang="scss">
+@use '../styles/utilities' as *;
+
+.header {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+}
+.nav {
+    display: flex;
+    align-items: flex-end;
+    @include fluid(padding-top padding-left padding-right, 3px, 5px);
+}
+.link {
+    position: relative;
+    text-transform: lowercase;
+    @include fluid(font-size, 17px, 28px);
+    @include fluid(padding, 3px, 10px);
+    &:hover {
+        & + .separator {
+            &.after {
+                transform: translateX(2vw);
+            }
+            &.before {
+                transform: translateX(-2vw);
+                & + .separator.after {
+                    transform: translateX(2vw);
+                }
+            }
+        }
+    }
+}
+.separator {
+    height: 1px;
+    width: 100%;
+    background-color: currentColor;
+    transition: transform 250ms;
+    @include fluid(margin-bottom, 9px, 20px);
+}
+</style>
