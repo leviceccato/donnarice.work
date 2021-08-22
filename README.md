@@ -25,6 +25,10 @@ Build site into `dist` folder.
 docker-compose run node npm run build
 ```
 
+## Deployment
+
+This site is hosted on Netlify.
+
 ## Fonts
 - [Clash Display](https://www.fontshare.com/fonts/clash-display)
 - [Inter](https://rsms.me/inter)
