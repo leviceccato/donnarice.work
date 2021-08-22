@@ -1,11 +1,56 @@
-<div>
+<div class="hero">
 <h1 class="heading">
     Donna is a draftsperson and senior PA based in Newcastle, Australia.
 </h1>
+<a class="link" href="#work">
+    View work
+</a>
 </div>
 
 <style lang="scss">
-.heading {
-    font-size: 20px;
+@use '../styles/utilities' as *;
+
+.hero {
+    line-height: 1.15;
+    @include fluid(font-size, 22px, 72px);
+    @include fluid(padding-left padding-right, 32px, 250px);
+}
+.link {
+    margin-top: 0.5em;
+    display: inline-block;
+    text-transform: lowercase;
+    position: relative;
+    &:hover {
+        &::before {
+            transition-delay: 150ms;
+            transform-origin: left center;
+            transform: scaleX(1);
+        }
+        &::after {
+            transform-origin: right center;
+            transform: scaleX(0);
+            transition-delay: 0ms;
+        }
+    }
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 1px;
+        background-color: currentColor;
+        transition: transform 300ms;
+    }
+    &::before {
+        transition-delay: 0ms;
+        transform-origin: right center;
+        transform: scaleX(0);
+    }
+    &::after {
+        transition-delay: 150ms;
+        transform-origin: left center;
+        transform: scaleX(1);
+    }
 }
 </style>
