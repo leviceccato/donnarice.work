@@ -1,6 +1,6 @@
 # Donna Rice's Portfolio
 
-Welcome to the repository of Donna Rice's portfolio website. It’s built using [Astro](https://astro.build). Check it the live site at [donnarice.work](https://donnarice.work).
+✍️ Welcome to the repository of Donna Rice's portfolio website. It’s built using [Astro](https://astro.build). Check it the live site at [donnarice.work](https://donnarice.work).
 
 ## Usage
 
