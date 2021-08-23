@@ -1,15 +1,3 @@
-<script>
-import { useStore } from 'nanostores/vue'
-import { rotation } from '../scripts/store.js'
-
-export default {
-    setup() {
-        const getRotation = useStore(rotation)
-        return { getRotation }
-    }
-}
-</script>
-
 <template>
 <svg
     class="icon-email"
@@ -23,11 +11,7 @@ export default {
         <path d="M43.15 48.98h43.69v32.05H43.15z" />
         <path d="M43.15 48.98L65 65l21.85-16.02" />
     </g>
-    <g
-        class="ring-container"
-        :style="{
-            transform: `rotate(${getRotation * 500}deg)`
-        }">
+    <g class="ring-container">
         <path class="ring" d="M21.77 41.04a49.47 49.47 0 0134.97-24.77" />
         <path
             class="ring-text"
@@ -53,6 +37,7 @@ export default {
 .ring-container {
     transform-origin: center;
     transform-box: fill-box;
+    transform: rotate(calc(var(--rotation) * 500deg))
 }
 .ring {
     fill: none;

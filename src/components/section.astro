@@ -1,4 +1,4 @@
-<div class="section" data-scene>
+<div class="section" data-scene="rotateZ">
 <slot />
 </div>
 
@@ -6,6 +6,7 @@
 @use '../styles/utilities' as *;
 
 .section {
+    position: relative;
     min-height: 100vh;
     display: grid;
     place-content: center;

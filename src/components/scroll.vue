@@ -1,23 +1,30 @@
 <script>
-import { onBeforeUnmount } from 'vue'
-import { setScroll, rotation, setRotation } from '../scripts/store.js'
-import { getValue } from 'nanostores'
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { setTextRotation, setTextSkew } from '../scripts/store.js'
 import createRolly from 'rolly.js'
+
+const setStyle = (property, value) => document.documentElement.style.setProperty(property, value)
 
 export default {
     props: {
         view: { type: String, required: true }
-    },
+    }, 
     setup(props) {
+        const rotation = ref(0)
+
+        watch(rotation, (to) => setStyle('--rotation', to))
+
         const rolly = createRolly({
             view: document.querySelector(props.view),
             native: true,
-            change(scroll) {
-                const offset = Math.abs((scroll.current / scroll.bounding) - (scroll.previous / scroll.bounding))
-                const relativeOffset = offset * (scroll.bounding * 0.0002)
-                setRotation(getValue(rotation) + relativeOffset)
-                setScroll(scroll.current / scroll.bounding)
-            }
+            change({ current, bounding, previous }) {
+                const delta = current - previous
+                const percentage = Math.abs(delta / bounding)
+                const offset = percentage * (bounding * 0.0002)
+                rotation.value += offset
+                setTextRotation(delta / 2)
+                setTextSkew(delta / 2.5)
+            },
         })
 
         rolly.init()
