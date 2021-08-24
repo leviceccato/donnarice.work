@@ -6,7 +6,8 @@ import { throttle } from 'lodash-es'
 
 export default {
     props: {
-        lines: { type: Array, default: () => [] }
+        lines: { type: Array, default: () => [] },
+        hasUnderline: { type: Boolean, default: false },
     },
     setup(props) {
         const getTextRotation = useStore(textRotation)
@@ -17,6 +18,52 @@ export default {
 
         const lineData = computed(() => props.lines.map((line) => line.split('').map((char) => char === ' ' ? '&nbsp' : char)))
         const maxLineLength = computed(() => Math.max(...lineData.value.map(line => line.length)))
+
+        const underlinePoints = computed(() => {
+            if (!props.hasUnderline) return []
+            return lineData.value.map((line) => {
+                const length = line.length + 1
+                console.log(length)
+                return Array.from({ length }).map((_, index) => [
+                    (index / (length - 1)) * 100,
+                    ((rotations.value[index] || 0) * -5) + 50
+                ])
+            })
+        })
+
+        const getOpposedLine = (pointA, pointB) => {
+            const lengthX = pointB[0] - pointA[0]
+            const lengthY = pointB[1] - pointA[1]
+            return {
+                length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
+                angle: Math.atan2(lengthY, lengthX),
+            }
+        }
+
+        const getControlPoint = (current, previous, next, reverse) => {
+            const _previous = previous || current
+            const _next = next || current
+            const smoothing = 0.2
+            const opposedLine = getOpposedLine(_previous, _next) 
+            const angle = opposedLine.angle + (reverse ? Math.PI : 0)
+            const length = opposedLine.length * smoothing
+            const x = current[0] + Math.cos(angle) * length
+            const y = current[1] + Math.sin(angle) * length
+            return [x, y]
+        }
+
+        const createBezierCurve = (point, index, array) => {
+            const [cpStartX, cpStartY] = getControlPoint(array[index - 1], array[index - 2], point)
+            const [cpEndX, cpEndY] = getControlPoint(point, array[index - 1], array[index + 1], true)
+            return `C ${cpStartX}, ${cpStartY} ${cpEndX}, ${cpEndY} ${point[0]}, ${point[1]}`
+        }
+
+        const underlinePaths = computed(() => underlinePoints.value.map((points) =>
+            points.reduce((result, point, index) => index === 0
+                ? `M ${point[0]}, ${point[1]}`
+                : `${result} ${createBezierCurve(point, index, points)}`
+            , '')
+        )) 
         
         const cycleArray = (array, to) => {
             if (array.value.length > maxLineLength.value) array.value.pop()
@@ -26,31 +73,60 @@ export default {
         watch(getTextRotation, (to) => cycleArray(rotations, to))
         watch(getTextSkew, (to) => cycleArray(skews, to))
 
-        return { lineData, rotations, skews }
+        return { lineData, rotations, skews, underlinePaths, underlinePoints }
     },
 }
 </script>
 
 <template>
-    <template v-for="line in lineData">
-        <span
-            class="char"
-            v-for="(char, index) in line"
-            :data-index="index" 
-            :style="{
-                transform: `
-                    translateY(${((rotations[index] || 0) * 5) * -1}px)
-                    rotateZ(${(rotations[index] || 0) * 1}deg)
-                    skew(${(skews[index] || 0) * 1}deg)
-                `
-            }"
-            v-html="char">
+    <template v-for="(line, lineIndex) in lineData">
+        <span class="line">
+            <span
+                class="char"
+                v-for="(char, charIndex) in line"
+                :style="{
+                    transform: `
+                        translateY(${(rotations[charIndex] || 0) * -5}px)
+                        rotateZ(${rotations[charIndex] || 0}deg)
+                        skew(${skews[charIndex] || 0}deg)
+                    `
+                }"
+                v-html="char">
+            </span>
+            <svg
+                v-if="hasUnderline"
+                class="underline"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none">
+                <path 
+                    class="underline-path"
+                    :d="underlinePaths[lineIndex]"
+                />
+            </svg>
         </span>
         <br />
     </template>
 </template>
 
 <style lang="scss" scoped>
+.line {
+    display: inline-block;
+    position: relative;
+}
+.underline {
+    position: absolute;
+    left: 0;
+    bottom: -0.15em;
+    width: 100%;
+    height: 2em;
+    transform: translateY(50%);
+}
+.underline-path {
+    stroke: var(--col-fg);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+    fill: none;
+}
 .char {
     display: inline-block;
 }

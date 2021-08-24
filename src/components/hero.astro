@@ -11,10 +11,14 @@ const link = ['View work']
 
 <div class="hero">
 <h1 class="heading">
-    <SplitString lines={heading} client:only />
+    <SplitString lines={heading} client:load />
 </h1>
 <a class="link" href="#work">
-    <SplitString lines={link} client:only />
+    <SplitString
+        lines={link}
+        hasUnderline
+        client:load
+    />
 </a>
 </div>
 
@@ -31,37 +35,37 @@ const link = ['View work']
     display: inline-block;
     text-transform: lowercase;
     position: relative;
-    &:hover {
-        &::before {
-            transition-delay: 150ms;
-            transform-origin: left center;
-            transform: scaleX(1);
-        }
-        &::after {
-            transform-origin: right center;
-            transform: scaleX(0);
-            transition-delay: 0ms;
-        }
-    }
-    &::before, &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -0.15em;
-        right: 0;
-        height: 1px;
-        background-color: currentColor;
-        transition: transform 300ms;
-    }
-    &::before {
-        transition-delay: 0ms;
-        transform-origin: right center;
-        transform: scaleX(0);
-    }
-    &::after {
-        transition-delay: 150ms;
-        transform-origin: left center;
-        transform: scaleX(1);
-    }
+    // &:hover {
+    //     &::before {
+    //         transition-delay: 150ms;
+    //         transform-origin: left center;
+    //         transform: scaleX(1);
+    //     }
+    //     &::after {
+    //         transform-origin: right center;
+    //         transform: scaleX(0);
+    //         transition-delay: 0ms;
+    //     }
+    // }
+    // &::before, &::after {
+    //     content: '';
+    //     position: absolute;
+    //     left: 0;
+    //     bottom: -0.15em;
+    //     right: 0;
+    //     height: 1px;
+    //     background-color: currentColor;
+    //     transition: transform 300ms;
+    // }
+    // &::before {
+    //     transition-delay: 0ms;
+    //     transform-origin: right center;
+    //     transform: scaleX(0);
+    // }
+    // &::after {
+    //     transition-delay: 150ms;
+    //     transform-origin: left center;
+    //     transform: scaleX(1);
+    // }
 }
 </style>
