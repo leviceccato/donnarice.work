@@ -11,10 +11,10 @@ const link = ['View work']
 
 <div class="hero">
 <h1 class="heading">
-    <SplitString lines={heading} client:load />
+    <SplitString lines={heading} client:only />
 </h1>
 <a class="link" href="#work">
-    <SplitString lines={link} client:load />
+    <SplitString lines={link} client:only />
 </a>
 </div>
 
