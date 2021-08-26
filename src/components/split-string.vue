@@ -2,7 +2,7 @@
 import { computed, watch, ref } from 'vue'
 import { useStore } from 'nanostores/vue'
 import { textRotation, textSkew } from '../scripts/store.js'
-import { throttle } from 'lodash-es'
+import { throttle, memoize } from 'lodash-es'
 
 export default {
     props: {
@@ -23,7 +23,6 @@ export default {
             if (!props.hasUnderline) return []
             return lineData.value.map((line) => {
                 const length = line.length + 1
-                console.log(length)
                 return Array.from({ length }).map((_, index) => [
                     (index / (length - 1)) * 100,
                     ((rotations.value[index] || 0) * -5) + 50
@@ -31,14 +30,14 @@ export default {
             })
         })
 
-        const getOpposedLine = (pointA, pointB) => {
+        const getOpposedLine = memoize((pointA, pointB) => {
             const lengthX = pointB[0] - pointA[0]
             const lengthY = pointB[1] - pointA[1]
             return {
                 length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
                 angle: Math.atan2(lengthY, lengthX),
             }
-        }
+        })
 
         const getControlPoint = (current, previous, next, reverse) => {
             const _previous = previous || current
@@ -52,11 +51,11 @@ export default {
             return [x, y]
         }
 
-        const createBezierCurve = (point, index, array) => {
+        const createBezierCurve = memoize((point, index, array) => {
             const [cpStartX, cpStartY] = getControlPoint(array[index - 1], array[index - 2], point)
             const [cpEndX, cpEndY] = getControlPoint(point, array[index - 1], array[index + 1], true)
             return `C ${cpStartX}, ${cpStartY} ${cpEndX}, ${cpEndY} ${point[0]}, ${point[1]}`
-        }
+        })
 
         const underlinePaths = computed(() => underlinePoints.value.map((points) =>
             points.reduce((result, point, index) => index === 0
