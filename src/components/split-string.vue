@@ -4,6 +4,33 @@ import { useStore } from 'nanostores/vue'
 import { textRotation } from '../scripts/store.js'
 import { throttle, memoize } from 'lodash-es'
 
+const getOpposedLine = memoize((pointA, pointB) => {
+    const lengthX = pointB[0] - pointA[0]
+    const lengthY = pointB[1] - pointA[1]
+    return {
+        length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
+        angle: Math.atan2(lengthY, lengthX),
+    }
+})
+
+const getControlPoint = (current, previous, next, reverse) => {
+    const _previous = previous || current
+    const _next = next || current
+    const smoothing = 0.2
+    const opposedLine = getOpposedLine(_previous, _next) 
+    const angle = opposedLine.angle + (reverse ? Math.PI : 0)
+    const length = opposedLine.length * smoothing
+    const x = current[0] + Math.cos(angle) * length
+    const y = current[1] + Math.sin(angle) * length
+    return [x, y]
+}
+
+const createBezierCurve = memoize((point, index, array) => {
+    const [cpStartX, cpStartY] = getControlPoint(array[index - 1], array[index - 2], point)
+    const [cpEndX, cpEndY] = getControlPoint(point, array[index - 1], array[index + 1], true)
+    return `C ${cpStartX}, ${cpStartY} ${cpEndX}, ${cpEndY} ${point[0]}, ${point[1]}`
+})
+
 export default {
     props: {
         lines: { type: Array, default: () => [] },
@@ -26,33 +53,6 @@ export default {
                     ((rotations.value[index] || 0) * -5) + 50
                 ])
             })
-        })
-
-        const getOpposedLine = memoize((pointA, pointB) => {
-            const lengthX = pointB[0] - pointA[0]
-            const lengthY = pointB[1] - pointA[1]
-            return {
-                length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
-                angle: Math.atan2(lengthY, lengthX),
-            }
-        })
-
-        const getControlPoint = (current, previous, next, reverse) => {
-            const _previous = previous || current
-            const _next = next || current
-            const smoothing = 0.2
-            const opposedLine = getOpposedLine(_previous, _next) 
-            const angle = opposedLine.angle + (reverse ? Math.PI : 0)
-            const length = opposedLine.length * smoothing
-            const x = current[0] + Math.cos(angle) * length
-            const y = current[1] + Math.sin(angle) * length
-            return [x, y]
-        }
-
-        const createBezierCurve = memoize((point, index, array) => {
-            const [cpStartX, cpStartY] = getControlPoint(array[index - 1], array[index - 2], point)
-            const [cpEndX, cpEndY] = getControlPoint(point, array[index - 1], array[index + 1], true)
-            return `C ${cpStartX}, ${cpStartY} ${cpEndX}, ${cpEndY} ${point[0]}, ${point[1]}`
         })
 
         const underlinePaths = computed(() => underlinePoints.value.map((points) =>
