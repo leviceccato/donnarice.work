@@ -1,7 +1,7 @@
 <script>
 import { computed, watch, ref } from 'vue'
 import { useStore } from 'nanostores/vue'
-import { textRotation, textSkew } from '../scripts/store.js'
+import { textRotation } from '../scripts/store.js'
 import { throttle, memoize } from 'lodash-es'
 
 export default {
@@ -11,10 +11,8 @@ export default {
     },
     setup(props) {
         const getTextRotation = useStore(textRotation)
-        const getTextSkew = useStore(textSkew)
 
-        const rotations = ref([]) 
-        const skews = ref([])
+        const rotations = ref([])
 
         const lineData = computed(() => props.lines.map((line) => line.split('').map((char) => char === ' ' ? '&nbsp' : char)))
         const maxLineLength = computed(() => Math.max(...lineData.value.map(line => line.length)))
@@ -70,9 +68,8 @@ export default {
         }
 
         watch(getTextRotation, (to) => cycleArray(rotations, to))
-        watch(getTextSkew, (to) => cycleArray(skews, to))
 
-        return { lineData, rotations, skews, underlinePaths, underlinePoints }
+        return { lineData, rotations, underlinePaths, underlinePoints }
     },
 }
 </script>
@@ -83,11 +80,12 @@ export default {
             <span
                 class="char"
                 v-for="(char, charIndex) in line"
+                :key="charIndex"
                 :style="{
                     transform: `
                         translateY(${(rotations[charIndex] || 0) * -5}px)
                         rotateZ(${rotations[charIndex] || 0}deg)
-                        skew(${skews[charIndex] || 0}deg)
+                        skew(${rotations[charIndex] || 0}deg)
                     `
                 }"
                 v-html="char">
