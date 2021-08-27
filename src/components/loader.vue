@@ -17,7 +17,7 @@ const loadFont = ({ name, url, style, weight }) => new Promise((resolve, reject)
 export default {
     props: {
         imageUrls: { type: Array, default: () => [] },
-        fonts: { type: Array, default: () => ({}) },
+        fonts: { type: Array, default: () => [] },
     },
     setup(props) {
 
