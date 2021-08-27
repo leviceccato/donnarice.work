@@ -28,22 +28,18 @@ export default {
         const areAssetsLoaded = computed(() => loadedAssets.value.length === assetCount.value)
 
         onMounted(() => {
-            props.imageUrls.forEach((url) =>
-                loadImage(url)
-                    .then((image) => loadedAssets.value.push(image))
-                    .catch((error) => {
-                        loadedAssets.value.push({})
-                        console.error(error)
-                    })
-            )
-            props.fonts.forEach((font) =>
-                loadFont(font)
-                    .then((font) => loadedAssets.value.push(font))
-                    .catch((error) => {
-                        loadedAssets.value.push({})
-                        console.error(error)
-                    })
-            )
+            props.imageUrls.forEach((url) => loadImage(url)
+                .then((image) => loadedAssets.value.push(image))
+                .catch((error) => {
+                    loadedAssets.value.push({})
+                    console.error(error)
+                }))
+            props.fonts.forEach((font) => loadFont(font)
+                .then((font) => loadedAssets.value.push(font))
+                .catch((error) => {
+                    loadedAssets.value.push({})
+                    console.error(error)
+                }))
         })
 
         return { barOffsetPercentage, areAssetsLoaded }
