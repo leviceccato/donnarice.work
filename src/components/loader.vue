@@ -3,42 +3,56 @@ import { ref, computed, onMounted } from 'vue'
 
 const loadImage = (url) => new Promise((resolve, reject) => {
     let image = new Image()
-    image.onerror = (error) => reject(error)
     image.onload = () => resolve(image)
+    image.onerror = (error) => reject(error)
     image.src = url
+})
+
+const loadFont = ({ name, url, style, weight }) => new Promise((resolve, reject) => {
+    new FontFace(name, `url(${url})`, { style, weight }).load()
+        .then((font) => resolve(font))
+        .catch((error) => reject(error))
 })
 
 export default {
     props: {
         imageUrls: { type: Array, default: () => [] },
+        fonts: { type: Array, default: () => ({}) },
     },
     setup(props) {
 
-        let loadedImages = ref([])
+        let loadedAssets = ref([])
 
-        const barOffsetPercentage = computed(() => (loadedImages.value.length / props.imageUrls.length) * 100)
-        const areImagesLoaded = computed(() => loadedImages.value.length === props.imageUrls.length)
+        const assetCount = computed(() => props.imageUrls.length + props.fonts.length)
+        const barOffsetPercentage = computed(() => (loadedAssets.value.length / assetCount.value) * 100)
+        const areAssetsLoaded = computed(() => loadedAssets.value.length === assetCount.value)
 
         onMounted(() => {
-            props.imageUrls.forEach((url) => {
+            props.imageUrls.forEach((url) =>
                 loadImage(url)
-                    .then((image) => {
-                        loadedImages.value.push(image)
-                    })
+                    .then((image) => loadedAssets.value.push(image))
                     .catch((error) => {
-                        loadedImages.value.push({})
+                        loadedAssets.value.push({})
                         console.error(error)
                     })
-            })
+            )
+            props.fonts.forEach((font) =>
+                loadFont(font)
+                    .then((font) => loadedAssets.value.push(font))
+                    .catch((error) => {
+                        loadedAssets.value.push({})
+                        console.error(error)
+                    })
+            )
         })
 
-        return { barOffsetPercentage, areImagesLoaded }
+        return { barOffsetPercentage, areAssetsLoaded }
     },
 }
 </script>
 
 <template>
-<div :class="['loader', areImagesLoaded && 'open']">
+<div :class="['loader', areAssetsLoaded && 'open']">
     <div class="slide top" />
     <div class="bar left" :style="{ transform: `translateX(-${barOffsetPercentage}%)` }" />
     <div class="bar right" :style="{ transform: `translateX(${barOffsetPercentage}%)` }" />
