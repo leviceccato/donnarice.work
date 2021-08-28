@@ -32,13 +32,14 @@ export default {
             barOffsetPercentage.value = (to.length / assetCount.value) * 100
         }, 50)
 
-        watch(() => [...loadedAssets.value], (to) => {
-            updateBarOffset(to)
-        })
+        watch(() => [...loadedAssets.value], (to) => updateBarOffset(to))
 
         onMounted(() => {
             props.fonts.forEach((font) => loadFont(font)
-                .then((font) => loadedAssets.value.push(font))
+                .then((font) => {
+                    loadedAssets.value.push(font)
+                    document.fonts.add(font)
+                })
                 .catch((error) => {
                     loadedAssets.value.push({})
                     console.error(error)
