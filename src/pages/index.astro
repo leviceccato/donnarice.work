@@ -6,11 +6,30 @@ import Header from '../components/header.astro'
 import Section from '../components/section.astro'
 import Hero from '../components/hero.astro'
 import Footer from '../components/footer.astro'
+
+const fonts = [
+    {
+        name: 'Clash Display',
+        url: '/fonts/clash-display-regular.woff2',
+        weight: 400,
+    },
+    {
+        name: 'Clash Display',
+        url: '/fonts/inter-light.woff2',
+        weight: 300,
+    }
+]
+
+const imageUrls = []
 --- 
 
 <DefaultLayout>
 <Scroll view={'.js-view'} client:only />
-<Loader imageUrls={['']} client:load />
+<Loader
+    imageUrls={imageUrls}
+    fonts={fonts}
+    client:load
+/>
 <Header />
 <main class="js-view">
     <Section>
