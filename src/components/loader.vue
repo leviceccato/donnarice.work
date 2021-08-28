@@ -1,5 +1,6 @@
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import { throttle } from 'lodash-es'
 
 const loadImage = (url) => new Promise((resolve, reject) => {
     let image = new Image()
@@ -22,10 +23,18 @@ export default {
     setup(props) {
 
         let loadedAssets = ref([])
+        let barOffsetPercentage = ref(0)
 
         const assetCount = computed(() => props.imageUrls.length + props.fonts.length)
-        const barOffsetPercentage = computed(() => (loadedAssets.value.length / assetCount.value) * 100)
-        const areAssetsLoaded = computed(() => loadedAssets.value.length === assetCount.value)
+        const areAssetsLoaded = computed(() => barOffsetPercentage.value === 100)
+
+        const updateBarOffset = throttle((to) => {
+            barOffsetPercentage.value = (to.length / assetCount.value) * 100
+        }, 50)
+
+        watch(() => [...loadedAssets.value], (to) => {
+            updateBarOffset(to)
+        })
 
         onMounted(() => {
             props.fonts.forEach((font) => loadFont(font)
@@ -82,7 +91,8 @@ export default {
     width: 100%;
     background-color: var(--col-fg);
     height: calc(50% - 0.5px);
-    transition: transform 650ms cubic-bezier(0.83, 0, 0.17, 1); // Ease in  quint 
+    // Ease in  quint
+    transition: transform 650ms cubic-bezier(0.83, 0, 0.17, 1);
     transition-delay: 450ms;
     &.top {
         top: 0;
@@ -95,7 +105,8 @@ export default {
     position: absolute;
     width: 50%;
     height: 1px;
-    transition: transform 150ms;
+    // Ease out cubic
+    transition: transform 250ms cubic-bezier(0.33, 1, 0.68, 1);
     background-color: var(--col-fg);
     top: calc(50% - 0.5px);
     &.left {
