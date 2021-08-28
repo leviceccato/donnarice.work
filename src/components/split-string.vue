@@ -61,14 +61,14 @@ export default {
                 : `${result} ${createBezierCurve(point, index, points)}`
             , '')
         )) 
-        
-        const cycleArray = (array, to) => {
+
+        const cycleArray = throttle((array, to) => {
             if (array.value.length > maxLineLength.value) array.value.pop()
-            throttle(() => array.value.unshift(to), 10)()
-        }
+            array.value.unshift(to)
+        }, 10)
 
         watch(getTextRotation, (to) => cycleArray(rotations, to))
-
+ 
         return { lineData, rotations, underlinePaths, underlinePoints }
     },
 }
