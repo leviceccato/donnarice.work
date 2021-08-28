@@ -8,7 +8,7 @@ const loadImage = (url) => new Promise((resolve, reject) => {
     image.src = url
 })
 
-const loadFont = ({ name, url, style, weight }) => new Promise((resolve, reject) => {
+const loadFont = ({ name, url, style = 'normal', weight }) => new Promise((resolve, reject) => {
     new FontFace(name, `url(${url})`, { style, weight }).load()
         .then((font) => resolve(font))
         .catch((error) => reject(error))
