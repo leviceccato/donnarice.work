@@ -2,7 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { throttle } from 'lodash-es'
 
-const loadImage = (url) => new Promise((resolve, reject) => {
+const loadImage = ({ url }) => new Promise((resolve, reject) => {
     let image = new Image()
     image.onload = () => resolve(image)
     image.onerror = (error) => reject(error)
@@ -17,7 +17,7 @@ const loadFont = ({ name, url, style = 'normal', weight }) => new Promise((resol
 
 export default {
     props: {
-        imageUrls: { type: Array, default: () => [] },
+        images: { type: Array, default: () => [] },
         fonts: { type: Array, default: () => [] },
     },
     setup(props) {
@@ -25,7 +25,7 @@ export default {
         let loadedAssets = ref([])
         let barOffsetPercentage = ref(0)
 
-        const assetCount = computed(() => props.imageUrls.length + props.fonts.length)
+        const assetCount = computed(() => props.images.length + props.fonts.length)
         const areAssetsLoaded = computed(() => barOffsetPercentage.value === 100)
 
         const updateBarOffset = throttle((to) => {
@@ -43,7 +43,7 @@ export default {
                     loadedAssets.value.push({})
                     console.error(error)
                 }))
-            props.imageUrls.forEach((url) => loadImage(url)
+            props.images.forEach((image) => loadImage(image)
                 .then((image) => loadedAssets.value.push(image))
                 .catch((error) => {
                     loadedAssets.value.push({})
