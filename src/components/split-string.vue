@@ -1,17 +1,16 @@
 <script>
-import { computed, watch, ref, onMounted, getCurrentInstance } from 'vue'
-import { useStore } from 'nanostores/vue'
+import { computed, watch, ref } from 'vue'
 import { textRotation } from '../scripts/store.js'
-import { throttle, memoize } from 'lodash-es'
+import throttle from 'lodash/throttle'
 
-const getOpposedLine = memoize((pointA, pointB) => {
+const getOpposedLine = (pointA, pointB) => {
     const lengthX = pointB[0] - pointA[0]
     const lengthY = pointB[1] - pointA[1]
     return {
         length: Math.sqrt(Math.pow(lengthX, 2) + Math.pow(lengthY, 2)),
         angle: Math.atan2(lengthY, lengthX),
     }
-})
+}
 
 const getControlPoint = (current, previous, next, reverse) => {
     const _previous = previous || current
@@ -25,20 +24,10 @@ const getControlPoint = (current, previous, next, reverse) => {
     return [x, y]
 }
 
-const createBezierCurve = memoize((point, index, array) => {
+const createBezierCurve = (point, index, array) => {
     const [cpStartX, cpStartY] = getControlPoint(array[index - 1], array[index - 2], point)
     const [cpEndX, cpEndY] = getControlPoint(point, array[index - 1], array[index + 1], true)
     return `C ${cpStartX}, ${cpStartY} ${cpEndX}, ${cpEndY} ${point[0]}, ${point[1]}`
-})
-
-let observer
-if (!import.meta.env.SSR) {
-    observer = new IntersectionObserver((entries) => 
-        entries.forEach(entry => {
-            console.log(entry)
-            entry.target._component.proxy.inViewport = entry.isIntersecting
-        })
-    )
 }
 
 export default {
@@ -47,11 +36,7 @@ export default {
         hasUnderline: { type: Boolean, default: false },
     },
     setup(props) {
-        const getTextRotation = useStore(textRotation)
-
         const rotations = ref([])
-        const root = ref(null)
-        const inViewport = ref(false)
 
         const lineData = computed(() => props.lines.map((line) => line.split('').map((char) => char === ' ' ? '&nbsp' : char)))
         const maxLineLength = computed(() => Math.max(...lineData.value.map(line => line.length)))
@@ -59,9 +44,8 @@ export default {
         const underlinePoints = computed(() => {
             if (!props.hasUnderline) return []
             return lineData.value.map((line) => {
-                const length = line.length + 1
-                return Array.from({ length }).map((_, index) => [
-                    (index / (length - 1)) * 100,
+                return Array.from({ length: line.lenth + 1 }).map((_, index) => [
+                    (index / line.length) * 100,
                     ((rotations.value[index] || 0) * -5) + 50
                 ])
             })
@@ -79,40 +63,32 @@ export default {
             array.value.unshift(to)
         }
 
-        watch(getTextRotation, (to) => requestAnimationFrame(() => cycleArray(rotations, to)))
-
-        onMounted(() => {
-            if (!import.meta.env.SSR) {
-                root.value._component = getCurrentInstance()
-                observer.observe(root.value)
-            }
-        })
+        watch(textRotation, (to) => cycleArray(rotations, to))
  
-        return { lineData, rotations, underlinePaths, inViewport, root }
+        return { lineData, rotations, underlinePaths }
     },
 }
 </script>
 
 <template>
-    <span class="split-string" ref="root">
+    <span class="split-string">
         <template v-for="(line, lineIndex) in lineData">
             <span class="line">
                 <span
                     class="char"
                     v-for="(char, charIndex) in line"
                     :key="charIndex"
-                    :style="inViewport && {
+                    :style="{
                         transform: `
                             translateY(${(rotations[charIndex] || 0) * -5}px)
                             rotateZ(${rotations[charIndex] || 0}deg)
                             skew(${rotations[charIndex] || 0}deg)
                         `
                     }"
-                    v-html="char">
-                </span>
+                    v-html="char"
+                />
                 <svg
                     v-if="hasUnderline"
-                    v-show="inViewport"
                     class="underline"
                     viewBox="0 0 100 100"
                     preserveAspectRatio="none">

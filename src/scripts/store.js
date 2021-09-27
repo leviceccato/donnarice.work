@@ -1,24 +1,11 @@
-import { createStore } from 'nanostores'
+import { ref } from 'vue'
 
-// const scroll = createStore(() => scroll.set(0))
-// const setScroll = newScroll => scroll.set(newScroll)
-
-const rotation = createStore(() => rotation.set(0))
-const setRotation = (to) => rotation.set(to.toFixed(3))
-
-const textRotation = createStore(() => textRotation.set(0))
-const setTextRotation = (to) => textRotation.set(to.toFixed(3))
-
-const textSkew = createStore(() => textSkew.set(0))
-const setTextSkew = (to) => textSkew.set(to.toFixed(3))
+const rotation = ref(0)
+const textRotation = ref(0)
+const textSkew = ref(0)
 
 export {
-    // scroll,
-    // setScroll,
     rotation,
-    setRotation,
     textRotation,
-    setTextRotation,
     textSkew,
-    setTextSkew,
 }

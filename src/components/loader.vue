@@ -1,6 +1,6 @@
 <script>
 import { ref, computed, watch, onMounted } from 'vue'
-import { throttle } from 'lodash-es'
+import throttle from 'lodash/throttle'
 
 const loadImage = ({ url }) => new Promise((resolve, reject) => {
     let image = new Image()

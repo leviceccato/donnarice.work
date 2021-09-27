@@ -1,14 +1,20 @@
 <script>
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { setTextRotation, setTextSkew } from '../scripts/store.js'
-import createRolly from 'rolly.js'
+import { textRotation, textSkew } from '../scripts/store.js'
+import LocomotiveScroll from 'locomotive-scroll'
+import debounce from 'lodash/debounce'
 
 const setStyle = (property, value) => document.documentElement.style.setProperty(property, value)
 
 export default {
     props: {
-        view: { type: String, required: true }
-    }, 
+        el: { type: String, required: true }
+    },
+    computed: {
+        updateScroll() {
+            return debounce(() => window._scroll.update(), 100)
+        }
+    },
     setup(props) {
         const rotation = ref(0)
 
@@ -27,74 +33,41 @@ export default {
             },
         })
 
-        rolly.init()
-        onBeforeUnmount(() => rolly.destroy())
+        window._scroll = new LocomotiveScroll({
+            el: document.querySelector(props.el),
+            smooth: true,
+            getSpeed: true,
+        })
+        window.addEventListener('resize', this.updateScroll)
+        window._scroll.on('scroll', ({ scroll, speed, limit }) => {
+            const percentage = Math.abs(speed / limit.y)
+            const offset = percentage * (limit.y * 0.2)
+            rotation.value += offset
+            textRotation.value = Math.min(speed, 20)
+            textSkew.value = Math.min(speed, 20)
+        })
+
+        onBeforeUnmount(() => window._scroll.destroy())
     }
 }
 </script>
 
 <template />
 
-<style>
-.is-virtual-scroll {
-    overflow: hidden;
+<style lang="scss">
+@use 'node_modules/locomotive-scroll/dist/locomotive-scroll.min.css';
+
+.c-scrollbar {
+    width: 10px;
+    &:hover { transform: none; }
 }
-.is-native-scroll.y-scroll {
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-.is-native-scroll.x-scroll {
-    overflow-y: hidden;
-    overflow-x: scroll;
-}
-.rolly-view {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    margin: auto;
-}
-.rolly-scroll-bar {
-    display: block;
-    position: absolute;
-    transition: transform 0.6s ease-out;
-    background: #efefef;
-}
-.rolly-scroll-bar.is-hidden {
-    display: none;
-}
-.rolly-scroll-bar.y-scroll {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 12px;
-    height: 100%;
-    transform: scaleX(0.5);
-    transform-origin: right;
-}
-.rolly-scroll-bar.x-scroll {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 12px;
-    transform: scaleY(0.5);
-    transform-origin: bottom;
-}
-.is-dragging-scroll-bar .rolly-scroll-bar,
-.rolly-scroll-bar:hover {
-    transform: none;
-}
-.rolly-scroll-bar-thumb {
-    width: 100%;
-    height: auto;
-    background: #ccc;
-}
-.rolly-scroll-view {
-    position: absolute;
-    top: 0;
-    width: 1px;
+.c-scrollbar_thumb {
+    z-index: 2;
+    background-color: transparent;
+    opacity: 1;
+    margin: 0;
+    width: 6px;
+    margin: 2px;
+    background-color: red;
 }
 </style>
