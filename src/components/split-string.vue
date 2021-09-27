@@ -3,6 +3,8 @@ import { computed, watch, ref } from 'vue'
 import { textRotation } from '../scripts/store.js'
 import throttle from 'lodash/throttle'
 
+const wait = (duration) => new Promise((res) => setTimeout(res, duration))
+
 const getOpposedLine = (pointA, pointB) => {
     const lengthX = pointB[0] - pointA[0]
     const lengthY = pointB[1] - pointA[1]
@@ -37,6 +39,7 @@ export default {
     },
     setup(props) {
         const rotations = ref([])
+        const rotationQueue = ref([])
 
         const lineData = computed(() => props.lines.map((line) => line.split('').map((char) => char === ' ' ? '&nbsp' : char)))
         const maxLineLength = computed(() => Math.max(...lineData.value.map(line => line.length)))
@@ -58,14 +61,23 @@ export default {
             , '')
         )) 
 
-        const cycleArray = (array, to) => {
-            if (array.value.length > maxLineLength.value) array.value.pop()
-            array.value.unshift(to)
+        const cycleRotations = (to) => {
+            if (rotations.value.length > maxLineLength.value) rotations.value.pop()
+            rotations.value.unshift(to)
         }
 
-        watch(textRotation, (to) => cycleArray(rotations, to))
+        const moveQueue = async () => {
+            if (!rotationQueue.value.length) return
+            cycleRotations(rotationQueue[0])
+            rotationQueue.value.shift()
+            await wait(100)
+            moveQueue()
+        }
+
+        watch(textRotation, (to) => rotationQueue.value.push(to))
+        watch(() => [...rotationQueue.value], moveQueue)
  
-        return { lineData, rotations, underlinePaths }
+        return { lineData, rotations, underlinePaths, rotationQueue }
     },
 }
 </script>
