@@ -32,24 +32,21 @@ export default {
             barOffsetPercentage.value = (to.length / assetCount.value) * 100
         }, 50)
 
+        const loadAsset = async (asset, loader) => {
+            try {
+                const data = await loader(asset)
+                loadedAssets.value.push(data)
+            } catch (error) {
+                loadedAssets.value.push({})
+                console.error(error)
+            }
+        }
+
         watch(() => [...loadedAssets.value], (to) => updateBarOffset(to))
 
         onMounted(() => {
-            props.fonts.forEach((font) => loadFont(font)
-                .then((font) => {
-                    loadedAssets.value.push(font)
-                    document.fonts.add(font)
-                })
-                .catch((error) => {
-                    loadedAssets.value.push({})
-                    console.error(error)
-                }))
-            props.images.forEach((image) => loadImage(image)
-                .then((image) => loadedAssets.value.push(image))
-                .catch((error) => {
-                    loadedAssets.value.push({})
-                    console.error(error)
-                }))
+            props.fonts.forEach((font) => loadAsset(font, loadFont))
+            props.images.forEach((image) => loadAsset(image, loadImage))
         })
 
         return { barOffsetPercentage, areAssetsLoaded }
