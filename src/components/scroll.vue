@@ -52,6 +52,6 @@ export default {
     margin: 0;
     width: 6px;
     margin: 2px;
-    background-color: red;
+    background-color: var(--col-fg);
 }
 </style>
