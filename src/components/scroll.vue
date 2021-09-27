@@ -25,7 +25,7 @@ export default {
         window.addEventListener('resize', updateScroll)
         window._scroll.on('scroll', ({ scroll, speed, limit }) => {
             const percentage = Math.abs(speed / limit.y)
-            const offset = percentage * (limit.y * 0.2)
+            const offset = percentage * (limit.y * 0.0002)
             rotation.value += offset
             textRotation.value = Math.min(speed, 20)
             textSkew.value = Math.min(speed, 20)
