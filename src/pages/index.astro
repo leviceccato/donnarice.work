@@ -1,6 +1,6 @@
 ---
 import DefaultLayout from '../layouts/default-layout.astro'
-// import Scroll from '../components/scroll.vue'
+import Scroll from '../components/scroll.vue'
 import Loader from '../components/loader.vue'
 import Header from '../components/header.astro'
 import Section from '../components/section.astro'
@@ -24,7 +24,7 @@ const images = [{}, {}, {}, {}, {}, {}, {}, {}]
 --- 
 
 <DefaultLayout>
-<!-- <Scroll view={'.js-view'} client:only /> -->
+<Scroll el={'.js-view'} client:only />
 <Loader
     images={images}
     fonts={fonts}

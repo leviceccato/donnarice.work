@@ -10,35 +10,19 @@ export default {
     props: {
         el: { type: String, required: true }
     },
-    computed: {
-        updateScroll() {
-            return debounce(() => window._scroll.update(), 100)
-        }
-    },
     setup(props) {
         const rotation = ref(0)
 
         watch(rotation, (to) => setStyle('--rotation', to))
 
-        const rolly = createRolly({
-            view: document.querySelector(props.view),
-            native: true,
-            change({ current, bounding, previous }) {
-                const delta = current - previous
-                const percentage = Math.abs(delta / bounding)
-                const offset = percentage * (bounding * 0.0002)
-                rotation.value += offset
-                setTextRotation(delta / 2)
-                setTextSkew(delta / 2.5)
-            },
-        })
+        const updateScroll = debounce(() => window._scroll.update(), 100)
 
         window._scroll = new LocomotiveScroll({
             el: document.querySelector(props.el),
             smooth: true,
             getSpeed: true,
         })
-        window.addEventListener('resize', this.updateScroll)
+        window.addEventListener('resize', updateScroll)
         window._scroll.on('scroll', ({ scroll, speed, limit }) => {
             const percentage = Math.abs(speed / limit.y)
             const offset = percentage * (limit.y * 0.2)
