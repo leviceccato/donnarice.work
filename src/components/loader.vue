@@ -9,10 +9,14 @@ const loadImage = ({ url }) => new Promise((resolve, reject) => {
     image.src = url
 })
 
-const loadFont = ({ name, url, style = 'normal', weight }) => new Promise((resolve, reject) => {
-    new FontFace(name, `url(${url})`, { style, weight }).load()
-        .then((font) => resolve(font))
-        .catch((error) => reject(error))
+const loadFont = ({ name, url, style = 'normal', weight }) => new Promise(async (resolve, reject) => {
+    const font = new FontFace(name, `url(${url})`, { style, weight })
+    try {
+        const loadedFont = await font.load()
+        resolve(loadedFont)
+    } catch (error) {
+        reject(error)
+    }
 })
 
 export default {
