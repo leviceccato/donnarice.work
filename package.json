@@ -3,5 +3,9 @@
     "scripts": {
         "start": "astro dev",
         "build": "astro build"
+    },
+    "devDependencies": {
+        "@astrojs/renderer-vue": "^0.3.0",
+        "astro": "^0.22.1"
     }
 }
