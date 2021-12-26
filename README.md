@@ -6,33 +6,29 @@
 
 ### Requirements
 
-- Docker 20
+- Node 14
 
 ### Development
 
 Install dependencies.
 ```shell
-docker-compose run node npm install
+npm i
 ```
 
 Run development server on [http://localhost:3000](http://localhost:3000).
 ```shell
-docker-compose up
+npm start
 ```
 
 Build site into `dist` folder.
 ```shell
-docker-compose run node npm run build
+npm run build
 ```
 
 ## Deployment
 
-This site is hosted on Netlify.
-
-## Fonts
-- [Clash Display](https://www.fontshare.com/fonts/clash-display)
-- [Inter](https://rsms.me/inter)
+This site is hosted on Cloudflare Pages. Commits to `main` will trigger a deploy.
 
 ## Licenses
 
-All non-third-party source code is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php). Content and images are © 2019 Donna Rice.
+All non-third-party source code is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php). Content and images are © 2021 Donna Rice.

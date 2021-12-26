@@ -1,4 +1,9 @@
 @use 'sass:math';
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:meta';
+@use 'sass:list';
+@use 'sass:color';
 
 // Return the number without it's unit
 @function strip-unit($number) {
@@ -6,10 +11,10 @@
 }
 
 // Simple string replace http://www.sassmeister.com/gist/1b4f2da5527830088e4d
-@function str-replace($string, $search, $replace: '') {
-    $index: str-index($string, $search);
+@function string-replace($string, $search, $replace: '') {
+    $index: string.index($string, $search);
     @if $index {
-        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+        @return string.slice($string, 1, $index - 1) + $replace + string-replace(string.slice($string, $index + string.length($search)), $search, $replace);
     }
     @return $string;
 }
@@ -24,34 +29,24 @@ $encoding-reference: (
 );
 @function svg-encode($svg) {
     @each $char, $encoded in $encoding-reference {
-        $svg: str-replace($svg, $char, $encoded);
+        $svg: string-replace($svg, $char, $encoded);
     }
     @return 'data:image/svg+xml,' + $svg;
-}
-
-// Crop the extra space above text that line-height adds.
-// A good $text-height value will vary from font to font.
-@mixin lh-crop($line-height, $text-height: 0.9) {
-    line-height: $line-height;
-    &::before {
-        content: '';
-        display: block;
-        height: 0;
-        width: 0;
-        margin-top: calc((#{$text-height} - #{$line-height}) * 0.5em);
-    }
 }
 
 // Define global breakpoints
 $breakpoints: (
     xs: 320px,
-    xl: 1000px,
-    figure: 900px,
-);
+    s: 560px,
+    m: 768px,
+    l: 1024px,
+    xl: 1400px,
+    2xl: 1680px,
+); 
 
 // Generic, mobile-first media query generator
 @mixin media($breakpoint) {
-    @media (min-width: #{map-get($breakpoints, $breakpoint)}) {
+    @media (min-width: #{map.get($breakpoints, $breakpoint)}) {
         @content;
     }
 }
@@ -65,15 +60,16 @@ $breakpoints: (
 
 // Generate a fluid value that will clamp between a min and max at the given breakpoints
 @mixin fluid($props, $min-value, $max-value, $min-bp: 'xs', $max-bp: 'xl') {
+
     // Allow passing breakpoint key or a custom value
-    $min-vw: if(map-has-key($breakpoints, $min-bp), map-get($breakpoints, $min-bp), $min-bp);
-    $max-vw: if(map-has-key($breakpoints, $max-bp), map-get($breakpoints, $max-bp), $max-bp);
+    $min-vw: if(map.has-key($breakpoints, $min-bp), map.get($breakpoints, $min-bp), $min-bp);
+    $max-vw: if(map.has-key($breakpoints, $max-bp), map.get($breakpoints, $max-bp), $max-bp);
 
     // Calculate the clamped fluid value
     $slope: math.div(strip-unit($min-value) - strip-unit($max-value), strip-unit($min-vw) - strip-unit($max-vw));
     $base: strip-unit($max-value) - $slope * strip-unit($max-vw);
-    $calc-value: calc(#{$base + unit($min-value)} + #{(100 * $slope) + unquote('vw')});
-    
+    $calc-value: calc(#{$base + math.unit($min-value)} + #{(100 * $slope) + string.unquote('vw')});
+
     // Assuming mobile first, set min value
     @include props($props, $min-value);
 
@@ -85,5 +81,45 @@ $breakpoints: (
     // From max bp on, set max value
     @media (min-width: $max-vw) {
         @include props($props, $max-value);
+    }
+}
+
+// For use with eased-gradient below
+@function ease-in-out-quad($v) {
+    @if $v < 0.5 {
+        @return 2 * $v * $v;
+    } @else {
+        @return -1 + (4 - 2 * $v) * $v;
+    }
+}
+
+// Create a gradient that has its stops eased to appear smoother
+@function eased-gradient($options) {
+
+    // Set default parameters
+    $easing: if(map.has-key($options, 'easing'), map.get($options, 'easing'), ease-in-out-quad);
+    $resolution: if(map.has-key($options, 'resolution'), map.get($options, 'resolution'), 10);
+    $type: if(map.has-key($options, 'type'), map.get($options, 'type'), 'linear');
+    $start-offset: if(map.has-key($options, 'start-offset'), map.get($options, 'start-offset'), 0);
+    $end-offset: if(map.has-key($options, 'end-offset'), map.get($options, 'end-offset'), 0);
+    // angle acts as position if type is 'radial'
+    $angle: if(map.has-key($options, 'angle'), map.get($options, 'angle'), 'to right');
+
+    $ramp: (1 - $end-offset) - $start-offset;
+    $stops: ();
+
+    // Create a list of interpolated stops
+    @for $i from 0 through $resolution {
+        $decimal: math.div($i, $resolution);
+        $position: ($decimal * $ramp) + $start-offset; 
+        $stop: color.mix(map.get($options, 'end-colour'), map.get($options, 'start-colour'), math.percentage(meta.call(meta.get-function(string.unquote($easing)), $decimal))) math.percentage($position);
+        $stops: list.append($stops, $stop, comma); 
+    }
+
+    // Return the constructed gradient
+    @if ($type == 'linear') {
+        @return linear-gradient(string.unquote($angle), $stops);
+    } @else if ($type == 'radial') {
+        @return radial-gradient(string.unquote($angle), $stops);
     }
 }
