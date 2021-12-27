@@ -1,7 +1,3 @@
----
-import style from '../styles/global.scss'
----
-
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -23,3 +19,57 @@ import style from '../styles/global.scss'
         <slot />
     </body>
 </html>
+
+<style lang="scss">
+@use '../styles/variables.scss' as *;
+
+@font-face {
+    font-family: 'Tex Gyre Heros';
+    font-weight: 400;
+    font-style: normal;
+    src: url('/fonts/texgyreheros-regular.woff2') format('woff2');
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    --font-copy: #{$font-copy};
+    --font-weight: #{$font-weight};
+    --line-height: #{$line-height};
+    --letter-spacing: #{$letter-spacing};
+
+    --col-black: #{$col-black};
+    --col-black-select: #{$col-black-select};
+    --col-white: #{$col-white};
+
+    --ease-out-quint: #{$ease-out-quint};
+    --ease-in-out-quint: #{$ease-in-out-quint};
+    --ease-out-back: #{$ease-out-back};
+
+    line-height: var(--line-height);
+    font-family: var(--font-copy);
+    letter-spacing: var(--letter-spacing);
+    color: var(--col-black);
+
+    margin: 0;
+    height: 100%;
+    // Fixes bold looking fonts on macOS in Chrome & Safari
+    -webkit-font-smoothing: antialiased;
+    // Fixes bold looking fonts on macOS in Firefox
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.4;
+    overflow-y: scroll;
+}
+
+// These have to be separate selectors otherwise they won't work
+::-moz-selection {
+    color: var(--col-white);
+    background-color: var(--col-black-select);
+} 
+::selection {
+    color: var(--col-white);
+    background-color: var(--col-black-select);
+}
+</style>
