@@ -1,40 +1,39 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, useCssModule } from 'vue'
+
+const style = useCssModule()
 
 const props = defineProps({
     crop: { type: [String, Array] }
 })
 
-const style = computed(() => {
-    if (typeof props.crop === 'string') {
-        if (props.crop === 'uppercase') {
-            return {
-                '--cap-height': '0.5',
-                '--x-desc-height': '0.72'
-            }
+const bind = computed(() => {
+    let result = {
+        class: [style.text],
+        style: {
+            '--cap-height': '0.5',
+            '--x-desc-height': '1.15'
         }
+    }
+
+    if (props.crop === 'uppercase') {
+        result.class = [...result.class, style.uppercase]
+        result.style['--cap-height'] = '0.5'
+        result.style['--x-desc-height'] = '0.72'
     }
 
     // Array
     if (typeof props.crop === 'object') {
-        return {
-            '--cap-height': String(props.crop[0]),
-            '--x-desc-height': String(props.crop[1])
-        }
+        result.style['--cap-height'] = String(props.crop[0])
+        result.style['--x-desc-height'] = String(props.crop[1])
     }
 
-    return {
-        '--cap-height': '0.5',
-        '--x-desc-height': '1.15'
-    }
+    return result
 })
 </script>
 
 <template>
-    <span
-        :class="$style.text"
-        :style="style"
-    >
+    <span v-bind="bind">
         <slot />
     </span>
 </template>
@@ -54,6 +53,9 @@ const style = computed(() => {
     }
     &::after {
         margin-bottom: calc((var(--x-desc-height, 0.72) - var(--line-height)) * 0.5em);
+    }
+    &.uppercase {
+        text-transform: uppercase;
     }
 }
 </style>
