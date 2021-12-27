@@ -48,10 +48,10 @@ const bind = computed(() => {
         width: 0;
     }
     &::before {
-        margin-top: calc((var(--cap-height, 0.5) - var(--line-height)) * 0.5em);
+        margin-top: calc((var(--cap-height) - var(--line-height)) * 0.5em);
     }
     &::after {
-        margin-bottom: calc((var(--x-desc-height, 0.72) - var(--line-height)) * 0.5em);
+        margin-bottom: calc((var(--x-desc-height) - var(--line-height)) * 0.5em);
     }
     &.uppercase {
         text-transform: uppercase;
