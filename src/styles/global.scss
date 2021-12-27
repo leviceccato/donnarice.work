@@ -49,10 +49,6 @@ html {
     --ease-out-quint: #{$ease-out-quint};
     --ease-in-out-quint: #{$ease-in-out-quint};
     --ease-out-back: #{$ease-out-back};
-
-    &.has-scroll-init {
-        body { overflow: visible; }
-    }
 }
 body {
     line-height: var(--line-height);
@@ -60,7 +56,6 @@ body {
     letter-spacing: var(--letter-spacing);
     color: var(--col-navy);
     background-color: var(--col-white);
-    overflow: hidden;
 }
 a, button {
     &:focus { outline: none; }
