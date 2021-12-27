@@ -22,8 +22,7 @@ const bind = computed(() => {
         result.style['--x-desc-height'] = '0.72'
     }
 
-    // Array
-    if (typeof props.crop === 'object') {
+    if (Array.isArray(props.crop)) {
         result.style['--cap-height'] = String(props.crop[0])
         result.style['--x-desc-height'] = String(props.crop[1])
     }
