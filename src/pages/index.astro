@@ -1,9 +1,8 @@
 ---
-import LayoutDefault from '../components/layout-default.vue'
+import LayoutDefault from '../components/layout-default.astro'
+import Header from '../components/header.vue'
 ---
 
-<LayoutDefault client:load>
-    <h1>
-        Hello there
-    </h1>
+<LayoutDefault>
+    <Header client:load />
 </LayoutDefault>
