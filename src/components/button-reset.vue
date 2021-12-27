@@ -20,5 +20,8 @@
     &:focus {
         outline: none;
     }
+    &:focus-visible {
+        box-shadow: 0px 0px 0px 2px currentColor;
+    }
 }
 </style>
