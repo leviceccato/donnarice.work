@@ -40,7 +40,6 @@ const bind = computed(() => {
 <style lang="scss" module>
 .text {
     display: block;
-    line-height: var(--line-height);
     &::before,
     &::after {
         content: '';
