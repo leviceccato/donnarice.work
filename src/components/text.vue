@@ -1,7 +1,7 @@
 <script setup>
 import { computed, useCssModule } from 'vue'
 
-const style = useCssModule()
+const $style = useCssModule()
 
 const props = defineProps({
     crop: { type: [String, Array] }
@@ -9,7 +9,7 @@ const props = defineProps({
 
 const bind = computed(() => {
     let result = {
-        class: [style.text],
+        class: [$style.text],
         style: {
             '--cap-height': '0.5',
             '--x-desc-height': '1.15'
@@ -17,7 +17,7 @@ const bind = computed(() => {
     }
 
     if (props.crop === 'uppercase') {
-        result.class = [...result.class, style.uppercase]
+        result.class = [...result.class, $style.uppercase]
         result.style['--cap-height'] = '0.5'
         result.style['--x-desc-height'] = '0.72'
     }
@@ -40,6 +40,7 @@ const bind = computed(() => {
 <style lang="scss" module>
 .text {
     display: block;
+    pointer-events: none;
     &::before,
     &::after {
         content: '';
