@@ -78,9 +78,6 @@ onMounted(() => {
         background-color: var(--dynamic-background);
         background-clip: content-box;
         border-radius: 10px;
-        &:hover {
-            border: none;
-        }
     }
 }
 </style>
