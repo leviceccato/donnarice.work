@@ -2,6 +2,16 @@
 import { reactive } from 'vue'
 
 import ButtonReset from './button-reset.vue'
+import Link from './link.vue'
+import Text from './text.vue'
+
+const links = [
+    { text: 'Intro', url: '#intro' },
+    { text: 'Work', url: '#work' },
+    { text: 'Testimonials', url: '#testimonials' },
+    { text: 'Resume', url: '#resume' },
+    { text: 'Contact', url: '#contact' }
+]
 
 const state = reactive({
     isNavOpen: false
@@ -14,39 +24,25 @@ const state = reactive({
             :class="$style.button"
             @click="state.isNavOpen = !state.isNavOpen"
         >
-            {{ state.isNavOpen ? 'Close menu' : 'Open menu' }}
+            <Text crop="uppercase">
+                {{ state.isNavOpen ? 'Close menu' : 'Open menu' }}
+            </Text>
         </ButtonReset>
         <nav :class="[$style.nav, { [$style.open]: state.isNavOpen }]">
-            <a
-                :class="$style.link"
-                href="#intro"
+            <div
+                v-for="link in links"
+                :key="link"
+                :class="$style.linkWrapper"
             >
-                Intro
-            </a>
-            <a
-                :class="$style.link"
-                href="#work"
-            >
-                Work
-            </a>
-            <a
-                :class="$style.link"
-                href="#testimonials"
-            >
-                Testimonials
-            </a>
-            <a
-                :class="$style.link"
-                href="#resume"
-            >
-                Resume
-            </a>
-            <a
-                :class="$style.link"
-                href="#contact"
-            >
-                Contact
-            </a>
+                <Link
+                    :class="$style.link"
+                    :href="link.url"
+                >
+                    <Text crop="uppercase">
+                        {{ link.text }}
+                    </Text>
+                </Link>
+            </div>
         </nav>
     </div>
 </template>
@@ -55,17 +51,23 @@ const state = reactive({
 @use '../styles/utilities.scss' as *;
 
 .header {
+    padding: 5px;
     display: flex;
     flex-direction: column;
-    .button {
-        @include media(s) {
-            display: none;
-        }
+    font-size: 30px;
+    align-items: flex-end;
+}
+.button.button {
+    padding: 0.2em;
+    margin: -0.2em;
+    @include media(s) {
+        display: none;
     }
 }
 .nav {
     display: none;
     flex-direction: column;
+    align-items: flex-end;
     @include media(s) {
         display: flex;
     }
@@ -73,7 +75,8 @@ const state = reactive({
         display: flex;
     }
 }
-.link {
-    color: green;
+.linkWrapper {
+    display: flex;
+    margin-top: 0.4em;
 }
 </style>
