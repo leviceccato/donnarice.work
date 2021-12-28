@@ -58,6 +58,17 @@ $breakpoints: (
     }
 }
 
+// Increase specificity by duplicating a selector
+@mixin spec($selector, $count: 1) {
+    $new-selector: '';
+    @for $i from 1 through $count {
+        $new-selector: $new-selector + $selector
+    }
+    #{$new-selector} {
+        @content;
+    }
+}
+
 // Generate a fluid value that will clamp between a min and max at the given breakpoints
 @mixin fluid($props, $min-value, $max-value, $min-bp: 'xs', $max-bp: 'xl') {
 
