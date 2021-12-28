@@ -51,16 +51,16 @@ const state = reactive({
 @use '../styles/utilities.scss' as *;
 
 .header {
-    padding: 5px;
+    padding: 0.3em;
     display: flex;
     flex-direction: column;
     font-size: 30px;
     align-items: flex-end;
 }
-.button.button {
+@include spec('.button', 2) {
     padding: 0.2em;
     margin: -0.2em;
-    @include media(s) {
+    @include media(m) {
         display: none;
     }
 }
@@ -68,8 +68,11 @@ const state = reactive({
     display: none;
     flex-direction: column;
     align-items: flex-end;
-    @include media(s) {
+    justify-content: space-between;
+    width: 100%;
+    @include media(m) {
         display: flex;
+        flex-direction: row;
     }
     &.open {
         display: flex;
@@ -78,5 +81,8 @@ const state = reactive({
 .linkWrapper {
     display: flex;
     margin-top: 0.4em;
+    @include media(m) {
+        margin-top: 0;
+    }
 }
 </style>
