@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, provide } from 'vue'
+import { onMounted, reactive, ref, provide } from 'vue'
 
 const colours = [
     [237, 237, 237],
@@ -19,13 +19,15 @@ const mixRgb = (rgb1, rgb2, weight = 0.5) => {
     ];
 };
 
+const background = ref(null)
+
 const state = reactive({
     colour: undefined,
     scrollTotal: 1
 })
 
 const setColour = () => {
-    const position = window.scrollY / state.scrollTotal
+    const position = background.value.scrollTop / state.scrollTotal
     const relativePosition = position * colours.length
     const index = Math.min(colours.length - 1, Math.ceil(relativePosition))
     const previousIndex = Math.max(0, index - 1)
@@ -37,14 +39,14 @@ const setColour = () => {
 }
 
 const setScrollTotal = () => {
-    state.scrollTotal = document.documentElement.scrollHeight - window.innerHeight
+    state.scrollTotal = background.value.scrollHeight - background.value.clientHeight
 }
 
 onMounted(() => {
     setScrollTotal()
     setColour()
     window.addEventListener('resize', setScrollTotal)
-    window.addEventListener('scroll', setColour)
+    background.value.addEventListener('scroll', setColour)
 })
 
 provide('dynamicBackground', state.colour)
@@ -52,6 +54,7 @@ provide('dynamicBackground', state.colour)
 
 <template>
     <div
+        ref="background"
         :class="$style.background"
         :style="{ '--dynamic-background': `rgba(${state.colour})` }"
     >
