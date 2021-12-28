@@ -40,7 +40,6 @@ const bind = computed(() => {
 <style lang="scss" module>
 .text {
     display: block;
-    pointer-events: none;
     &::before,
     &::after {
         content: '';
