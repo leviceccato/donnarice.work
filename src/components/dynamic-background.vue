@@ -66,5 +66,27 @@ provide('dynamicBackground', state.colour)
 .background {
     height: 100%;
     background-color: var(--dynamic-background);
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border: solid 3px transparent;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 0 4px currentColor;
+        border: solid 2px transparent;
+        background-color: var(--dynamic-background);
+        background-clip: content-box;
+        border-radius: 10px;
+
+        &:hover {
+            border: none;
+        }
+    }
 }
 </style>
