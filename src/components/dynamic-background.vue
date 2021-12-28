@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, provide } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 const colours = [
     [237, 237, 237],
@@ -48,8 +48,6 @@ onMounted(() => {
     window.addEventListener('resize', setScrollTotal)
     background.value.addEventListener('scroll', setColour)
 })
-
-provide('dynamicBackground', state.colour)
 </script>
 
 <template>
@@ -58,7 +56,7 @@ provide('dynamicBackground', state.colour)
         :class="$style.background"
         :style="{ '--dynamic-background': `rgba(${state.colour})` }"
     >
-        <slot v-bind="state" />
+        <slot />
     </div>
 </template>
 
@@ -67,23 +65,19 @@ provide('dynamicBackground', state.colour)
     height: 100%;
     background-color: var(--dynamic-background);
     overflow-y: scroll;
-
     &::-webkit-scrollbar {
         width: 8px;
     }
-
     &::-webkit-scrollbar-track {
         border: solid 3px transparent;
         background-color: transparent;
     }
-
     &::-webkit-scrollbar-thumb {
         box-shadow: inset 0 0 0 4px currentColor;
         border: solid 2px transparent;
         background-color: var(--dynamic-background);
         background-clip: content-box;
         border-radius: 10px;
-
         &:hover {
             border: none;
         }
