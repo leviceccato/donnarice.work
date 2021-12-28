@@ -20,7 +20,7 @@
     </body>
 </html>
 
-<style lang="scss">
+<style lang="scss" global>
 @use 'modern-normalize/modern-normalize.css';
 @use '../styles/variables.scss' as *;
 
@@ -60,6 +60,7 @@ body {
     -webkit-font-smoothing: antialiased;
     // Fixes bold looking fonts on macOS in Firefox
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
     line-height: 1.4;
     overflow-y: scroll;
 }
