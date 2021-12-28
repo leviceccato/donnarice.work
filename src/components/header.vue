@@ -4,6 +4,7 @@ import { reactive } from 'vue'
 import ButtonReset from './button-reset.vue'
 import Link from './link.vue'
 import Text from './text.vue'
+import FloodText from './flood-text.vue'
 
 const links = [
     { text: 'Intro', url: '#intro' },
@@ -25,7 +26,7 @@ const state = reactive({
             @click="state.isNavOpen = !state.isNavOpen"
         >
             <Text crop="uppercase">
-                {{ state.isNavOpen ? 'Close menu' : 'Open menu' }}
+                <FloodText :text="state.isNavOpen ? 'Close menu' : 'Open menu'" />
             </Text>
         </ButtonReset>
         <nav :class="[$style.nav, { [$style.open]: state.isNavOpen }]">
@@ -39,7 +40,7 @@ const state = reactive({
                     :href="link.url"
                 >
                     <Text crop="uppercase">
-                        {{ link.text }}
+                        <FloodText :text="link.text" />
                     </Text>
                 </Link>
             </div>
@@ -56,6 +57,8 @@ const state = reactive({
     flex-direction: column;
     font-size: 30px;
     align-items: flex-end;
+    position: fixed;
+    width: 100%;
 }
 @include spec('.button', 2) {
     padding: 0.2em;
