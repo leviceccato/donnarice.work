@@ -9,7 +9,9 @@ import LinkReset from './link-reset.vue'
 </template>
 
 <style lang="scss" module>
-.link.link {
+@use '../styles/utilities.scss' as *;
+
+@include spec('.link', 2) {
     display: inline-flex;
     padding: 0.2em;
     margin: -0.2em;
