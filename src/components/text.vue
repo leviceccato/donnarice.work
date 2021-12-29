@@ -1,30 +1,27 @@
 <script setup>
-import { computed, useCssModule } from 'vue'
-
-const $style = useCssModule()
+import { computed } from 'vue'
 
 const props = defineProps({
-    crop: { type: [String, Array] }
+    crop: { type: [String, Array] },
+    tag: { type: String, default: 'span' }
 })
 
-const bind = computed(() => {
+const isUppercase = computed(() => props.crop === 'uppercase')
+
+const style = computed(() => {
     let result = {
-        class: [$style.text],
-        style: {
-            '--cap-height': '0.5',
-            '--x-desc-height': '1.15'
-        }
+        '--cap-height': '0.5',
+        '--x-desc-height': '1.15'
     }
 
-    if (props.crop === 'uppercase') {
-        result.class = [...result.class, $style.uppercase]
-        result.style['--cap-height'] = '0.5'
-        result.style['--x-desc-height'] = '0.72'
+    if (isUppercase.value) {
+        result['--cap-height'] = '0.5'
+        result['--x-desc-height'] = '0.72'
     }
 
     if (Array.isArray(props.crop)) {
-        result.style['--cap-height'] = String(props.crop[0])
-        result.style['--x-desc-height'] = String(props.crop[1])
+        result['--cap-height'] = String(props.crop[0])
+        result['--x-desc-height'] = String(props.crop[1])
     }
 
     return result
@@ -32,14 +29,21 @@ const bind = computed(() => {
 </script>
 
 <template>
-    <span v-bind="bind">
+    <Component
+        :is="props.tag"
+        :class="[$style.text, { [$style.uppercase]: isUppercase }]"
+        :style="style"
+    >
         <slot />
-    </span>
+    </Component>
 </template>
 
 <style lang="scss" module>
 .text {
     display: block;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
     &::before,
     &::after {
         content: '';
