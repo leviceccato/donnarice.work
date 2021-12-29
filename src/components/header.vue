@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, inject } from 'vue'
 
 import ButtonReset from './button-reset.vue'
 import Link from './link.vue'
@@ -17,6 +17,8 @@ const links = [
 const state = reactive({
     isNavOpen: false
 })
+
+const isTextShown = inject('isReady', false)
 </script>
 
 <template>
@@ -26,7 +28,10 @@ const state = reactive({
             @click="state.isNavOpen = !state.isNavOpen"
         >
             <Text crop="uppercase">
-                <FloodText :text="state.isNavOpen ? 'Close menu' : 'Open menu'" />
+                <FloodText
+                    :is-shown="isTextShown"
+                    :text="state.isNavOpen ? 'Close menu' : 'Open menu'"
+                />
             </Text>
         </ButtonReset>
         <nav :class="[$style.nav, { [$style.open]: state.isNavOpen }]">
@@ -40,7 +45,10 @@ const state = reactive({
                     :href="link.url"
                 >
                     <Text crop="uppercase">
-                        <FloodText :text="link.text" />
+                        <FloodText
+                            :is-shown="isTextShown"
+                            :text="link.text"
+                        />
                     </Text>
                 </Link>
             </div>

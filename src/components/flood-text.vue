@@ -2,7 +2,9 @@
 import { computed, reactive, inject } from 'vue'
 
 const props = defineProps({
-    text: { type: String, default: '' }
+    text: { type: String, default: '' },
+    isShown: { type: Boolean, default: false },
+    hasHover: { type: Boolean, default: true }
 })
 
 const isReady = inject('isReady', false)
@@ -29,11 +31,11 @@ const delays = computed(() => {
 </script>
 
 <template>
-    <span :class="$style.segments">
+    <span :class="[$style.segments, { [$style.hover]: props.hasHover }]">
         <span
             v-for="segment, index in segments"
             :key="index"
-            :class="[$style.segment, { [$style.ready]: isReady }]"
+            :class="[$style.segment, { [$style.shown]: props.isShown }]"
             v-html="segment"
             :style="{ transitionDelay: `${delays[index]}ms` }"
             @mouseover="state.hoveredIndex = index"
@@ -57,13 +59,15 @@ $increment: math.div($start, $count);
 }
 
 .segments {
-    &:hover {
-        .segment {
-            text-shadow:
-                -0.6px 0px 0 currentColor,
-                0px -0.6px 0 currentColor,
-                0.6px 0px 0 currentColor,
-                0px 0.6px 0 currentColor;
+    &.hover {
+        &:hover {
+            .segment {
+                text-shadow:
+                    -0.6px 0px 0 currentColor,
+                    0px -0.6px 0 currentColor,
+                    0.6px 0px 0 currentColor,
+                    0px 0.6px 0 currentColor;
+            }
         }
     }
 }
@@ -71,13 +75,13 @@ $increment: math.div($start, $count);
 .segment {
     animation-name: bleedIn;
     animation-duration: 550ms;
-    animation-timing-function: ease;
+    animation-timing-function: ease-in-out;
     animation-fill-mode: both;
     animation-play-state: paused;
     -webkit-text-stroke-color: var(--dynamic-background);
     transition: text-shadow 350ms ease;
     display: inline-block;
-    &.ready {
+    &.shown {
         animation-play-state: running;
     }
 }

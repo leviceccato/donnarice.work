@@ -1,19 +1,30 @@
 <script setup>
+import { inject } from 'vue'
+
 import Link from './link.vue'
 import Text from './text.vue'
 import FloodText from './flood-text.vue'
+
+const isTextShown = inject('isReady', false)
 </script>
 
 <template>
     <div :class="$style.hero">
         <div :class="$style.container">
             <Text :class="$style.heading" tag="h1">
-                Donna is a draftsperson and senior PA based in Newcastle, Australia.
+                <FloodText
+                    :has-hover="false"
+                    :is-shown="isTextShown"
+                    text="Donna is a draftsperson and senior PA based in Newcastle, Australia."
+                />
             </Text>
             <div :class="$style.linkWrapper">
                 <Link href="#work">
                     <Text>
-                        <FloodText text="View work" />
+                        <FloodText
+                            :is-shown="isTextShown"
+                            text="View work"
+                        />
                     </Text>
                 </Link>
             </div>
