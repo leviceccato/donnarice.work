@@ -22,29 +22,35 @@ const mixRgb = (rgb1, rgb2, weight = 0.5) => {
 const background = ref(null)
 
 const state = reactive({
-    colour: undefined,
+    colour: colours[0],
     scrollTotal: 1
 })
 
 const setColour = () => {
     const position = background.value.scrollTop / state.scrollTotal
     const relativePosition = position * colours.length
+
     const index = Math.min(colours.length - 1, Math.ceil(relativePosition))
     const previousIndex = Math.max(0, index - 1)
+
     const colour = colours[index]
     const previousColour = colours[previousIndex]
+
     const weight = index - relativePosition
 
     state.colour = mixRgb(previousColour, colour, weight)
 }
 
 const setScrollTotal = () => {
+    if (!background.value) return
+
     state.scrollTotal = background.value.scrollHeight - background.value.clientHeight
 }
 
 onMounted(() => {
     setScrollTotal()
     setColour()
+
     window.addEventListener('resize', setScrollTotal)
     background.value.addEventListener('scroll', setColour)
 })
