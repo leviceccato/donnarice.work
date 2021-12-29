@@ -11,20 +11,17 @@ const isTextShown = inject('isReady', false)
 <template>
     <div :class="$style.hero">
         <div :class="$style.container">
-            <Text :class="$style.heading" tag="h1">
-                <FloodText
-                    :has-hover="false"
-                    :is-shown="isTextShown"
-                    text="Donna is a draftsperson and senior PA based in Newcastle, Australia."
-                />
+            <Text
+                :is-shown="isTextShown"
+                :class="$style.heading"
+                tag="h1"
+            >
+                Donna is a draftsperson and senior PA based in Newcastle, Australia.
             </Text>
             <div :class="$style.linkWrapper">
                 <Link href="#work">
-                    <Text>
-                        <FloodText
-                            :is-shown="isTextShown"
-                            text="View work"
-                        />
+                    <Text :is-shown="isTextShown">
+                        <FloodText text="View work" />
                     </Text>
                 </Link>
             </div>
@@ -46,16 +43,17 @@ const isTextShown = inject('isReady', false)
     line-height: 1.2;
     padding: 40px 35px 0 35px;
     box-sizing: content-box;
+
     @include media(m) {
         font-size: 50px;
         padding: 40px 100px 0 100px;
     }
 }
+
 .container {
     max-width: 600px;
 }
-.heading {
-}
+
 .linkWrapper {
     margin-top: 1em;
 }
