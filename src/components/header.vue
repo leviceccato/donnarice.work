@@ -53,6 +53,7 @@ const state = reactive({
 
 .header {
     padding: 0.3em;
+    padding-right: calc(0.1em + 8px);
     display: flex;
     flex-direction: column;
     font-size: 30px;
