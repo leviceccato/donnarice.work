@@ -91,6 +91,7 @@ const setIsNavOpen = () => {
 @include spec('.button', 2) {
     padding: 0.2em;
     margin: -0.2em;
+    overflow: hidden;
 
     @include media(m) {
         display: none;
@@ -103,10 +104,12 @@ const setIsNavOpen = () => {
     align-items: flex-end;
     justify-content: space-between;
     width: 100%;
+    margin-top: 0.4em;
 
     @include media(m) {
         display: flex;
         flex-direction: row;
+        margin-top: 0;
     }
 
     &.open {
@@ -114,9 +117,16 @@ const setIsNavOpen = () => {
     }
 }
 
+@include spec('.link', 2) {
+    overflow: hidden;
+}
+
 .linkWrapper {
     display: flex;
-    margin-top: 0.4em;
+
+    &:not(:first-of-type) {
+        margin-top: 0.4em;
+    }
 
     @include media(m) {
         margin-top: 0;
