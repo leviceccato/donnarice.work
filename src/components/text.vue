@@ -58,16 +58,23 @@ $increment: math.div($start, $count);
     }
 }
 
+@keyframes bleedOut {
+    @for $i from 0 through $count {
+        #{($i * $frame) + '%'} {
+            -webkit-text-stroke-width: #{$i * $increment}em;
+        }
+    }
+}
+
 .text {
     display: block;
     font-size: inherit;
     font-weight: inherit;
     margin: 0;
-    animation-name: bleedIn;
+    animation-name: bleedOut;
     animation-duration: 550ms;
     animation-timing-function: ease-in-out;
     animation-fill-mode: both;
-    animation-play-state: paused;
     -webkit-text-stroke-color: var(--dynamic-background);
 
     &::before,
@@ -91,7 +98,7 @@ $increment: math.div($start, $count);
     }
 
     &.shown {
-        animation-play-state: running;
+        animation-name: bleedIn;
     }
 }
 </style>
