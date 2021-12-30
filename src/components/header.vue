@@ -60,6 +60,8 @@ const setIsNavOpen = () => {
                 <Link
                     :class="$style.link"
                     :href="link.url"
+                    is-virtual
+                    @follow="toggleNav"
                 >
                     <Text
                         :is-shown="state.isNavTextShown"
