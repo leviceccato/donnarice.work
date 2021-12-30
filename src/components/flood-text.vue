@@ -1,13 +1,11 @@
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
     text: { type: String, default: '' }
 })
 
-const state = reactive({
-    hoveredIndex: -1
-})
+const hoveredIndex = ref(-1)
 
 const segments = computed(() => {
     return props.text.split('').map(char => {
@@ -20,7 +18,7 @@ const segments = computed(() => {
 
 const delays = computed(() => {
     return segments.value.map((_, index) => {
-        const offset = Math.abs(state.hoveredIndex - index)
+        const offset = Math.abs(hoveredIndex.value - index)
         return offset * 50
     })
 })
@@ -34,7 +32,7 @@ const delays = computed(() => {
             :class="$style.segment"
             v-html="segment"
             :style="{ transitionDelay: `${delays[index]}ms` }"
-            @mouseover="state.hoveredIndex = index"
+            @mouseover="hoveredIndex = index"
         />
     </span>
 </template>
