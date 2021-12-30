@@ -25,14 +25,14 @@ const scrollContext = computed(() => {
     if (!background.value) return null
 
     return {
-        scrollTo: selector => {
+        scrollTo: (selector, behavior = 'smooth') => {
             const targetEl = background.value.querySelector(selector)
             if (!targetEl) return
 
             background.value.scrollTo({
                 top: targetEl.offsetTop,
                 left: 0,
-                behavior: 'smooth'
+                behavior
             })
         }
     }
