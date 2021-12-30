@@ -45,23 +45,47 @@ const style = computed(() => {
 <style lang="scss" module>
 @use 'sass:math';
 
-$count: 30;
-$start: 0.15;
-$frame: math.div(100, $count);
-$increment: math.div($start, $count);
+$fade-iterations: 10;
+$bleed-iterations: 20;
+$total-iterations: $fade-iterations + $bleed-iterations;
+
+$max-width: 0.15;
+$max-opacity: 1;
+$max-blur: 0.15;
+
+$frame-percentage: math.div(100, $total-iterations);
+$stroke-increment: math.div($max-width, $bleed-iterations);
 
 @keyframes bleedIn {
-    @for $i from 0 through $count {
-        #{($i * $frame) + '%'} {
-            -webkit-text-stroke-width: #{$start - ($i * $increment)}em;
+    @for $i from 0 through $fade-iterations {
+        #{($i * $frame-percentage) + '%'} {
+            -webkit-text-stroke-width: #{$max-width}em;
+            opacity: 1;
+            filter: blur(0px);
+        }
+    }
+    @for $i from $fade-iterations through $total-iterations {
+        #{($i * $frame-percentage) + '%'} {
+            -webkit-text-stroke-width: #{$max-width - ($i * $stroke-increment)}em;
+            opacity: 1;
+            filter: blur(0px);
         }
     }
 }
 
 @keyframes bleedOut {
-    @for $i from 0 through $count {
-        #{($i * $frame) + '%'} {
-            -webkit-text-stroke-width: #{$i * $increment}em;
+    @for $i from 0 through $bleed-iterations {
+        #{($i * $frame-percentage) + '%'} {
+            -webkit-text-stroke-width: #{$i * $stroke-increment}em;
+            opacity: 1;
+            filter: blur(0px);
+        }
+    }
+    @for $i from $bleed-iterations through $total-iterations {
+        #{($i * $frame-percentage) + '%'} {
+            -webkit-text-stroke-width: #{$max-width}em;
+            opacity: 1;
+            filter: blur(0px);
         }
     }
 }
