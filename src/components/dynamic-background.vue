@@ -9,35 +9,33 @@ const colours = [
 ]
 
 const mixRgb = (rgb1, rgb2, weight = 0.5) => {
-    const w = weight * 2 - 1;
-    const w1 = (w + 1) / 2.0;
-    const w2 = 1 - w1;
+    const w = weight * 2 - 1
+    const w1 = (w + 1) / 2.0
+    const w2 = 1 - w1
     return [
         Math.round(rgb1[0] * w1 + rgb2[0] * w2),
         Math.round(rgb1[1] * w1 + rgb2[1] * w2),
         Math.round(rgb1[2] * w1 + rgb2[2] * w2)
-    ];
-};
+    ]
+}
 
 const background = ref(null)
+const isScrolling = ref(false)
 
 const scrollContext = computed(() => {
     if (!background.value) return null
 
     return {
-        scrollTo: (selector, behavior = 'smooth') => {
+        scrollTo: selector => {
             const targetEl = background.value.querySelector(selector)
             if (!targetEl) return
 
-            background.value.scrollTo({
-                top: targetEl.offsetTop,
-                left: 0,
-                behavior
-            })
+            background.value.scrollTo(targetEl.offsetTop)
         }
     }
 })
 provide('scrollContext', scrollContext)
+provide('isScrolling', isScrolling)
 
 const state = reactive({
     colour: colours[0],

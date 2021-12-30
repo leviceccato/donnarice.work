@@ -89,6 +89,7 @@ const setIsNavOpen = () => {
     position: fixed;
     width: 100%;
     pointer-events: none;
+    z-index: 1;
 }
 
 @include spec('.button', 2) {
