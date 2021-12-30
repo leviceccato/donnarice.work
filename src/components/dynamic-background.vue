@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, provide, computed } from 'vue'
 
 const colours = [
     [237, 237, 237],
@@ -20,6 +20,24 @@ const mixRgb = (rgb1, rgb2, weight = 0.5) => {
 };
 
 const background = ref(null)
+
+const scrollContext = computed(() => {
+    if (!background.value) return null
+
+    return {
+        scrollTo: selector => {
+            const targetEl = background.value.querySelector(selector)
+            if (!targetEl) return
+
+            background.value.scrollTo({
+                top: targetEl.offsetTop,
+                left: 0,
+                behavior: 'smooth'
+            })
+        }
+    }
+})
+provide('scrollContext', scrollContext)
 
 const state = reactive({
     colour: colours[0],
