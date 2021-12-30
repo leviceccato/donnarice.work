@@ -51,7 +51,11 @@ const isTextShown = inject('isReady', false)
 }
 
 .container {
-    max-width: 600px;
+    max-width: 400px;
+
+    @include media(m) {
+        max-width: 600px;
+    }
 }
 
 .linkWrapper {
