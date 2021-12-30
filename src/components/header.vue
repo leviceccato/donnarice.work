@@ -15,20 +15,37 @@ const links = [
 ]
 
 const state = reactive({
-    isNavOpen: false
+    isNavOpen: false,
+    isNavTextShown: false
 })
 
-const isTextShown = inject('isReady', false)
+const toggleNav = () => {
+    if (!state.isNavOpen) {
+        state.isNavOpen = true
+        state.isNavTextShown = true
+        return
+    }
+
+    state.isNavTextShown = false
+}
+
+const isReady = inject('isReady', false)
+
+const setIsNavOpen = () => {
+    if (state.isNavTextShown) return
+
+    state.isNavOpen = false
+}
 </script>
 
 <template>
     <div role="banner" :class="$style.header">
         <ButtonReset
             :class="$style.button"
-            @click="state.isNavOpen = !state.isNavOpen"
+            @click="toggleNav"
         >
             <Text
-                :is-shown="isTextShown"
+                :is-shown="isReady"
                 crop="uppercase"
             >
                 <FloodText :text="state.isNavOpen ? 'Close menu' : 'Open menu'" />
@@ -43,10 +60,13 @@ const isTextShown = inject('isReady', false)
                 <Link
                     :class="$style.link"
                     :href="link.url"
+                    is-virtual
+                    @follow="toggleNav"
                 >
                     <Text
-                        :is-shown="isTextShown"
+                        :is-shown="state.isNavTextShown"
                         crop="uppercase"
+                        @animationend="setIsNavOpen"
                     >
                         <FloodText :text="link.text" />
                     </Text>
@@ -68,11 +88,15 @@ const isTextShown = inject('isReady', false)
     align-items: flex-end;
     position: fixed;
     width: 100%;
+    pointer-events: none;
+    z-index: 1;
 }
 
 @include spec('.button', 2) {
     padding: 0.2em;
     margin: -0.2em;
+    overflow: hidden;
+    pointer-events: all;
 
     @include media(m) {
         display: none;
@@ -85,10 +109,13 @@ const isTextShown = inject('isReady', false)
     align-items: flex-end;
     justify-content: space-between;
     width: 100%;
+    margin-top: 0.4em;
+    pointer-events: none;
 
     @include media(m) {
         display: flex;
         flex-direction: row;
+        margin-top: 0;
     }
 
     &.open {
@@ -96,9 +123,17 @@ const isTextShown = inject('isReady', false)
     }
 }
 
+@include spec('.link', 2) {
+    overflow: hidden;
+    pointer-events: all;
+}
+
 .linkWrapper {
     display: flex;
-    margin-top: 0.4em;
+
+    &:not(:first-of-type) {
+        margin-top: 0.4em;
+    }
 
     @include media(m) {
         margin-top: 0;

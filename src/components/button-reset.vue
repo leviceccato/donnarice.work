@@ -14,6 +14,7 @@
     text-align: inherit;
     font-size: inherit;
     letter-spacing: inherit;
+    line-height: inherit;
     padding: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;

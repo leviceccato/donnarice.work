@@ -13,10 +13,31 @@ onMounted(() => isReady.value = true)
 </script>
 
 <template>
-    <DynamicBackground>
+    <DynamicBackground v-slot="{ scrolling }">
         <Header />
-        <div style="height: 3000px">
-            <Hero />
-        </div>
+        <main
+            style="height: 3000px"
+            :class="[$style.main, {
+                [$style.scrollingDown]: scrolling === 'down',
+                [$style.scrollingUp]: scrolling === 'up'
+            }]"
+        >
+            <Hero id="intro" />
+            <div id="work" />
+        </main>
     </DynamicBackground>
 </template>
+
+<style lang="scss" module>
+.main {
+    transition: transform 350ms ease;
+
+    &.scrollingDown {
+        transform: translateY(-20px);
+    }
+
+    &.scrollingUp {
+        transform: translateY(20px);
+    }
+}
+</style>
