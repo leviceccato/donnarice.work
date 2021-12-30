@@ -15,20 +15,37 @@ const links = [
 ]
 
 const state = reactive({
-    isNavOpen: false
+    isNavOpen: false,
+    isNavTextShown: false
 })
 
-const isTextShown = inject('isReady', false)
+const toggleNav = () => {
+    if (!state.isNavOpen) {
+        state.isNavOpen = true
+        state.isNavTextShown = true
+        return
+    }
+
+    state.isNavTextShown = false
+}
+
+const isReady = inject('isReady', false)
+
+const setIsNavOpen = () => {
+    if (state.isNavTextShown) return
+
+    state.isNavOpen = false
+}
 </script>
 
 <template>
     <div role="banner" :class="$style.header">
         <ButtonReset
             :class="$style.button"
-            @click="state.isNavOpen = !state.isNavOpen"
+            @click="toggleNav"
         >
             <Text
-                :is-shown="isTextShown"
+                :is-shown="isReady"
                 crop="uppercase"
             >
                 <FloodText :text="state.isNavOpen ? 'Close menu' : 'Open menu'" />
@@ -45,8 +62,9 @@ const isTextShown = inject('isReady', false)
                     :href="link.url"
                 >
                     <Text
-                        :is-shown="isTextShown"
+                        :is-shown="state.isNavTextShown"
                         crop="uppercase"
+                        @animationend="setIsNavOpen"
                     >
                         <FloodText :text="link.text" />
                     </Text>
