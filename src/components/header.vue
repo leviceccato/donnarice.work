@@ -86,12 +86,14 @@ const setIsNavOpen = () => {
     align-items: flex-end;
     position: fixed;
     width: 100%;
+    pointer-events: none;
 }
 
 @include spec('.button', 2) {
     padding: 0.2em;
     margin: -0.2em;
     overflow: hidden;
+    pointer-events: all;
 
     @include media(m) {
         display: none;
@@ -105,6 +107,7 @@ const setIsNavOpen = () => {
     justify-content: space-between;
     width: 100%;
     margin-top: 0.4em;
+    pointer-events: none;
 
     @include media(m) {
         display: flex;
@@ -119,6 +122,7 @@ const setIsNavOpen = () => {
 
 @include spec('.link', 2) {
     overflow: hidden;
+    pointer-events: all;
 }
 
 .linkWrapper {
