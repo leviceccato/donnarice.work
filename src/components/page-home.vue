@@ -16,7 +16,8 @@ onMounted(() => isReady.value = true)
     <DynamicBackground>
         <Header />
         <div style="height: 3000px">
-            <Hero />
+            <Hero id="intro" />
+            <div id="work" />
         </div>
     </DynamicBackground>
 </template>
