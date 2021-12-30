@@ -20,22 +20,27 @@ const mixRgb = (rgb1, rgb2, weight = 0.5) => {
 }
 
 const background = ref(null)
-const isScrolling = ref(false)
+const scrolling = ref('none')
+
+const scrollTo = async selector => {
+    const targetEl = background.value.querySelector(selector)
+    if (!targetEl) return
+
+    scrolling.value = targetEl.offsetTop >= background.value.scrollTop
+        ? 'down'
+        : 'up'
+
+    await new Promise(res => setTimeout(res, 500))
+    background.value.scrollTo(0, targetEl.offsetTop)
+}
 
 const scrollContext = computed(() => {
     if (!background.value) return null
 
-    return {
-        scrollTo: selector => {
-            const targetEl = background.value.querySelector(selector)
-            if (!targetEl) return
-
-            background.value.scrollTo(targetEl.offsetTop)
-        }
-    }
+    return { scrolling, scrollTo }
 })
+
 provide('scrollContext', scrollContext)
-provide('isScrolling', isScrolling)
 
 const state = reactive({
     colour: colours[0],
@@ -77,8 +82,9 @@ onMounted(() => {
         ref="background"
         :class="$style.background"
         :style="{ '--dynamic-background': `rgba(${state.colour})` }"
+        @transitionend="void 0"
     >
-        <slot />
+        <slot v-bind="{ scrolling }" />
     </div>
 </template>
 
@@ -87,13 +93,16 @@ onMounted(() => {
     height: 100%;
     background-color: var(--dynamic-background);
     overflow-y: scroll;
+
     &::-webkit-scrollbar {
         width: 8px;
     }
+
     &::-webkit-scrollbar-track {
         border: solid 3px transparent;
         background-color: transparent;
     }
+
     &::-webkit-scrollbar-thumb {
         box-shadow: inset 0 0 0 4px currentColor;
         border: solid 2px transparent;
