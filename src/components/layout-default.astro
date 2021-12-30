@@ -1,0 +1,77 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Donna Rice</title>
+        <meta name="description" content="The work of Donna Rice, a draftsperson and senior PA from Newcastle, Australia" />
+
+        <meta property="og:title" content="Donna Rice" />
+        <meta property="og:description" content="The work of Donna Rice, a draftsperson and senior PA from Newcastle, Australia" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://donnarice.work" />
+        <meta property="og:image" content="/theme/image.png" />
+
+        <link rel="icon" type="image/png" sizes="16x16" href="/theme/favicon-16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/theme/favicon-32.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/theme/apple-touch-icon.png" />
+    </head>
+    <body>
+        <slot />
+    </body>
+</html>
+
+<style lang="scss" global>
+@use 'modern-normalize/modern-normalize.css';
+@use '../styles/variables.scss' as *;
+
+@font-face {
+    font-family: 'Tex Gyre Heros';
+    font-weight: 400;
+    font-style: normal;
+    src: url('/fonts/texgyreheros-regular.woff2') format('woff2');
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    --font-copy: #{$font-copy};
+    --font-weight: #{$font-weight};
+    --line-height: #{$line-height};
+    --letter-spacing: #{$letter-spacing};
+
+    --col-black: #{$col-black};
+    --col-black-select: #{$col-black-select};
+    --col-white: #{$col-white};
+
+    --ease-out-quint: #{$ease-out-quint};
+    --ease-in-out-quint: #{$ease-in-out-quint};
+    --ease-out-back: #{$ease-out-back};
+
+    line-height: var(--line-height);
+    font-family: var(--font-copy);
+    letter-spacing: var(--letter-spacing);
+    color: var(--col-black);
+
+    margin: 0;
+    height: 100%;
+    // Fixes bold looking fonts on macOS in Chrome & Safari
+    -webkit-font-smoothing: antialiased;
+    // Fixes bold looking fonts on macOS in Firefox
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+    line-height: 1.4;
+    overflow-y: hidden;
+}
+
+// These have to be separate selectors otherwise they won't work
+::-moz-selection {
+    color: var(--col-white);
+    background-color: var(--col-black-select);
+} 
+::selection {
+    color: var(--col-white);
+    background-color: var(--col-black-select);
+}
+</style>
