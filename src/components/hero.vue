@@ -1,11 +1,19 @@
 <script setup>
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 
 import Link from './link.vue'
 import Text from './text.vue'
 import FloodText from './flood-text.vue'
 
-const isTextShown = inject('isReady', false)
+const isReady = inject('isReady', false)
+const scrollContext = inject('scrollContext', null)
+
+const isTextShown = computed(() => {
+    if (scrollContext) {
+        return isReady.value && (scrollContext.value.scrolling.value === 'none')
+    }
+    return isReady.value
+})
 </script>
 
 <template>
