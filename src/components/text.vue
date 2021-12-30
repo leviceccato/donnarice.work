@@ -71,6 +71,7 @@ $increment: math.div($start, $count);
     font-size: inherit;
     font-weight: inherit;
     margin: 0;
+
     animation-name: bleedOut;
     animation-duration: 550ms;
     animation-timing-function: ease-in-out;
