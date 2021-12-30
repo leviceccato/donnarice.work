@@ -19,7 +19,10 @@ const isTextShown = inject('isReady', false)
                 Donna is a draftsperson and senior PA based in Newcastle, Australia.
             </Text>
             <div :class="$style.linkWrapper">
-                <Link href="#work">
+                <Link
+                    href="#work"
+                    is-virtual
+                >
                     <Text :is-shown="isTextShown">
                         <FloodText text="View work" />
                     </Text>
