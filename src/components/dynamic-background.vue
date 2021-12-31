@@ -58,7 +58,7 @@ const scrollTo = async selector => {
 
     const fromColour = getColour(background.value.scrollTop)
     const toColour = getColour(targetEl.offsetTop)
-    animate(0, 1, scrollDuration, easeInOutSine, weight => {
+    animate(1, 0, scrollDuration, easeInOutSine, weight => {
         state.colour = mixRgb(fromColour, toColour, weight)
     })
     await sleep(scrollDuration / 2)
