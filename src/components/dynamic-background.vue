@@ -32,7 +32,7 @@ const state = reactive({
     scrollTotal: 1
 })
 
-const setColour = scrollTop => {
+const getColour = scrollTop => {
     const position = scrollTop / state.scrollTotal
     const relativePosition = position * colours.length
 
@@ -44,7 +44,7 @@ const setColour = scrollTop => {
 
     const weight = index - relativePosition
 
-    state.colour = mixRgb(previousColour, colour, weight)
+    return mixRgb(previousColour, colour, weight)
 }
 
 const scrollTo = async selector => {
@@ -55,13 +55,12 @@ const scrollTo = async selector => {
         ? 'down'
         : 'up'
     isTransitioning.value = true
-    animate(
-        background.value.scrollTop,
-        targetEl.offsetTop,
-        scrollDuration,
-        easeInOutSine,
-        setColour
-    )
+
+    const fromColour = getColour(background.value.scrollTop)
+    const toColour = getColour(targetEl.offsetTop)
+    animate(0, 1, scrollDuration, easeInOutSine, weight => {
+        state.colour = mixRgb(fromColour, toColour, weight)
+    })
     await sleep(scrollDuration / 2)
 
     background.value.scrollTo(0, targetEl.offsetTop)
@@ -87,13 +86,13 @@ const setScrollTotal = () => {
 
 onMounted(() => {
     setScrollTotal()
-    setColour(background.value.scrollTop)
+    state.colour = getColour(background.value.scrollTop)
 
     window.addEventListener('resize', setScrollTotal)
     background.value.addEventListener('scroll', () => {
         if (isTransitioning.value) return
 
-        setColour(background.value.scrollTop)
+        state.colour = getColour(background.value.scrollTop)
     })
 })
 </script>
