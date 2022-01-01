@@ -2,6 +2,7 @@
 import { onMounted, provide, ref } from 'vue'
 
 import DynamicBackground from './dynamic-background.vue'
+import Section from './section.vue'
 import Header from './header.vue'
 import Hero from './hero.vue'
 import Text from './text.vue'
@@ -16,20 +17,25 @@ onMounted(() => isReady.value = true)
 <template>
     <DynamicBackground v-slot="{ scrolling, scrollDuration }">
         <Header />
-        <main
-            style="height: 3000px"
-            :style="{ animationDuration: `${scrollDuration}ms` }"
-            :class="[$style.main, {
-                [$style.scrollingDown]: scrolling === 'down',
-                [$style.scrollingUp]: scrolling === 'up'
-            }]"
-        >
-            <Hero id="intro" />
-            <Hero id="work" />
-            <Hero id="testimonials" />
-            <Hero id="resume" />
-            <Hero id="contact" />
-        </main>
+        <div :class="$style.container">
+            <main
+                :style="{ animationDuration: `${scrollDuration}ms` }"
+                :class="[$style.main, {
+                    [$style.scrollingDown]: scrolling === 'down',
+                    [$style.scrollingUp]: scrolling === 'up'
+                }]"
+            >
+                <Section id="intro">
+                    <Hero />
+                </Section>
+                <Section id="work">
+                    <Hero />
+                </Section>
+                <Hero id="testimonials" />
+                <Hero id="resume" />
+                <Hero id="contact" />
+            </main>
+        </div>
     </DynamicBackground>
 </template>
 
@@ -48,6 +54,10 @@ onMounted(() => isReady.value = true)
     100% {
         transform: translateY(0);
     }
+}
+
+.container {
+    overflow: hidden;
 }
 
 .main {

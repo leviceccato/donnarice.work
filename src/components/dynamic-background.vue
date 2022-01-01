@@ -26,6 +26,7 @@ const scrollDuration = 1100
 const background = ref(null)
 const scrolling = ref('none')
 const isTransitioning = ref(false)
+const currentSection = ref(null)
 
 const state = reactive({
     colour: colours[0],
@@ -70,10 +71,17 @@ const scrollTo = async selector => {
     scrolling.value = 'none'
 }
 
+const setSection = section => currentSection.value = section
+
 const scrollContext = computed(() => {
     if (!background.value) return null
 
-    return { scrolling, scrollTo, isTransitioning }
+    return {
+        scrolling,
+        scrollTo,
+        isTransitioning,
+        setSection
+    }
 })
 
 provide('scrollContext', scrollContext)
