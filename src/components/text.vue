@@ -1,5 +1,6 @@
 <script setup>
-import { computed, provide } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
+import { animate, easeInOutSine } from '../scripts/animation.js'
 
 const props = defineProps({
     crop: { type: [String, Array] },
@@ -30,15 +31,32 @@ const style = computed(() => {
 
 const isTextShown = computed(() => props.isShown)
 provide('isTextShown', isTextShown)
+
+const maxStroke = 0.15
+const minStroke = 0
+
+const strokeWidth = ref(maxStroke);
+
+watch(() => props.isShown, isShown => {
+    bleed(isShown ? minStroke : maxStroke)
+})
+
+const bleed = to => {
+    animate(strokeWidth.value, to, 550, easeInOutSine, width => {
+        strokeWidth.value = width
+    })
+}
 </script>
 
 <template>
     <Component
         :is="props.tag"
-        :style="style"
+        :style="{
+            ...style,
+            '-webkit-text-stroke-width': `${strokeWidth}em`
+        }"
         :class="[$style.text, {
-            [$style.uppercase]: isUppercase,
-            [$style.shown]: isShown
+            [$style.uppercase]: isUppercase
         }]"
     >
         <slot />
@@ -48,61 +66,15 @@ provide('isTextShown', isTextShown)
 <style lang="scss" module>
 @use 'sass:math';
 
-$fade-iterations: 10;
-$bleed-iterations: 20;
-$total-iterations: $fade-iterations + $bleed-iterations;
-
-$max-width: 0.15;
-
-$frame-percentage: math.div(100, $total-iterations);
-$stroke-increment: math.div($max-width, $bleed-iterations);
-
-@keyframes bleedIn {
-    @for $i from 0 through $fade-iterations {
-        #{($i * $frame-percentage) + '%'} {
-            -webkit-text-stroke-width: #{$max-width}em;
-            opacity: 1;
-            filter: blur(0px);
-        }
-    }
-    @for $i from $fade-iterations through $total-iterations {
-        $count: $i - $fade-iterations;
-        #{($i * $frame-percentage) + '%'} {
-            -webkit-text-stroke-width: #{$max-width - ($count * $stroke-increment)}em;
-            opacity: 1;
-            filter: blur(0px);
-        }
-    }
-}
-
-@keyframes bleedOut {
-    @for $i from 0 through $bleed-iterations {
-        #{($i * $frame-percentage) + '%'} {
-            -webkit-text-stroke-width: #{$i * $stroke-increment}em;
-            opacity: 1;
-            filter: blur(0px);
-        }
-    }
-    @for $i from $bleed-iterations through $total-iterations {
-        #{($i * $frame-percentage) + '%'} {
-            -webkit-text-stroke-width: #{$max-width}em;
-            opacity: 1;
-            filter: blur(0px);
-        }
-    }
-}
-
 .text {
     display: block;
     font-size: inherit;
     font-weight: inherit;
     margin: 0;
 
-    animation-name: bleedOut;
-    animation-duration: 550ms;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: both;
     -webkit-text-stroke-color: var(--dynamic-background);
+    opacity: 1;
+    filter: blur(0px);
 
     &::before,
     &::after {
@@ -122,10 +94,6 @@ $stroke-increment: math.div($max-width, $bleed-iterations);
 
     &.uppercase {
         text-transform: uppercase;
-    }
-
-    &.shown {
-        animation-name: bleedIn;
     }
 }
 </style>
