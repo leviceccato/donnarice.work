@@ -16,7 +16,7 @@ const scrollContext = inject('scrollContext', null)
 const followHref = event => {
     if (!props.isVirtual) return
     if (!attrs.href) return
-    if (!scrollContext) return
+    if (!scrollContext.value) return
 
     event.preventDefault()
     scrollContext.value.scrollTo(attrs.href)

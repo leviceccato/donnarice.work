@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, inject } from 'vue'
+import { reactive, inject, computed } from 'vue'
 
 import ButtonReset from './button-reset.vue'
 import MediaQuery from './media-query.vue'
@@ -8,11 +8,11 @@ import Text from './text.vue'
 import FloodText from './flood-text.vue'
 
 const links = [
-    { text: 'Intro', url: '#intro' },
-    { text: 'Work', url: '#work' },
-    { text: 'Testimonials', url: '#testimonials' },
-    { text: 'Resume', url: '#resume' },
-    { text: 'Contact', url: '#contact' }
+    { text: 'Intro', id: 'intro' },
+    { text: 'Work', id: 'work' },
+    { text: 'Testimonials', id: 'testimonials' },
+    { text: 'Resume', id: 'resume' },
+    { text: 'Contact', id: 'contact' }
 ]
 
 const state = reactive({
@@ -37,6 +37,36 @@ const setIsNavOpen = () => {
 
     state.isNavOpen = false
 }
+
+const scrollContext = inject('scrollContext', null)
+
+const currentSection = computed(() => {
+    if (!scrollContext.value) return null
+
+    return scrollContext.value.currentSection.value
+})
+const nextSection = ref(null)
+
+const nextSectionDirection = computed(() => {
+    if (!nextSection.value) return 'none'
+    if (!currentSection.value) return 'none'
+
+    let nextIndex = 0
+    let currentIndex = 0
+    links.forEach((link, index) => {
+        if (link.id === nextIndex.value) {
+            nextIndex = index
+            return
+        }
+        if (link.id === currentIndex.value) {
+            currentIndex = index
+        }
+    })
+
+    if (nextIndex === currentIndex) return 'none'
+    if (nextIndex > currentIndex) return 'right'
+    return 'left'
+})
 </script>
 
 <template>
@@ -61,9 +91,12 @@ const setIsNavOpen = () => {
                 >
                     <Link
                         :class="$style.link"
-                        :href="link.url"
+                        :href="`#${link.id}`"
                         is-virtual
-                        @follow="toggleNav"
+                        @follow="
+                            toggleNav();
+                            nextSection = link.id
+                        "
                     >
                         <Text
                             :is-shown="state.isNavTextShown || isMatching"
@@ -73,6 +106,9 @@ const setIsNavOpen = () => {
                             <FloodText :text="link.text" />
                         </Text>
                     </Link>
+                    <span :class="[$style.linkLine, {
+                        [$style.active]: link.id === currentSection
+                    }]" />
                 </div>
             </nav>
         </div>
@@ -133,6 +169,7 @@ const setIsNavOpen = () => {
 
 .linkWrapper {
     display: flex;
+    position: relative;
 
     &:not(:first-of-type) {
         margin-top: 0.4em;
@@ -140,6 +177,21 @@ const setIsNavOpen = () => {
         @include media(m) {
             margin-top: 0;
         }
+    }
+}
+
+.linkLine {
+    position: absolute;
+    left: 0;
+    bottom: -0.3em;
+    width: 100%;
+    height: 2px;
+    transition: transform 250ms ease;
+    background-color: currentColor;
+    transform: scaleY(0);
+
+    &.active {
+        transform: scaleY(1);
     }
 }
 </style>
