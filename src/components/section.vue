@@ -15,7 +15,7 @@ const options = () => ({
 
 const viewSection = ({ entry }) => {
     if (!entry.isIntersecting) return
-    if (!scrollContext) return
+    if (!scrollContext.value) return
     if (!props.id) return
 
     scrollContext.value.setSection(props.id)
