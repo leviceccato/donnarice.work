@@ -2,6 +2,7 @@
 import { reactive, inject } from 'vue'
 
 import ButtonReset from './button-reset.vue'
+import MediaQuery from './media-query.vue'
 import Link from './link.vue'
 import Text from './text.vue'
 import FloodText from './flood-text.vue'
@@ -39,41 +40,43 @@ const setIsNavOpen = () => {
 </script>
 
 <template>
-    <div role="banner" :class="$style.header">
-        <ButtonReset
-            :class="$style.button"
-            @click="toggleNav"
-        >
-            <Text
-                :is-shown="isReady"
-                crop="uppercase"
+    <MediaQuery query="(min-width: 768px)" v-slot="{ isMatching }">
+        <div role="banner" :class="$style.header">
+            <ButtonReset
+                :class="$style.button"
+                @click="toggleNav"
             >
-                <FloodText :text="state.isNavOpen ? 'Close menu' : 'Open menu'" />
-            </Text>
-        </ButtonReset>
-        <nav :class="[$style.nav, { [$style.open]: state.isNavOpen }]">
-            <div
-                v-for="link in links"
-                :key="link"
-                :class="$style.linkWrapper"
-            >
-                <Link
-                    :class="$style.link"
-                    :href="link.url"
-                    is-virtual
-                    @follow="toggleNav"
+                <Text
+                    :is-shown="isReady"
+                    crop="uppercase"
                 >
-                    <Text
-                        :is-shown="state.isNavTextShown"
-                        crop="uppercase"
-                        @animationend="setIsNavOpen"
+                    <FloodText :text="state.isNavOpen ? 'Close menu' : 'Open menu'" />
+                </Text>
+            </ButtonReset>
+            <nav :class="[$style.nav, { [$style.open]: state.isNavOpen }]">
+                <div
+                    v-for="link in links"
+                    :key="link"
+                    :class="$style.linkWrapper"
+                >
+                    <Link
+                        :class="$style.link"
+                        :href="link.url"
+                        is-virtual
+                        @follow="toggleNav"
                     >
-                        <FloodText :text="link.text" />
-                    </Text>
-                </Link>
-            </div>
-        </nav>
-    </div>
+                        <Text
+                            :is-shown="state.isNavTextShown || isMatching"
+                            crop="uppercase"
+                            @animationend="setIsNavOpen"
+                        >
+                            <FloodText :text="link.text" />
+                        </Text>
+                    </Link>
+                </div>
+            </nav>
+        </div>
+    </MediaQuery>
 </template>
 
 <style lang="scss" module>
@@ -133,10 +136,10 @@ const setIsNavOpen = () => {
 
     &:not(:first-of-type) {
         margin-top: 0.4em;
-    }
 
-    @include media(m) {
-        margin-top: 0;
+        @include media(m) {
+            margin-top: 0;
+        }
     }
 }
 </style>
