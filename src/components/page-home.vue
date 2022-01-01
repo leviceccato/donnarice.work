@@ -2,6 +2,7 @@
 import { onMounted, provide, ref } from 'vue'
 
 import DynamicBackground from './dynamic-background.vue'
+import Section from './section.vue'
 import Header from './header.vue'
 import Hero from './hero.vue'
 import Text from './text.vue'
@@ -24,8 +25,12 @@ onMounted(() => isReady.value = true)
                     [$style.scrollingUp]: scrolling === 'up'
                 }]"
             >
-                <Hero id="intro" />
-                <Hero id="work" />
+                <Section id="intro">
+                    <Hero />
+                </Section>
+                <Section id="work">
+                    <Hero />
+                </Section>
                 <Hero id="testimonials" />
                 <Hero id="resume" />
                 <Hero id="contact" />
