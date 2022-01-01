@@ -1,9 +1,11 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, inject } from 'vue'
 
 const props = defineProps({
     text: { type: String, default: '' }
 })
+
+const isTextShown = inject('isTextShown', false)
 
 const hoveredIndex = ref(-1)
 
@@ -29,7 +31,7 @@ const delays = computed(() => {
         <span
             v-for="segment, index in segments"
             :key="index"
-            :class="$style.segment"
+            :class="[$style.segment, { [$style.hidden]: !isTextShown }]"
             v-html="segment"
             :style="{ transitionDelay: `${delays[index]}ms` }"
             @mouseover="hoveredIndex = index"
@@ -42,10 +44,14 @@ const delays = computed(() => {
     &:hover {
         .segment {
             text-shadow:
-                -0.6px 0px 0 currentColor,
-                0px -0.6px 0 currentColor,
-                0.6px 0px 0 currentColor,
-                0px 0.6px 0 currentColor;
+                -0.02em 0 0 currentColor,
+                0 -0.02em 0 currentColor,
+                0.02em 0 0 currentColor,
+                0 0.02em 0 currentColor;
+
+            &.hidden {
+                text-shadow: none;
+            }
         }
     }
 }
@@ -53,5 +59,9 @@ const delays = computed(() => {
 .segment {
     transition: text-shadow 350ms ease;
     display: inline-block;
+
+    &.hidden {
+        transition: none;
+    }
 }
 </style>

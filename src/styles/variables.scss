@@ -4,8 +4,7 @@ $line-height: 1.3;
 $letter-spacing: -0.027em;
 
 $col-black: #000000;
-$col-black-select: #{transparentize($col-black, 0.01)};
-$col-white: #FFFFFF;
+$col-black-select: #{transparentize($col-black, 0.6)};
 
 $ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 $ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);

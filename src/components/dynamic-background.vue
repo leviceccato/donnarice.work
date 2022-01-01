@@ -1,5 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref, provide, computed } from 'vue'
+import { animate, easeInOutSine } from '../scripts/animation.js'
+import { sleep } from '../scripts/async.js'
 
 const colours = [
     [237, 237, 237],
@@ -19,36 +21,19 @@ const mixRgb = (rgb1, rgb2, weight = 0.5) => {
     ]
 }
 
+const scrollDuration = 1100
+
 const background = ref(null)
 const scrolling = ref('none')
-
-const scrollTo = async selector => {
-    const targetEl = background.value.querySelector(selector)
-    if (!targetEl) return
-
-    scrolling.value = targetEl.offsetTop >= background.value.scrollTop
-        ? 'down'
-        : 'up'
-
-    await new Promise(res => setTimeout(res, 500))
-    background.value.scrollTo(0, targetEl.offsetTop)
-}
-
-const scrollContext = computed(() => {
-    if (!background.value) return null
-
-    return { scrolling, scrollTo }
-})
-
-provide('scrollContext', scrollContext)
+const isTransitioning = ref(false)
 
 const state = reactive({
     colour: colours[0],
     scrollTotal: 1
 })
 
-const setColour = () => {
-    const position = background.value.scrollTop / state.scrollTotal
+const getColour = scrollTop => {
+    const position = scrollTop / state.scrollTotal
     const relativePosition = position * colours.length
 
     const index = Math.min(colours.length - 1, Math.ceil(relativePosition))
@@ -59,8 +44,39 @@ const setColour = () => {
 
     const weight = index - relativePosition
 
-    state.colour = mixRgb(previousColour, colour, weight)
+    return mixRgb(previousColour, colour, weight)
 }
+
+const scrollTo = async selector => {
+    const targetEl = background.value.querySelector(selector)
+    if (!targetEl) return
+
+    scrolling.value = targetEl.offsetTop >= background.value.scrollTop
+        ? 'down'
+        : 'up'
+    isTransitioning.value = true
+
+    const fromColour = getColour(background.value.scrollTop)
+    const toColour = getColour(targetEl.offsetTop)
+    animate(1, 0, scrollDuration, easeInOutSine, weight => {
+        state.colour = mixRgb(fromColour, toColour, weight)
+    })
+    await sleep(scrollDuration / 2)
+
+    background.value.scrollTo(0, targetEl.offsetTop)
+    isTransitioning.value = false
+    await sleep(scrollDuration / 2)
+
+    scrolling.value = 'none'
+}
+
+const scrollContext = computed(() => {
+    if (!background.value) return null
+
+    return { scrolling, scrollTo, isTransitioning }
+})
+
+provide('scrollContext', scrollContext)
 
 const setScrollTotal = () => {
     if (!background.value) return
@@ -70,10 +86,14 @@ const setScrollTotal = () => {
 
 onMounted(() => {
     setScrollTotal()
-    setColour()
+    state.colour = getColour(background.value.scrollTop)
 
     window.addEventListener('resize', setScrollTotal)
-    background.value.addEventListener('scroll', setColour)
+    background.value.addEventListener('scroll', () => {
+        if (isTransitioning.value) return
+
+        state.colour = getColour(background.value.scrollTop)
+    })
 })
 </script>
 
@@ -81,10 +101,11 @@ onMounted(() => {
     <div
         ref="background"
         :class="$style.background"
-        :style="{ '--dynamic-background': `rgba(${state.colour})` }"
-        @transitionend="void 0"
+        :style="{
+            '--dynamic-background': `rgba(${state.colour})`
+        }"
     >
-        <slot v-bind="{ scrolling }" />
+        <slot v-bind="{ scrolling, scrollDuration }" />
     </div>
 </template>
 

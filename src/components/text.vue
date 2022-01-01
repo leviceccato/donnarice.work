@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, provide } from 'vue'
 
 const props = defineProps({
     crop: { type: [String, Array] },
@@ -27,6 +27,9 @@ const style = computed(() => {
 
     return result
 })
+
+const isTextShown = computed(() => props.isShown)
+provide('isTextShown', isTextShown)
 </script>
 
 <template>
