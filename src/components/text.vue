@@ -68,8 +68,9 @@ $stroke-increment: math.div($max-width, $bleed-iterations);
         }
     }
     @for $i from $fade-iterations through $total-iterations {
+        $count: $i - $fade-iterations;
         #{($i * $frame-percentage) + '%'} {
-            -webkit-text-stroke-width: #{$max-width - ($i * $stroke-increment)}em;
+            -webkit-text-stroke-width: #{$max-width - ($count * $stroke-increment)}em;
             opacity: 1;
             filter: blur(0px);
         }
