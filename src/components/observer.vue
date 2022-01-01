@@ -1,5 +1,3 @@
-
-
 <script>
 import { onMounted, onBeforeUnmount, ref, getCurrentInstance } from 'vue'
 
@@ -18,21 +16,21 @@ export default {
         options: { type: Function, default: () => ({}) }
     },
     emits: ['update'],
-    setup(props) {
+    setup(props, { emit }) {
 
         const el = ref(null)
 
         const observe = () => {
-            // Store reference to component on the DOM element so
-            // we can access its $emit method in the observer callback
-            el.__component = getCurrentInstance()
-            observers[props.namespace].observer.observe(el)
+            // Store reference to the emit on the DOM element so
+            // we can call it in the observer callback
+            el.value.__emit = emit
+            observers[props.namespace].observer.observe(el.value)
             observers[props.namespace].count++
         }
 
         const unobserve = () => {
-            delete el.__component
-            observers[props.namespace].observer.unobserve(el)
+            delete el.value.__emit
+            observers[props.namespace].observer.unobserve(el.value)
             observers[props.namespace].count--
         }
 
@@ -43,17 +41,20 @@ export default {
                 observe()
                 return
             }
+
             // Store count and increment per component of the same namespace. That way we can
             // disconnect the observer if all components are unobserved.
             observers[props.namespace] = { count: 0 }
+
             // Create observer based on type
             if (props.type === 'intersection') {
                 observers[props.namespace].observer = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
-                        entry.target.__component.$emit('update', { entry, entries, observer })
+                        entry.target.__emit('update', { entry, entries, observer })
                     })
                 }, props.options())
             }
+
             observe()
         })
 
@@ -66,13 +67,19 @@ export default {
                 delete observers[props.namespace]
             }
         })
+
+        return {
+            el,
+            tag: props.tag
+        }
     }
 }
 </script>
 
 <template>
     <Component
-        :is="props.tag"
+        ref="el"
+        :is="tag"
         :class="$style.observer"
     >
         <slot />
