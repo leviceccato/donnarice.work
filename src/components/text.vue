@@ -76,6 +76,7 @@ const bleed = to => animate(
     margin: 0;
 
     -webkit-text-stroke-color: var(--dynamic-background);
+    // Required for this to look good for some reason
     opacity: 1;
     filter: blur(0px);
 
