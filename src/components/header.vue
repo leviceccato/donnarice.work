@@ -45,6 +45,28 @@ const currentSection = computed(() => {
 
     return scrollContext.value.currentSection.value
 })
+const nextSection = ref(null)
+
+const nextSectionDirection = computed(() => {
+    if (!nextSection.value) return 'none'
+    if (!currentSection.value) return 'none'
+
+    let nextIndex = 0
+    let currentIndex = 0
+    links.forEach((link, index) => {
+        if (link.id === nextIndex.value) {
+            nextIndex = index
+            return
+        }
+        if (link.id === currentIndex.value) {
+            currentIndex = index
+        }
+    })
+
+    if (nextIndex === currentIndex) return 'none'
+    if (nextIndex > currentIndex) return 'right'
+    return 'left'
+})
 </script>
 
 <template>
@@ -71,7 +93,10 @@ const currentSection = computed(() => {
                         :class="$style.link"
                         :href="`#${link.id}`"
                         is-virtual
-                        @follow="toggleNav"
+                        @follow="
+                            toggleNav();
+                            nextSection = link.id
+                        "
                     >
                         <Text
                             :is-shown="state.isNavTextShown || isMatching"
