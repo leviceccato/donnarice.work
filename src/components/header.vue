@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, inject, computed } from 'vue'
+import { reactive, inject, computed, ref } from 'vue'
 
 import ButtonReset from './button-reset.vue'
 import MediaQuery from './media-query.vue'
