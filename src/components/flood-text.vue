@@ -44,10 +44,10 @@ const delays = computed(() => {
     &:hover {
         .segment {
             text-shadow:
-                -0.02em 0 0 currentColor,
-                0 -0.02em 0 currentColor,
-                0.02em 0 0 currentColor,
-                0 0.02em 0 currentColor;
+                -1px 0 0 currentColor,
+                0 -1px 0 currentColor,
+                1px 0 0 currentColor,
+                0 1px 0 currentColor;
 
             &.hidden {
                 text-shadow: none;
@@ -59,6 +59,11 @@ const delays = computed(() => {
 .segment {
     transition: text-shadow 350ms ease;
     display: inline-block;
+    text-shadow:
+        -1px 0 0 transparent,
+        0 -1px 0 transparent,
+        1px 0 0 transparent,
+        0 1px 0 transparent;
 
     &.hidden {
         transition: none;
