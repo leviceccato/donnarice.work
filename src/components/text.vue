@@ -34,6 +34,7 @@ provide('isTextShown', isTextShown)
 
 const maxStroke = 0.15
 const minStroke = 0
+const strokeAnimDuration = 550
 
 const strokeWidth = ref(maxStroke);
 
@@ -41,11 +42,13 @@ watch(() => props.isShown, isShown => {
     bleed(isShown ? minStroke : maxStroke)
 })
 
-const bleed = to => {
-    animate(strokeWidth.value, to, 550, easeInOutSine, width => {
-        strokeWidth.value = width
-    })
-}
+const bleed = to => animate(
+    strokeWidth.value,
+    to,
+    strokeAnimDuration,
+    easeInOutSine,
+    width => strokeWidth.value = width
+)
 </script>
 
 <template>
