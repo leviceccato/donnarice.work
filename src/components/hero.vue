@@ -10,7 +10,7 @@ const scrollContext = inject('scrollContext', null)
 
 const isTextShown = computed(() => {
     if (scrollContext) {
-        return isReady.value && (scrollContext.value.scrolling.value === 'none')
+        return isReady.value && !scrollContext.value.isTransitioning.value
     }
     return isReady.value
 })

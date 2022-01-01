@@ -64,16 +64,16 @@ const scrollTo = async selector => {
     await sleep(scrollDuration / 2)
 
     background.value.scrollTo(0, targetEl.offsetTop)
-    scrolling.value = 'none'
+    isTransitioning.value = false
     await sleep(scrollDuration / 2)
 
-    isTransitioning.value = false
+    scrolling.value = 'none'
 }
 
 const scrollContext = computed(() => {
     if (!background.value) return null
 
-    return { scrolling, scrollTo }
+    return { scrolling, scrollTo, isTransitioning }
 })
 
 provide('scrollContext', scrollContext)

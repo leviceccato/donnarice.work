@@ -18,7 +18,7 @@ onMounted(() => isReady.value = true)
         <Header />
         <main
             style="height: 3000px"
-            :style="{ transitionDuration: `${scrollDuration / 2}ms` }"
+            :style="{ animationDuration: `${scrollDuration}ms` }"
             :class="[$style.main, {
                 [$style.scrollingDown]: scrolling === 'down',
                 [$style.scrollingUp]: scrolling === 'up'
@@ -26,21 +26,42 @@ onMounted(() => isReady.value = true)
         >
             <Hero id="intro" />
             <Hero id="work" />
+            <Hero id="testimonials" />
+            <Hero id="resume" />
+            <Hero id="contact" />
         </main>
     </DynamicBackground>
 </template>
 
 <style lang="scss" module>
+
+@keyframes move {
+    0% {
+        transform: translateY(0);
+    }
+    49.99% {
+        transform: translateY(-30px);
+    }
+    50% {
+        transform: translateY(30px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 .main {
-    transition-property: transform;
-    transition-timing-function: ease;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
 
     &.scrollingDown {
-        transform: translateY(-20px);
+        animation-name: move;
+        animation-direction: normal;
     }
 
     &.scrollingUp {
-        transform: translateY(20px);
+        animation-name: move;
+        animation-direction: reverse;
     }
 }
 </style>
