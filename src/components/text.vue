@@ -53,8 +53,6 @@ $bleed-iterations: 20;
 $total-iterations: $fade-iterations + $bleed-iterations;
 
 $max-width: 0.15;
-$max-opacity: 1;
-$max-blur: 0.15;
 
 $frame-percentage: math.div(100, $total-iterations);
 $stroke-increment: math.div($max-width, $bleed-iterations);
