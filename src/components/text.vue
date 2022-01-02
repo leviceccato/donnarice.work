@@ -10,7 +10,7 @@ const props = defineProps({
 
 const isUppercase = computed(() => props.crop === 'uppercase')
 
-const style = computed(() => {
+const cropProps = computed(() => {
     let result = {
         '--cap-height': '0.5',
         '--x-desc-height': '1.15'
@@ -51,7 +51,7 @@ watch(() => props.isShown, isShown => animate(
     <Component
         :is="props.tag"
         :style="{
-            ...style,
+            ...cropProps,
             '-webkit-text-stroke-width': `${strokeWidth}em`
         }"
         :class="[$style.text, {
