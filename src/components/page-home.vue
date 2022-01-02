@@ -34,8 +34,12 @@ onMounted(() => isReady.value = true)
                 <Section id="testimonials">
                     <Hero />
                 </Section>
-                <Hero id="resume" />
-                <Hero id="contact" />
+                <Section id="resume">
+                    <Hero />
+                </Section>
+                <Section id="contact">
+                    <Hero />
+                </Section>
             </main>
         </div>
     </DynamicBackground>
