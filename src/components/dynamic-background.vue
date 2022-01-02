@@ -81,7 +81,8 @@ const scrollContext = computed(() => {
         scrollTo,
         isTransitioning,
         setSection,
-        currentSection
+        currentSection,
+        scrollDuration
     }
 })
 
