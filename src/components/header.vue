@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, inject, computed, ref, watch } from 'vue'
 import { animate, easeInOutSine } from '../scripts/animation.js'
-import { sleep } from '../scripts/async.js'
+import { debounce } from '../scripts/async.js'
 
 import ButtonReset from './button-reset.vue'
 import MediaQuery from './media-query.vue'
@@ -54,7 +54,7 @@ const visualSection = ref(links[0].id)
 const linkOffset = ref(0)
 const linkScaleY = ref(1)
 
-watch(currentSection, async (newSection, currentSection) => {
+watch(currentSection, debounce(250, async (newSection, currentSection) => {
     if (!currentSection) return
     if (!newSection) return
 
@@ -90,7 +90,7 @@ watch(currentSection, async (newSection, currentSection) => {
     animate(newOffset * -1, 0, slideDuration, easeInOutSine, offset => {
         linkOffset.value = offset
     })
-})
+}))
 </script>
 
 <template>
@@ -235,7 +235,9 @@ watch(currentSection, async (newSection, currentSection) => {
     opacity: 0;
 
     &.active {
-        opacity: 1;
+        @include media(m) {
+            opacity: 1;
+        }
     }
 }
 </style>
