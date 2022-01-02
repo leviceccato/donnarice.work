@@ -1,5 +1,7 @@
 <script setup>
-import { reactive, inject, computed } from 'vue'
+import { reactive, inject, computed, ref, watch } from 'vue'
+import { animate, easeInOutSine } from '../scripts/animation.js'
+import { debounce } from '../scripts/async.js'
 
 import ButtonReset from './button-reset.vue'
 import MediaQuery from './media-query.vue'
@@ -42,31 +44,53 @@ const scrollContext = inject('scrollContext', null)
 
 const currentSection = computed(() => {
     if (!scrollContext.value) return null
-
     return scrollContext.value.currentSection.value
 })
-const nextSection = ref(null)
 
-const nextSectionDirection = computed(() => {
-    if (!nextSection.value) return 'none'
-    if (!currentSection.value) return 'none'
+const maxOffset = 10
+const slideDuration = 250
 
-    let nextIndex = 0
+const visualSection = ref(links[0].id)
+const linkOffset = ref(0)
+const linkScaleY = ref(1)
+
+watch(currentSection, debounce(250, async (newSection, currentSection) => {
+    if (!currentSection) return
+    if (!newSection) return
+
     let currentIndex = 0
+    let newIndex = 0
     links.forEach((link, index) => {
-        if (link.id === nextIndex.value) {
-            nextIndex = index
-            return
-        }
-        if (link.id === currentIndex.value) {
-            currentIndex = index
+        switch (link.id) {
+            case currentSection:
+                currentIndex = index
+                return
+            case newSection:
+                newIndex = index
         }
     })
 
-    if (nextIndex === currentIndex) return 'none'
-    if (nextIndex > currentIndex) return 'right'
-    return 'left'
-})
+    let newOffset = 0
+    if (newIndex > currentIndex) {
+        newOffset = maxOffset
+    } else if (newIndex < currentIndex) {
+        newOffset = -maxOffset
+    }
+
+    animate(1, 0, slideDuration, easeInOutSine, scaleY => {
+        linkScaleY.value = scaleY
+    })
+    await animate(0, newOffset, slideDuration, easeInOutSine, offset => {
+        linkOffset.value = offset
+    })
+    visualSection.value = newSection
+    animate(0, 1, slideDuration, easeInOutSine, scaleY => {
+        linkScaleY.value = scaleY
+    })
+    animate(newOffset * -1, 0, slideDuration, easeInOutSine, offset => {
+        linkOffset.value = offset
+    })
+}))
 </script>
 
 <template>
@@ -85,18 +109,15 @@ const nextSectionDirection = computed(() => {
             </ButtonReset>
             <nav :class="[$style.nav, { [$style.open]: state.isNavOpen }]">
                 <div
-                    v-for="link in links"
-                    :key="link"
+                    v-for="link, index in links"
+                    :key="index"
                     :class="$style.linkWrapper"
                 >
                     <Link
                         :class="$style.link"
                         :href="`#${link.id}`"
                         is-virtual
-                        @follow="
-                            toggleNav();
-                            nextSection = link.id
-                        "
+                        @follow="toggleNav"
                     >
                         <Text
                             :is-shown="state.isNavTextShown || isMatching"
@@ -106,9 +127,15 @@ const nextSectionDirection = computed(() => {
                             <FloodText :text="link.text" />
                         </Text>
                     </Link>
-                    <span :class="[$style.linkLine, {
-                        [$style.active]: link.id === currentSection
-                    }]" />
+                    <span
+                        :style="{
+                            transform: `translateX(${linkOffset}px) scaleY(${linkScaleY})`
+                        }"
+                        :class="[$style.linkLine, {
+                            [$style.shown]: isReady,
+                            [$style.active]: link.id === visualSection
+                        }]"
+                    />
                 </div>
             </nav>
         </div>
@@ -180,18 +207,44 @@ const nextSectionDirection = computed(() => {
     }
 }
 
+.container {
+    overflow: hidden;
+}
+
+.main {
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+
+    &.scrollingDown {
+        animation-name: move;
+        animation-direction: normal;
+    }
+
+    &.scrollingUp {
+        animation-name: move;
+        animation-direction: reverse;
+    }
+}
+
 .linkLine {
     position: absolute;
     left: 0;
-    bottom: -0.3em;
+    bottom: -0.25em;
     width: 100%;
     height: 2px;
-    transition: transform 250ms ease;
     background-color: currentColor;
-    transform: scaleY(0);
+    display: none;
+    opacity: 0;
+    transition: opacity 750ms ease 100ms;
+
+    &.shown {
+        opacity: 1;
+    }
 
     &.active {
-        transform: scaleY(1);
+        @include media(m) {
+            display: block;
+        }
     }
 }
 </style>
