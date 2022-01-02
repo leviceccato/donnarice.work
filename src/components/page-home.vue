@@ -31,7 +31,9 @@ onMounted(() => isReady.value = true)
                 <Section id="work">
                     <Hero />
                 </Section>
-                <Hero id="testimonials" />
+                <Section id="testimonials">
+                    <Hero />
+                </Section>
                 <Hero id="resume" />
                 <Hero id="contact" />
             </main>
