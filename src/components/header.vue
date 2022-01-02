@@ -132,6 +132,7 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
                             transform: `translateX(${linkOffset}px) scaleY(${linkScaleY})`
                         }"
                         :class="[$style.linkLine, {
+                            [$style.shown]: isReady,
                             [$style.active]: link.id === visualSection
                         }]"
                     />
@@ -232,11 +233,17 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
     width: 100%;
     height: 2px;
     background-color: currentColor;
+    display: none;
     opacity: 0;
+    transition: opacity 750ms ease 100ms;
+
+    &.shown {
+        opacity: 1;
+    }
 
     &.active {
         @include media(m) {
-            opacity: 1;
+            display: block;
         }
     }
 }
