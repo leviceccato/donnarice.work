@@ -8,6 +8,8 @@ const props = defineProps({
     isShown: { type: Boolean, default: false }
 })
 
+const emit = defineEmits(['aftershown'])
+
 const isUppercase = computed(() => props.crop === 'uppercase')
 
 const cropProps = computed(() => {
@@ -38,13 +40,17 @@ const strokeAnimDuration = 550
 
 const strokeWidth = ref(maxStroke)
 
-watch(() => props.isShown, isShown => animate(
-    strokeWidth.value,
-    isShown ? minStroke : maxStroke,
-    strokeAnimDuration,
-    easeInOutSine,
-    width => strokeWidth.value = width
-))
+watch(() => props.isShown, async isShown => {
+    await animate(
+        strokeWidth.value,
+        isShown ? minStroke : maxStroke,
+        strokeAnimDuration,
+        easeInOutSine,
+        width => strokeWidth.value = width
+    )
+    emit('aftershown')
+
+})
 </script>
 
 <template>

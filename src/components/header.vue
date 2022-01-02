@@ -122,7 +122,7 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
                         <Text
                             :is-shown="state.isNavTextShown || isMatching"
                             crop="uppercase"
-                            @animationend="setIsNavOpen"
+                            @aftershown="setIsNavOpen"
                         >
                             <FloodText :text="link.text" />
                         </Text>
