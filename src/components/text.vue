@@ -36,7 +36,7 @@ const maxStroke = 0.15
 const minStroke = 0
 const strokeAnimDuration = 550
 
-const strokeWidth = ref(maxStroke);
+const strokeWidth = ref(maxStroke)
 
 watch(() => props.isShown, isShown => animate(
     strokeWidth.value,
