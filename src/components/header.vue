@@ -207,25 +207,6 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
     }
 }
 
-.container {
-    overflow: hidden;
-}
-
-.main {
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-
-    &.scrollingDown {
-        animation-name: move;
-        animation-direction: normal;
-    }
-
-    &.scrollingUp {
-        animation-name: move;
-        animation-direction: reverse;
-    }
-}
-
 .linkLine {
     position: absolute;
     left: 0;
