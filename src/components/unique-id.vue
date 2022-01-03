@@ -8,7 +8,7 @@ export default {
         let id = ref('')
 
         onMounted(() => {
-            id.value = `uid-${uuid}`
+            id.value = `uid-${uid}`
             uid++
         })
 
