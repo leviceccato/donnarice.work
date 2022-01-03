@@ -1,15 +1,15 @@
 <script>
 import { onMounted, ref } from 'vue'
 
-let uuid = 0
+let uid = 0
 
 export default {
     setup() {
         let id = ref('')
 
         onMounted(() => {
-            id.value = `unique-id-${uuid}`
-            uuid++
+            id.value = `uid-${uuid}`
+            uid++
         })
 
         return { id }
