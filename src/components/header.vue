@@ -217,6 +217,7 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
     display: none;
     opacity: 0;
     transition: opacity 750ms ease 100ms;
+    filter: url('#filter-roughen');
 
     &.shown {
         opacity: 1;
