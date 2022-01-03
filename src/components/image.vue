@@ -16,7 +16,7 @@ export default {
         const minErosionRadius = 0
         const erosionAnimDuration = 550
 
-        const erosionRadius = ref(minErosionRadius)
+        const erosionRadius = ref(maxErosionRadius)
 
         watch(() => props.isShown, isShown => {
             animate(
