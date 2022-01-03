@@ -1,11 +1,30 @@
 <script setup>
 import { onMounted, provide, ref } from 'vue'
 
+import SvgDefs from './svg-defs.vue'
 import DynamicBackground from './dynamic-background.vue'
 import Section from './section.vue'
 import Header from './header.vue'
 import Hero from './hero.vue'
 import Text from './text.vue'
+import Gallery from './gallery.vue'
+
+const galleryItems = [
+    {
+        image: '/images/1-1.png',
+        imageAlt: '',
+        text: `
+            <p>This is a thing</p>
+        `
+    },
+    {
+        image: '/images/1-1.png',
+        imageAlt: '',
+        text: `
+            <p>This is a thing</p>
+        `
+    }
+]
 
 const isReady = ref(false)
 
@@ -15,12 +34,13 @@ onMounted(() => isReady.value = true)
 </script>
 
 <template>
+    <SvgDefs />
     <DynamicBackground v-slot="{ scrolling, scrollDuration }">
         <Header />
-        <div :class="$style.container">
-            <main
+        <main :class="$style.main">
+            <div
                 :style="{ animationDuration: `${scrollDuration}ms` }"
-                :class="[$style.main, {
+                :class="[$style.container, {
                     [$style.scrollingDown]: scrolling === 'down',
                     [$style.scrollingUp]: scrolling === 'up'
                 }]"
@@ -29,7 +49,7 @@ onMounted(() => isReady.value = true)
                     <Hero />
                 </Section>
                 <Section id="work">
-                    <Hero />
+                    <Gallery :items="galleryItems" />
                 </Section>
                 <Section id="testimonials">
                     <Hero />
@@ -40,8 +60,8 @@ onMounted(() => isReady.value = true)
                 <Section id="contact">
                     <Hero />
                 </Section>
-            </main>
-        </div>
+            </div>
+        </main>
     </DynamicBackground>
 </template>
 
@@ -62,11 +82,11 @@ onMounted(() => isReady.value = true)
     }
 }
 
-.container {
+.main {
     overflow: hidden;
 }
 
-.main {
+.container {
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
 
