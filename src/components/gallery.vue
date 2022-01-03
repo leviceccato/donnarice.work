@@ -1,4 +1,6 @@
 <script setup>
+import ImgReset from './img-reset.vue'
+
 const props = defineProps({
     items: { type: Array, default: () => [] }
 })
@@ -13,7 +15,7 @@ const props = defineProps({
                 :class="$style.item"
             >
                 <figure :class="$style.imageContainer">
-                    <img
+                    <ImgReset
                         :class="$style.image"
                         :src="item.image"
                         :alt="item.imageAlt || ''"
@@ -31,6 +33,8 @@ const props = defineProps({
 </template>
 
 <style lang="scss" module>
+@use '../styles/utilities.scss' as *;
+
 .gallery {
 
 }
@@ -38,4 +42,8 @@ const props = defineProps({
 .container {
 
 }
+
+// @include spec('.image', 2) {
+//     filter: blur(0.5px);
+// }
 </style>
