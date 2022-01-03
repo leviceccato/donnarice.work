@@ -7,7 +7,7 @@ import UniqueId from './unique-id.vue'
 
 export default {
     inheritAttrs: false,
-    components: { ImgReset },
+    components: { ImgReset, UniqueId },
     props: {
         isShown: { type: Boolean, default: false }
     },
