@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, provide, computed } from 'vue'
+import { onMounted, reactive, ref, provide, computed, inject } from 'vue'
 import { animate, easeInOutSine } from '../scripts/animation.js'
 import { sleep } from '../scripts/async.js'
 
@@ -87,6 +87,15 @@ const scrollContext = computed(() => {
 })
 
 provide('scrollContext', scrollContext)
+
+const isReady = inject('isReady', false)
+const isContentShown = computed(() => {
+    if (scrollContext.value) {
+        return isReady.value && !scrollContext.value.isTransitioning.value
+    }
+    return isReady.value
+})
+provide('isContentShown', isContentShown)
 
 const setScrollTotal = () => {
     if (!background.value) return
