@@ -210,7 +210,7 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
 .linkLine {
     position: absolute;
     left: 0;
-    bottom: -0.25em;
+    bottom: -0.2em;
     width: 100%;
     height: 2px;
     background-color: currentColor;
