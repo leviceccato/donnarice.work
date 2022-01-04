@@ -21,7 +21,7 @@ export default {
         watch(() => props.isShown, isShown => {
             animate(
                 erosionRadius.value,
-                isShown ? maxErosionRadius : minErosionRadius,
+                isShown ? minErosionRadius : maxErosionRadius,
                 erosionAnimDuration,
                 easeInOutSine,
                 radius => erosionRadius.value = radius
