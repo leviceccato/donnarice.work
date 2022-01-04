@@ -22,7 +22,6 @@ const isTextShown = computed(() => {
             <Text
                 :is-shown="isTextShown"
                 :class="$style.heading"
-                tag="h1"
             >
                 Donna is a draftsperson and senior PA based in Newcastle, Australia.
             </Text>
