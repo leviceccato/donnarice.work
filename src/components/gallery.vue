@@ -1,9 +1,15 @@
 <script setup>
+import { inject } from 'vue'
+
 import Image from './image.vue'
+import Text from './text.vue'
+import FloodText from './flood-text.vue'
 
 const props = defineProps({
     items: { type: Array, default: () => [] }
 })
+
+const isContentShown = inject('isContentShown', false)
 </script>
 
 <template>
@@ -14,18 +20,27 @@ const props = defineProps({
                 :key="index"
                 :class="$style.item"
             >
-                <figure :class="$style.imageContainer">
+                <div :class="$style.imageContainer">
                     <Image
+                        v-for="image, index in item.images"
+                        :key="index"
                         :class="$style.image"
-                        :src="item.image"
-                        :alt="item.imageAlt || ''"
+                        :src="image.src"
+                        :alt="image.alt || ''"
+                        :is-shown="isContentShown"
                     />
-                </figure>
+                </div>
                 <div :class="$style.textContainer">
-                    <div
-                        :class="$style.text"
-                        v-html="item.text"
-                    />
+                    <div :class="$style.text">
+                        <Text
+                            v-for="paragraph, index in item.text"
+                            :key="index"
+                            :class="$style.paragraph"
+                            :is-shown="isContentShown"
+                        >
+                            {{ paragraph }}
+                        </Text>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,10 +51,53 @@ const props = defineProps({
 @use '../styles/utilities.scss' as *;
 
 .gallery {
-
+    padding: 120px 20px;
 }
 
-.container {
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
+    @include media(m) {
+        flex-direction: row;
+    }
+
+    &:not(:first-of-type) {
+        margin-top: 120px;
+    }
+}
+
+@include spec('.image', 2) {
+    max-height: calc(100vh - 40px);
+    max-width: 60vw;
+
+    &:not(:first-of-type) {
+        margin-top: 120px;
+    }
+}
+
+.textContainer {
+    margin-top: 25px;
+    max-width: 20em;
+    width: 20em;
+    line-height: 1.3;
+
+    @include media(m) {
+        margin-top: 0;
+        margin-left: 35px;
+        padding: 25px 0;
+    }
+}
+
+.text {
+    position: sticky;
+    top: 120px;
+}
+
+@include spec('.paragraph', 2) {
+    &:not(:first-of-type) {
+        margin-top: 1em;
+    }
 }
 </style>
