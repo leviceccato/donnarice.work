@@ -122,7 +122,7 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
                         <Text
                             :is-shown="state.isNavTextShown || isMatching"
                             crop="uppercase"
-                            @animationend="setIsNavOpen"
+                            @aftershown="setIsNavOpen"
                         >
                             <FloodText :text="link.text" />
                         </Text>
@@ -207,35 +207,17 @@ watch(currentSection, debounce(250, async (newSection, currentSection) => {
     }
 }
 
-.container {
-    overflow: hidden;
-}
-
-.main {
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-
-    &.scrollingDown {
-        animation-name: move;
-        animation-direction: normal;
-    }
-
-    &.scrollingUp {
-        animation-name: move;
-        animation-direction: reverse;
-    }
-}
-
 .linkLine {
     position: absolute;
     left: 0;
-    bottom: -0.25em;
+    bottom: -0.2em;
     width: 100%;
     height: 2px;
     background-color: currentColor;
     display: none;
     opacity: 0;
     transition: opacity 750ms ease 100ms;
+    filter: url('#filter-roughen');
 
     &.shown {
         opacity: 1;

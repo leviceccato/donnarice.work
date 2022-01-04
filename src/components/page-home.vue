@@ -1,11 +1,74 @@
 <script setup>
 import { onMounted, provide, ref } from 'vue'
 
+import SvgDefs from './svg-defs.vue'
 import DynamicBackground from './dynamic-background.vue'
 import Section from './section.vue'
 import Header from './header.vue'
 import Hero from './hero.vue'
 import Text from './text.vue'
+import Gallery from './gallery.vue'
+import VisuallyHidden from './visually-hidden.vue'
+
+const galleryItems = [
+    {
+        images: [
+            { src: '/images/1-1.png', alt: '' },
+            { src: '/images/1-2.png', alt: '' },
+            { src: '/images/1-3.png', alt: '' }
+        ],
+        heading: 'Hello heading here',
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/2-1.png', alt: '' },
+            { src: '/images/2-2.png', alt: '' },
+            { src: '/images/2-4.png', alt: '' }
+        ],
+        heading: 'Hello heading here',
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/3-1.png', alt: '' },
+            { src: '/images/3-2.png', alt: '' },
+            { src: '/images/3-3.png', alt: '' }
+        ],
+        heading: 'Hello heading here',
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/4-1.png', alt: '' },
+            { src: '/images/4-2.png', alt: '' }
+        ],
+        heading: 'Hello heading here',
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/5-1.png', alt: '' }
+        ],
+        heading: 'Hello heading here',
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    }
+]
 
 const isReady = ref(false)
 
@@ -15,33 +78,64 @@ onMounted(() => isReady.value = true)
 </script>
 
 <template>
+    <SvgDefs />
+    <VisuallyHidden>
+        <Text tag="h1">
+            Donna Rice
+        </Text>
+    </VisuallyHidden>
     <DynamicBackground v-slot="{ scrolling, scrollDuration }">
         <Header />
-        <div :class="$style.container">
-            <main
+        <main>
+            <div
                 :style="{ animationDuration: `${scrollDuration}ms` }"
-                :class="[$style.main, {
+                :class="[$style.container, {
                     [$style.scrollingDown]: scrolling === 'down',
                     [$style.scrollingUp]: scrolling === 'up'
                 }]"
             >
                 <Section id="intro">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Intro
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
                 <Section id="work">
-                    <Hero />
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Work
+                        </Text>
+                    </VisuallyHidden>
+                    <Gallery :items="galleryItems" />
                 </Section>
                 <Section id="testimonials">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Testimonials
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
                 <Section id="resume">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Resume
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
                 <Section id="contact">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Contact
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
-            </main>
-        </div>
+            </div>
+        </main>
     </DynamicBackground>
 </template>
 
@@ -63,10 +157,6 @@ onMounted(() => isReady.value = true)
 }
 
 .container {
-    overflow: hidden;
-}
-
-.main {
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
 

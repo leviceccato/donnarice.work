@@ -7,22 +7,15 @@ import FloodText from './flood-text.vue'
 
 const isReady = inject('isReady', false)
 const scrollContext = inject('scrollContext', null)
-
-const isTextShown = computed(() => {
-    if (scrollContext) {
-        return isReady.value && !scrollContext.value.isTransitioning.value
-    }
-    return isReady.value
-})
+const isContentShown = inject('isContentShown', false)
 </script>
 
 <template>
     <div :class="$style.hero">
         <div :class="$style.container">
             <Text
-                :is-shown="isTextShown"
+                :is-shown="isContentShown"
                 :class="$style.heading"
-                tag="h1"
             >
                 Donna is a draftsperson and senior PA based in Newcastle, Australia.
             </Text>
@@ -31,7 +24,7 @@ const isTextShown = computed(() => {
                     href="#work"
                     is-virtual
                 >
-                    <Text :is-shown="isTextShown">
+                    <Text :is-shown="isContentShown">
                         <FloodText text="View work" />
                     </Text>
                 </Link>
