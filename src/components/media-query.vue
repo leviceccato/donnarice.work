@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, onBeforeUnmount } from 'vue'
+import { onMounted, ref, onBeforeUnmount, defineProps } from 'vue'
 
 const props = defineProps({
     query: { type: String, required: true }

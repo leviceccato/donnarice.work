@@ -1,11 +1,13 @@
 <script setup>
-import { computed, provide, ref, watch } from 'vue'
+import { computed, provide, ref, watch, defineProps } from 'vue'
 import { animate, easeInOutSine } from '../scripts/animation.js'
 
 const props = defineProps({
     crop: { type: [String, Array] },
     tag: { type: String, default: 'span' },
-    isShown: { type: Boolean, default: false }
+    isShown: { type: Boolean, default: false },
+
+    floodText: { type: String, default: '' }
 })
 
 const emit = defineEmits(['aftershown'])
@@ -49,7 +51,24 @@ watch(() => props.isShown, async isShown => {
         width => strokeWidth.value = width
     )
     emit('aftershown')
+})
 
+const hoveredIndex = ref(-1)
+
+const segments = computed(() => {
+    return props.floodText.split('').map(char => {
+        if (char === ' ') {
+            char = '&nbsp;'
+        }
+        return char
+    })
+})
+
+const delays = computed(() => {
+    return segments.value.map((_, index) => {
+        const offset = Math.abs(hoveredIndex.value - index)
+        return offset * 50
+    })
 })
 </script>
 
@@ -61,10 +80,21 @@ watch(() => props.isShown, async isShown => {
             '-webkit-text-stroke-width': `${strokeWidth}em`
         }"
         :class="[$style.text, {
-            [$style.uppercase]: isUppercase
+            [$style.uppercase]: isUppercase,
+            [$style.flood]: Boolean(floodText)
         }]"
     >
-        <slot />
+        <template v-if="floodText">
+            <span
+                v-for="segment, index in segments"
+                :key="index"
+                :class="$style.segment"
+                v-html="segment"
+                :style="{ transitionDelay: `${delays[index]}ms` }"
+                @mouseover="hoveredIndex = index"
+            />
+        </template>
+        <slot v-else />
     </Component>
 </template>
 

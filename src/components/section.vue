@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from 'vue'
+import { inject, defineProps } from 'vue'
 
 import Observer from './observer.vue'
 
