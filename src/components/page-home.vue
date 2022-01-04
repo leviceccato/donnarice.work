@@ -11,18 +11,56 @@ import Gallery from './gallery.vue'
 
 const galleryItems = [
     {
-        image: '/images/1-1.png',
-        imageAlt: '',
-        text: `
-            <p>This is a thing</p>
-        `
+        images: [
+            { src: '/images/1-1.png', alt: '' },
+            { src: '/images/1-2.png', alt: '' },
+            { src: '/images/1-3.png', alt: '' }
+        ],
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
     },
     {
-        image: '/images/1-1.png',
-        imageAlt: '',
-        text: `
-            <p>This is a thing</p>
-        `
+        images: [
+            { src: '/images/2-1.png', alt: '' },
+            { src: '/images/2-2.png', alt: '' },
+            { src: '/images/2-4.png', alt: '' }
+        ],
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/3-1.png', alt: '' },
+            { src: '/images/3-2.png', alt: '' },
+            { src: '/images/3-3.png', alt: '' }
+        ],
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/4-1.png', alt: '' },
+            { src: '/images/4-2.png', alt: '' }
+        ],
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
+    },
+    {
+        images: [
+            { src: '/images/5-1.png', alt: '' }
+        ],
+        text: [
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
+            'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
+        ]
     }
 ]
 
@@ -37,7 +75,7 @@ onMounted(() => isReady.value = true)
     <SvgDefs />
     <DynamicBackground v-slot="{ scrolling, scrollDuration }">
         <Header />
-        <main :class="$style.main">
+        <main>
             <div
                 :style="{ animationDuration: `${scrollDuration}ms` }"
                 :class="[$style.container, {
@@ -80,10 +118,6 @@ onMounted(() => isReady.value = true)
     100% {
         transform: translateY(0);
     }
-}
-
-.main {
-    overflow: hidden;
 }
 
 .container {
