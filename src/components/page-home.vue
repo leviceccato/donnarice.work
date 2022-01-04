@@ -8,6 +8,7 @@ import Header from './header.vue'
 import Hero from './hero.vue'
 import Text from './text.vue'
 import Gallery from './gallery.vue'
+import VisuallyHidden from './visually-hidden.vue'
 
 const galleryItems = [
     {
@@ -78,6 +79,11 @@ onMounted(() => isReady.value = true)
 
 <template>
     <SvgDefs />
+    <VisuallyHidden>
+        <Text tag="h1">
+            Donna Rice
+        </Text>
+    </VisuallyHidden>
     <DynamicBackground v-slot="{ scrolling, scrollDuration }">
         <Header />
         <main>
@@ -89,18 +95,43 @@ onMounted(() => isReady.value = true)
                 }]"
             >
                 <Section id="intro">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Intro
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
                 <Section id="work">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Work
+                        </Text>
+                    </VisuallyHidden>
                     <Gallery :items="galleryItems" />
                 </Section>
                 <Section id="testimonials">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Testimonials
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
                 <Section id="resume">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Resume
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
                 <Section id="contact">
+                    <VisuallyHidden>
+                        <Text tag="h2">
+                            Contact
+                        </Text>
+                    </VisuallyHidden>
                     <Hero />
                 </Section>
             </div>
