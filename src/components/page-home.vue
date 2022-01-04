@@ -16,6 +16,7 @@ const galleryItems = [
             { src: '/images/1-2.png', alt: '' },
             { src: '/images/1-3.png', alt: '' }
         ],
+        heading: 'Hello heading here',
         text: [
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
@@ -27,6 +28,7 @@ const galleryItems = [
             { src: '/images/2-2.png', alt: '' },
             { src: '/images/2-4.png', alt: '' }
         ],
+        heading: 'Hello heading here',
         text: [
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
@@ -38,6 +40,7 @@ const galleryItems = [
             { src: '/images/3-2.png', alt: '' },
             { src: '/images/3-3.png', alt: '' }
         ],
+        heading: 'Hello heading here',
         text: [
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
@@ -48,6 +51,7 @@ const galleryItems = [
             { src: '/images/4-1.png', alt: '' },
             { src: '/images/4-2.png', alt: '' }
         ],
+        heading: 'Hello heading here',
         text: [
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'
@@ -57,6 +61,7 @@ const galleryItems = [
         images: [
             { src: '/images/5-1.png', alt: '' }
         ],
+        heading: 'Hello heading here',
         text: [
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing',
             'This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing, This is a thing'

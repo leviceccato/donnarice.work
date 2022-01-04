@@ -33,6 +33,15 @@ const isContentShown = inject('isContentShown', false)
                 <div :class="$style.textContainer">
                     <div :class="$style.text">
                         <Text
+                            v-if="item.heading"
+                            crop="uppercase"
+                            :is-shown="isContentShown"
+                            :class="$style.heading"
+                            tag="h3"
+                        >
+                            {{ item.heading }}
+                        </Text>
+                        <Text
                             v-for="paragraph, index in item.text"
                             :key="index"
                             :class="$style.paragraph"
@@ -93,6 +102,10 @@ const isContentShown = inject('isContentShown', false)
 .text {
     position: sticky;
     top: 120px;
+}
+
+@include spec('.heading', 2) {
+    margin-bottom: 1em;
 }
 
 @include spec('.paragraph', 2) {
