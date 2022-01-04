@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, inject } from 'vue'
+import { computed, ref, inject, defineProps } from 'vue'
 
 const props = defineProps({
     text: { type: String, default: '' }

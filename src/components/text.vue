@@ -1,5 +1,5 @@
 <script setup>
-import { computed, provide, ref, watch } from 'vue'
+import { computed, provide, ref, watch, defineProps } from 'vue'
 import { animate, easeInOutSine } from '../scripts/animation.js'
 
 const props = defineProps({

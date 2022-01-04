@@ -1,4 +1,6 @@
 <script>
+import { defineProps } from 'vue'
+
 const props = defineProps({
     isFocusable: { type: Boolean, default: false }
 })

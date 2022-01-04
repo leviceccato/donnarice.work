@@ -1,5 +1,5 @@
 <script setup>
-import { computed, inject, useAttrs } from 'vue'
+import { computed, inject, useAttrs, defineProps } from 'vue'
 
 import LinkReset from './link-reset.vue'
 
