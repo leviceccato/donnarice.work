@@ -9,7 +9,7 @@ const minErosionRadius = 0
 
 export default {
     inheritAttrs: false,
-    components: { ImgReset, UniqueId },
+    components: { ImgReset, Morph },
     props: {
         isShown: { type: Boolean, default: false }
     },
