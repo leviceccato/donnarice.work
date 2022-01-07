@@ -1,13 +1,11 @@
 <script>
 import { ref, watch } from 'vue'
-import { animate, easeInOutSine } from '../scripts/animation.js'
 
 import ImgReset from './img-reset.vue'
-import UniqueId from './unique-id.vue'
+import Morph from './morph.vue'
 
 const maxErosionRadius = 3
 const minErosionRadius = 0
-const erosionAnimDuration = 550
 
 export default {
     inheritAttrs: false,
@@ -19,13 +17,9 @@ export default {
         const erosionRadius = ref(maxErosionRadius)
 
         watch(() => props.isShown, isShown => {
-            animate(
-                erosionRadius.value,
-                isShown ? minErosionRadius : maxErosionRadius,
-                erosionAnimDuration,
-                easeInOutSine,
-                radius => erosionRadius.value = radius
-            )
+            erosionRadius.value = isShown
+                ? maxErosionRadius
+                : minErosionRadius
         })
 
         return {
@@ -37,27 +31,10 @@ export default {
 </script>
 
 <template>
-    <UniqueId v-slot="{ id }">
-        <svg :class="$style.svg">
-            <defs>
-                <filter :id="id">
-                    <feMorphology
-                        operator="erode"
-                        :radius="erosionRadius"
-                    />
-                </filter>
-            </defs>
-        </svg>
+    <Morph v-slot="{ filter }">
         <ImgReset
             v-bind="attrs"
-            :style="{ filter: `url(#${id})` }"
+            :style="{ filter }"
         />
-    </UniqueId>
+    </Morph>
 </template>
-
-<style lang="scss" module>
-.svg {
-    display: block;
-    height: 0;
-}
-</style>
