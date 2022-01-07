@@ -31,7 +31,11 @@ export default {
 </script>
 
 <template>
-    <Morph v-slot="{ filter }">
+    <Morph
+        :radius="erosionRadius"
+        operator="erode"
+        v-slot="{ filter }"
+    >
         <ImgReset
             v-bind="attrs"
             :style="{ filter }"
