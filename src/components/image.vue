@@ -2,28 +2,31 @@
 import { ref, watch } from 'vue'
 
 import ImgReset from './img-reset.vue'
-import Morph from './morph.vue'
+import Weight from './weight.vue'
 
-const maxErosionRadius = 3
-const minErosionRadius = 0
+const maxThinning = 3
+const minThinning = 0
 
 export default {
     inheritAttrs: false,
-    components: { ImgReset, Morph },
+    components: { ImgReset, Weight },
     props: {
         isShown: { type: Boolean, default: false }
     },
     setup(props, { attrs }) {
-        const erosionRadius = ref(maxErosionRadius)
+        const thinning = ref(maxThinning)
 
-        watch(() => props.isShown, isShown => {
-            erosionRadius.value = isShown
-                ? maxErosionRadius
-                : minErosionRadius
-        })
+        const setThinning = isShown => {
+            thinning.value = isShown
+                ? minThinning
+                : maxThinning
+        }
+
+        setThinning(props.isShown)
+        watch(() => props.isShown, setThinning)
 
         return {
-            erosionRadius,
+            thinning,
             attrs
         }
     }
@@ -31,14 +34,15 @@ export default {
 </script>
 
 <template>
-    <Morph
-        :radius="erosionRadius"
-        operator="erode"
+    <Weight
+        :amount="thinning"
+        type="thin"
+        :duration="550"
         v-slot="{ filter }"
     >
         <ImgReset
             v-bind="attrs"
             :style="{ filter }"
         />
-    </Morph>
+    </Weight>
 </template>

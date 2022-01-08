@@ -5,20 +5,25 @@ import { animate, easeInOutSine } from '../scripts/animation.js'
 import UniqueId from './unique-id.vue'
 
 const props = defineProps({
-    radius: { type: Number, default: 0 },
-    operator: { type: String, default: 'dilate' }, // 'erode'
-    duration: { type: Number, default: 0 } // 0 means instant
+    amount: { type: Number, default: 0 },
+    type: { type: String, default: 'thick' }, // 'thin'
+    duration: { type: Number, default: 1 } // 1 means instant
 })
 
-const _radius = ref(props.radius)
+const operatorMap = {
+    thick: 'dilate',
+    thin: 'erode'
+}
 
-watch(() => props.radius, radius => {
+const radius = ref(props.amount)
+
+watch(() => props.amount, radius => {
     animate(
-        _radius.value,
+        radius.value,
         radius,
-        props.duration,
+        Math.max(1, props.duration),
         easeInOutSine,
-        value => _radius.value = value
+        value => radius.value = value
     )
 })
 </script>
@@ -29,8 +34,8 @@ watch(() => props.radius, radius => {
             <defs>
                 <filter :id="id">
                     <feMorphology
-                        :operator="props.operator"
-                        :radius="_radius"
+                        :operator="operatorMap[props.type]"
+                        :radius="radius"
                     />
                 </filter>
             </defs>
