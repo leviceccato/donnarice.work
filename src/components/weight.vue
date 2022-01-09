@@ -17,10 +17,10 @@ const operatorMap = {
 
 const radius = ref(props.amount)
 
-watch(() => props.amount, radius => {
+watch(() => props.amount, amount => {
     animate(
         radius.value,
-        radius,
+        amount,
         Math.max(1, props.duration),
         easeInOutSine,
         value => radius.value = value
