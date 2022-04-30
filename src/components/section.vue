@@ -23,13 +23,34 @@ const viewSection = ({ entry }) => {
 </script>
 
 <template>
-    <Observer
+    <div
+        :class="$style.section"
         :id="props.id"
-        type="intersection"
-        namespace="sections"
-        :options="options"
-        @update="viewSection"
     >
+        <Observer
+            :class="$style.observer"
+            type="intersection"
+            namespace="sections"
+            :options="options"
+            @update="viewSection"
+        />
         <slot />
-    </Observer>
+    </div>
 </template>
+
+<style lang="scss" module>
+@use '../styles/utilities.scss' as *;
+
+.section {
+    position: relative;
+}
+
+@include spec('.observer', 2) {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100vw;
+}
+</style>

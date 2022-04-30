@@ -60,7 +60,7 @@ const isContentShown = inject('isContentShown', false)
 @use '../styles/utilities.scss' as *;
 
 .gallery {
-    padding: 120px 20px;
+    padding: 120px 0;
 }
 
 .item {
@@ -86,6 +86,12 @@ const isContentShown = inject('isContentShown', false)
     }
 }
 
+.imageContainer {
+    @include media(m) {
+        width: calc(100% * (2 / 3));
+    }
+}
+
 .textContainer {
     margin-top: 25px;
     max-width: 20em;
@@ -94,8 +100,8 @@ const isContentShown = inject('isContentShown', false)
 
     @include media(m) {
         margin-top: 0;
-        margin-left: 35px;
         padding: 25px 0;
+        width: calc(100% * (1 / 3));
     }
 }
 
