@@ -1,5 +1,5 @@
 <script setup>
-import { inject, defineProps } from 'vue'
+import { inject, ref, defineProps, onMounted } from 'vue'
 
 import Observer from './observer.vue'
 
@@ -10,8 +10,11 @@ const props = defineProps({
 const scrollContext = inject('scrollContext', null)
 
 const options = () => ({
-    threshold: 0.5
+    threshold: 0.5,
+    root: observee.value
 })
+
+const observee = ref(null)
 
 const viewSection = ({ entry }) => {
     if (!entry.isIntersecting) return
