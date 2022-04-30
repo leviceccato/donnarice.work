@@ -1,44 +1,20 @@
 <script setup>
-import { computed, inject, useAttrs, defineProps } from 'vue'
+import { usePageContext } from '@/scripts/use-page-context'
 
-import LinkReset from './link-reset.vue'
-
-const props = defineProps({
-    isVirtual: { type: Boolean, default: false }
-})
-
-const emit = defineEmits(['follow'])
-
-const attrs = useAttrs()
-
-const scrollContext = inject('scrollContext', null)
-
-const followHref = event => {
-    if (!props.isVirtual) return
-    if (!attrs.href) return
-    if (!scrollContext.value) return
-
-    event.preventDefault()
-    scrollContext.value.scrollTo(attrs.href)
-    emit('follow')
-}
+const ctx = usePageContext()
 </script>
 
 <template>
-    <LinkReset
-        :class="$style.link"
-        @click="followHref"
-    >
+    <a :class="[$style.link, { [$style.active]: ctx.urlPathname === $attrs.href }]">
         <slot />
-    </LinkReset>
+    </a>
 </template>
 
 <style lang="scss" module>
-@use '../styles/utilities.scss' as *;
-
-@include spec('.link', 2) {
-    display: inline-flex;
-    padding: 0.2em;
-    margin: -0.2em;
+.link {
+    padding: 3px 10px;
+    &.active {
+        background-color: #eee;
+    }
 }
 </style>

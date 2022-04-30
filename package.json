@@ -1,14 +1,20 @@
 {
     "private": true,
     "scripts": {
-        "start": "astro dev",
-        "build": "astro build"
-    },
-    "devDependencies": {
-        "@astrojs/renderer-vue": "^0.3.0",
-        "astro": "^0.22.1"
+        "start": "node ./server.js",
+        "build": "vite build && vite build --ssr && vite-plugin-ssr prerender",
+        "preview": "cross-env NODE_ENV=production node ./server.js"
     },
     "dependencies": {
-        "modern-normalize": "^1.1.0"
+        "@vitejs/plugin-vue": "^2.2.2",
+        "@vue/compiler-sfc": "^3.2.31",
+        "@vue/server-renderer": "^3.2.31",
+        "cross-env": "^7.0.3",
+        "express": "^4.17.3",
+        "modern-normalize": "^1.1.0",
+        "sass": "^1.51.0",
+        "vite": "^2.8.4",
+        "vite-plugin-ssr": "^0.3.64",
+        "vue": "^3.2.31"
     }
 }

@@ -10,7 +10,7 @@
     @return math.div($number, $number * 0 + 1);
 }
 
-// Simple string replace http://www.sassmeister.com/gist/1b4f2da5527830088e4d
+// Simple string replace https://www.sassmeister.com/gist/1b4f2da5527830088e4d
 @function string-replace($string, $search, $replace: '') {
     $index: string.index($string, $search);
     @if $index {
@@ -38,11 +38,13 @@ $encoding-reference: (
 $breakpoints: (
     xs: 320px,
     s: 560px,
+    sm: 640px,
     m: 768px,
     l: 1024px,
-    xl: 1400px,
-    2xl: 1680px,
-); 
+    xl: 1280px,
+    xxl: 1400px,
+    xxxl: 1680px,
+);
 
 // Generic, mobile-first media query generator
 @mixin media($breakpoint) {
