@@ -11,14 +11,14 @@ export const render = async (ctx: PageContext) => {
     const appHtml = await renderToString(app)
 
     const { documentProps } = ctx
-    const title = (documentProps && documentProps.title) || 'Vite SSR app'
-    const description = (documentProps && documentProps.description) || 'App using Vite + vite-plugin-ssr'
+    const title = documentProps?.title || 'Donna Rice'
+    const description = documentProps?.description || 'The work of Donna Rice, a draftsperson and senior PA from Newcastle, Australia'
 
     const documentHtml = escapeInject`
-        <!DOCTYPE html>
+        <!doctype html>
         <html lang="en">
             <head>
-                <meta charset="UTF-8" />
+                <meta charset="utf-8" />
                 <link rel="icon" href="${logoUrl}" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="description" content="${description}" />
