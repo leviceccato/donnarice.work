@@ -1,21 +1,19 @@
 import { App } from 'vue'
-import { createApp } from './app'
+import { createApp, SSRApp } from './app'
 import { PageContext } from './types' 
 import { useClientRouter } from 'vite-plugin-ssr/client/router'
 
-let _app: {
-    app: App<Element>,
-    changePage: (ctx: PageContext) => void,
-}
+let app: SSRApp
 
 const { hydrationPromise } = useClientRouter({
     ensureHydration: true,
+    prefetchLinks: true,
     render(ctx) {
-        if (!_app) {
-            _app = createApp(ctx)
-            _app.app.mount('#app')
+        if (!app) {
+            app = createApp(ctx)
+            app.mount('#app')
         } else {
-            _app.changePage(ctx)
+            app.changePage?.(ctx)
         }
     }
 })

@@ -1,12 +1,15 @@
-import { createSSRApp, h, markRaw, reactive, App, Component } from 'vue'
+import { createSSRApp, h, markRaw, reactive, App, defineComponent, Component } from 'vue'
 import PageShell from '../components/page-shell.vue'
 import { setPageContext } from '../scripts/use-page-context'
 import { PageContext } from './types'
 
-export const createApp = (ctx: PageContext): { app: App<Element>, changePage: (ctx: PageContext) => void } => {
+export type SSRApp = App<Element> & { changePage?: (ctx: PageContext) => void }
+
+export const createApp = (ctx: PageContext): App<Element> & {} => {
     let reactiveCtx = reactive(ctx)
 
-    const component: Component = {
+    let rootComponent: Component
+    const component = defineComponent({
         data: () => ({
             Page: markRaw(ctx.Page),
             pageProps: markRaw(ctx.pageProps || {})
@@ -16,16 +19,20 @@ export const createApp = (ctx: PageContext): { app: App<Element>, changePage: (c
                 default: () => h(this.Page, this.pageProps)
             })
         },
-        changePage(ctx: PageContext) {
-            Object.assign(reactiveCtx, ctx)
-            this.Page = markRaw(ctx.Page)
-            this.pageProps = markRaw(ctx.pageProps || {})
+        created() {
+            rootComponent = this
         }
-    }
+    })
 
-    const app = createSSRApp(component)
+    const app: SSRApp = createSSRApp(component)
+
+    app.changePage = (ctx: PageContext) => {
+        Object.assign(reactiveCtx, ctx)
+        ;(rootComponent as typeof component).Page = markRaw(ctx.Page)
+        ;(rootComponent as typeof component).pageProps = markRaw(ctx.pageProps || {})
+    }
 
     setPageContext(app, reactiveCtx)
 
-    return { app, changePage: component.changePage }
+    return app
 }

@@ -7,7 +7,7 @@ import logoUrl from '../static/logo.svg'
 export const passToClient = ['pageProps', 'render', 'effect', 'state', '_']
 
 export const render = async (ctx: PageContext) => {
-    const { app } = createApp(ctx)
+    const app = createApp(ctx)
     const appHtml = await renderToString(app)
 
     const { documentProps } = ctx

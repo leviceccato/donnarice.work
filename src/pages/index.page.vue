@@ -10,7 +10,7 @@ onMounted(() => {
 
 <template>
     <h1>Welcome!</h1>
-    This page is:
+    This page is: HOME PAGE
     <ul>
         <li :style="{ color: textColor }">Rendered to HTML.</li>
     </ul>
