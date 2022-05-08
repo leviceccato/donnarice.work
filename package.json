@@ -3,7 +3,7 @@
     "scripts": {
         "start": "ts-node ./server",
         "build": "vue-tsc --noEmit && vite build && vite build --ssr && vite-plugin-ssr prerender",
-        "preview": "cross-env NODE_ENV=production ts-node ./server"
+        "preview": "npm run build && cross-env NODE_ENV=production ts-node ./server"
     },
     "dependencies": {
         "@types/express": "^4.17.13",

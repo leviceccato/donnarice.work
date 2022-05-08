@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 defineProps(['is404'])
 </script>
 

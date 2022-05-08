@@ -1,4 +1,5 @@
 import { inject, App, InjectionKey } from 'vue'
+import { PageContext } from '../renderer/types'
 
 const key: InjectionKey<PageContext> = Symbol()
 

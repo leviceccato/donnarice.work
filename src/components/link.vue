@@ -5,7 +5,7 @@ const ctx = usePageContext()
 </script>
 
 <template>
-    <a :class="[$style.link, { [$style.active]: ctx.urlPathname === $attrs.href }]">
+    <a :class="[$style.link, { [$style.active]: ctx?.urlPathname === $attrs.href }]">
         <slot />
     </a>
 </template>

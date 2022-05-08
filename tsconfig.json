@@ -13,6 +13,7 @@
         "esModuleInterop": true,
         "jsx": "preserve"
     },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
     "ts-node": {
         "transpileOnly": true,
         "compilerOptions": {
