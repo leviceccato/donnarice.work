@@ -1,6 +1,6 @@
 # Donna Rice's Portfolio
 
-✍️ Welcome to the repository of Donna Rice's portfolio website. It’s built using Vue & Vite. Check it the live site at [donnarice.work](https://donnarice.work).
+✍️ Welcome to the repository of Donna Rice's portfolio website. It's built with Vite, Vue and TypeScript. Check it the live site at [donnarice.work](https://donnarice.work).
 
 ## Usage
 
