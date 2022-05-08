@@ -1,15 +1,16 @@
 import { renderToString } from '@vue/server-renderer'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
-import { createApp } from '@/renderer/app'
-import logoUrl from '@/static/logo.svg'
+import { createApp } from '../renderer/app'
+import { PageContext } from './types'
+import logoUrl from '../static/logo.svg'
 
 export const passToClient = ['pageProps', 'render', 'effect', 'state', '_']
 
-export const render = async pageContext => {
-    const app = createApp(pageContext)
+export const render = async (ctx: PageContext) => {
+    const { app } = createApp(ctx)
     const appHtml = await renderToString(app)
 
-    const { documentProps } = pageContext
+    const { documentProps } = ctx
     const title = (documentProps && documentProps.title) || 'Vite SSR app'
     const description = (documentProps && documentProps.description) || 'App using Vite + vite-plugin-ssr'
 

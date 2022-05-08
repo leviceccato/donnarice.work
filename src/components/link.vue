@@ -1,5 +1,5 @@
-<script setup>
-import { usePageContext } from '@/scripts/use-page-context'
+<script lang="ts" setup>
+import { usePageContext } from '../scripts/use-page-context'
 
 const ctx = usePageContext()
 </script>

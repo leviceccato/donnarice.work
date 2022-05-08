@@ -1,6 +1,6 @@
-const express = require('express')
-const { createServer } = require('vite')
-const { createPageRenderer } = require('vite-plugin-ssr')
+import express from 'express'
+import { createServer } from 'vite'
+import { createPageRenderer } from 'vite-plugin-ssr'
 
 const root = __dirname
 const isProduction = process.env.NODE_ENV === 'production'

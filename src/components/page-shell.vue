@@ -1,12 +1,12 @@
-<script setup>
-import Link from '@/components/link.vue'
+<script lang="ts" setup>
+import Link from '../components/link.vue'
 </script>
 
 <template>
     <div class="layout">
         <div class="navigation">
             <a href="/" class="logo">
-                <img src="@/static/logo.svg" height="64" width="64" alt="logo" />
+                <img src="../static/logo.svg" height="64" width="64" alt="logo" />
             </a>
             <Link href="/">Home</Link>
         </div>
@@ -17,8 +17,8 @@ import Link from '@/components/link.vue'
 </template>
 
 <style lang="scss">
-@use '@/styles/base';
-@use '@/styles/vars';
+@use '../styles/base';
+@use '../styles/vars';
 
 html {
     @include vars.to-custom-props();

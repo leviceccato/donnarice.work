@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 
 const textColor = ref('inherit')
