@@ -1,5 +1,5 @@
 import express from 'express'
-import { createServer } from 'vite'
+import { createServer, ViteDevServer } from 'vite'
 import { createPageRenderer } from 'vite-plugin-ssr'
 
 const root = __dirname
@@ -9,7 +9,8 @@ const port = process.env.PORT || 3000
 const start = async (): Promise<void> => {
     const app = express()
 
-    let viteDevServer
+    let viteDevServer: ViteDevServer
+
     if (isProduction) {
         app.use(express.static(`${root}/dist/client`))
     } else {
