@@ -6,7 +6,7 @@ const root = __dirname
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 3000
 
-const start = async () => {
+const start = async (): Promise<void> => {
     const app = express()
 
     let viteDevServer
