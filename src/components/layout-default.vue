@@ -1,9 +1,5 @@
-<script lang="ts" setup>
-import Link from '../components/link.vue'
-</script>
-
 <template>
-    <div class="layout">
+    <div :class="$style.root">
         <div class="navigation">
             <a href="/" class="logo">
                 <img src="../static/logo.svg" height="64" width="64" alt="logo" />
@@ -24,4 +20,8 @@ import Link from '../components/link.vue'
 html {
     @include vars.to-custom-props();
 }
+</style>
+
+<style lang="scss" module>
+.root {}
 </style>

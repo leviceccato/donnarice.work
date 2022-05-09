@@ -1,5 +1,5 @@
 import { createSSRApp, h, markRaw, reactive, App, defineComponent, Component } from 'vue'
-import PageShell from '../components/page-shell.vue'
+import PageShell from '../components/layout-default.vue'
 import { setPageContext } from '../scripts/use-page-context'
 import { PageContext } from './types'
 
