@@ -5,7 +5,7 @@ import { PageContext } from './types'
 
 export type SSRApp = App<Element> & { changePage?: (ctx: PageContext) => void }
 
-export const createApp = (ctx: PageContext): App<Element> & {} => {
+export const createApp = (ctx: PageContext): SSRApp => {
     let reactiveCtx = reactive(ctx)
 
     let rootComponent: Component
@@ -25,8 +25,7 @@ export const createApp = (ctx: PageContext): App<Element> & {} => {
     })
 
     const app: SSRApp = createSSRApp(component)
-
-    app.changePage = (ctx: PageContext) => {
+    app.changePage = (ctx: PageContext): void => {
         Object.assign(reactiveCtx, ctx)
         ;(rootComponent as typeof component).Page = markRaw(ctx.Page)
         ;(rootComponent as typeof component).pageProps = markRaw(ctx.pageProps || {})
