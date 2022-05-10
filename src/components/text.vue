@@ -6,7 +6,7 @@ const {
     variant = 'body',
 } = defineProps<{
     tag?: string
-    variant?: 'body' | 'heading-xlarge' | 'heading-large',
+    variant?: 'body' | 'heading'
     color?: string
 }>()
 
@@ -36,5 +36,12 @@ const _variant = computed(() => {
     font-weight: inherit;
     margin: 0;
     color: var(--color, inherit);
+    &.heading {
+        font-family: var(--font-interdisplay);
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+    }
 }
 </style>
