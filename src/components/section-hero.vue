@@ -1,8 +1,12 @@
+<script lang="ts" setup>
+import Text from './text.vue'
+</script>
+
 <template>
     <div :class="$style.root">
         <div :class="$style.column" />
         <div :class="[$style.column, $style.main]">
-            asd
+            <Text variant="heading">Donna Rice</Text>
         </div>
         <div :class="$style.column" />
     </div>
