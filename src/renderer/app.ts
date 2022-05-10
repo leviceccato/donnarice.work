@@ -15,9 +15,7 @@ export const createApp = (ctx: PageContext): SSRApp => {
             pageProps: markRaw(ctx.pageProps || {})
         }),
         render() {
-            return h(PageShell, {}, {
-                default: () => h(this.Page, this.pageProps)
-            })
+            return h(this.Page, this.pageProps)
         },
         created() {
             rootComponent = this

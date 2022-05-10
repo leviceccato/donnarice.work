@@ -1,27 +1,29 @@
+<script lang="ts" setup>
+import Nav from './nav.vue'
+</script>
+
 <template>
     <div :class="$style.root">
-        <div class="navigation">
-            <a href="/" class="logo">
-                <img src="../static/logo.svg" height="64" width="64" alt="logo" />
-            </a>
-            <Link href="/">Home</Link>
-            <Link href="/about">ABOUT</Link>
-        </div>
-        <div class="content">
+        <Nav />
+        <main :class="$style.main">
             <slot />
-        </div>
+        </main>
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" module>
 @use '../styles/base';
 @use '../styles/vars';
+@use '../styles/util';
 
-html {
-    @include vars.to-custom-props();
+:global {
+    html {
+        @include vars.to-custom-props();
+    }
 }
-</style>
-
-<style lang="scss" module>
-.root {}
+.root {
+    background-color: var(--col-grey-1);
+    min-height: 100vh;
+    @include util.fluid(padding, 20px, 152px);
+}
 </style>

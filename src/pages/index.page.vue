@@ -1,17 +1,14 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-
-const textColor = ref('inherit')
-
-onMounted(() => {
-    textColor.value = 'red'
-})
+import LayoutDefault from '../components/layout-default.vue'
+import SectionHero from '../components/section-hero.vue'
+import SectionWork from '../components/section-work.vue'
+import SectionKindWords from '../components/section-kind-words.vue'
 </script>
 
 <template>
-    <h1>Welcome!</h1>
-    This page is: HOME PAGE
-    <ul>
-        <li :style="{ color: textColor }">Rendered to HTML.</li>
-    </ul>
+    <LayoutDefault>
+        <SectionHero />
+        <SectionWork />
+        <SectionKindWords />
+    </LayoutDefault>
 </template>
