@@ -2,7 +2,8 @@
 @use 'sass:meta';
 
 $vars: (
-    col-base-black: black,
+    col-black-1: black,
+    col-grey-1: #F3F3F3,
     font-interdisplay: ('Inter Display', Arial, sans-serif),
 
     ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1),
