@@ -8,7 +8,8 @@ const {
 } = defineProps<{
     tag?: string
     variant:
-        'body' |
+        'body-small' |
+        'body-medium' |
         'heading-small' |
         'heading-large'
     color?: string
@@ -42,9 +43,15 @@ const _variant = computed(() => {
     color: var(--color, inherit);
     font-family: var(--font-interdisplay);
     &.body {
-        font-size: 18px;
-        line-height: 1.5;
-        letter-spacing: 0.01em;
+        &.small {
+            font-size: 18px;
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+        }
+        &.medium {
+            font-size: 22px;
+            line-height: 1.4;
+        }
     }
     &.heading {
         &.small {

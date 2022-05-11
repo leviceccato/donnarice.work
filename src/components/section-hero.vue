@@ -14,7 +14,7 @@ import Text from './text.vue'
                 I’m a draftsperson and senior PA based in Newcastle — Australia.
             </Text>
             <Text
-                variant="body"
+                variant="body-small"
                 :class="$style.body"
             >
                 I’ve worked as an ___ at ____, as a ____ and have experience doing ____.
