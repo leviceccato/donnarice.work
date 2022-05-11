@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-defineProps(['is404'])
+const { is404 } = defineProps<{ is404: boolean }>()
 </script>
 
 <template>
