@@ -3,10 +3,14 @@ import { computed } from 'vue'
 
 const {
     tag = 'span',
-    variant = 'body',
+    variant,
+    color,
 } = defineProps<{
     tag?: string
-    variant?: 'body' | 'heading'
+    variant:
+        'body' |
+        'heading-small' |
+        'heading-large'
     color?: string
 }>()
 
@@ -36,12 +40,23 @@ const _variant = computed(() => {
     font-weight: inherit;
     margin: 0;
     color: var(--color, inherit);
+    font-family: var(--font-interdisplay);
+    &.body {
+        font-size: 18px;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+    }
     &.heading {
-        font-family: var(--font-interdisplay);
-        font-weight: 500;
-        text-transform: uppercase;
-        font-size: 14px;
-        letter-spacing: 0.04em;
+        &.small {
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.04em;
+        }
+        &.large {
+            font-size: 32px;
+            line-height: 1.3;
+        }
     }
 }
 </style>
