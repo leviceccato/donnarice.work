@@ -4,10 +4,12 @@ import Nav from './nav.vue'
 
 <template>
     <div :class="$style.root">
-        <Nav />
-        <main :class="$style.main">
-            <slot />
-        </main>
+        <div :class="$style.container">
+            <Nav :class="$style.nav" />
+            <main :class="$style.main">
+                <slot />
+            </main>
+        </div>
     </div>
 </template>
 
@@ -25,5 +27,8 @@ import Nav from './nav.vue'
     background-color: var(--col-grey-1);
     min-height: 100vh;
     @include util.fluid(padding, 20px, 152px);
+}
+.nav {
+    position: absolute;
 }
 </style>
