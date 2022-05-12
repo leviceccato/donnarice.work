@@ -1,23 +1,27 @@
+<script lang="ts" setup>
+import Button from './button.vue'
+</script>
+
 <template>
     <nav :class="$style.root">
-        <a
+        <Button
             href="#home"
             :class="$style.link"
         >
             Home
-        </a>
-        <a
+        </Button>
+        <Button
             href="#work"
             :class="$style.link"
         >
             Work
-        </a>
-        <a
+        </Button>
+        <Button
             href="#kind-words"
             :class="$style.link"
         >
             Kind words
-        </a>
+        </Button>
     </nav>
 </template>
 
