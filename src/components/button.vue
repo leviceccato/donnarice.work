@@ -36,7 +36,7 @@ function scrollToTarget(selector: string): void {
         @click="handleClick"
     >
         <slot name="container">
-            <span :class="$style.container">
+            <span>
                 <Text variant="body-medium">
                     <slot />
                 </Text>
@@ -62,16 +62,5 @@ function scrollToTarget(selector: string): void {
     -webkit-tap-highlight-color: transparent;
     &:focus { outline: none; }
     &:focus-visible { box-shadow: 0px 0px 0px 2px currentColor; }
-    &:hover {
-        .container { transform: scale(1.05); }
-    }
-}
-.container {
-    background-color: var(--col-magenta);
-    border-radius: 1000px;
-    color: var(--col-black-tint-4);
-    transition: transform 150ms;
-    &.m { padding: 0.6em 1.2em; }
-    &.l { padding: 0.8em 1.9em; }
 }
 </style>
