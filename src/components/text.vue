@@ -49,19 +49,20 @@ const _variant = computed(() => {
             letter-spacing: 0.01em;
         }
         &.medium {
-            font-size: 22px;
+            font-size: 20px;
             line-height: 1.4;
+            letter-spacing: 0.01em;
         }
     }
     &.heading {
         &.small {
             font-weight: 500;
             text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 0.04em;
+            font-size: 16px;
+            letter-spacing: 0.06em;
         }
         &.large {
-            font-size: 32px;
+            font-size: 40px;
             line-height: 1.3;
         }
     }
