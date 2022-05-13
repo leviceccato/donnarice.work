@@ -35,13 +35,7 @@ function scrollToTarget(selector: string): void {
         :class="$style.root"
         @click="handleClick"
     >
-        <slot name="container">
-            <span>
-                <Text variant="body-medium">
-                    <slot />
-                </Text>
-            </span>
-        </slot>
+        <slot />
     </Component>
 </template>
 
