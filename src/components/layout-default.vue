@@ -15,12 +15,11 @@ import Nav from './nav.vue'
 
 <style lang="scss" module>
 @use '../styles/base';
-@use '../styles/vars';
 @use '../styles/util';
 
 :global {
     html {
-        @include vars.to-custom-props();
+        @include util.vars-to-custom-props();
     }
 }
 .root {

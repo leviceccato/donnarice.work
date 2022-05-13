@@ -1,22 +1,7 @@
-@use 'sass:map';
-@use 'sass:meta';
+$col-black-1: black;
+$col-grey-1: #F3F3F3;
+$font-interdisplay: ('Inter Display', Arial, sans-serif);
 
-$vars: (
-    col-black-1: black,
-    col-grey-1: #F3F3F3,
-    font-interdisplay: ('Inter Display', Arial, sans-serif),
-
-    ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1),
-    ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1),
-    ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1)
-);
-
-@function get($var) {
-    @return map.get($vars, $var);
-}
-
-@mixin to-custom-props() {
-    @each $prop, $value in $vars {
-        #{'--' + $prop}: #{meta.inspect($value)};
-    }
-}
+$ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+$ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+$ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);

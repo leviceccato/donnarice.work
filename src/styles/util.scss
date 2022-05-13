@@ -5,6 +5,20 @@
 @use 'sass:list';
 @use 'sass:color';
 
+@use './vars.scss' as v;
+
+$vars: meta.module-variables(v);
+
+@function var($var) {
+    @return map.get($vars, $var);
+}
+
+@mixin vars-to-custom-props() {
+    @each $prop, $value in $vars {
+        #{'--' + $prop}: #{meta.inspect($value)};
+    }
+}
+
 // Return the number without it's unit
 @function strip-unit($number) {
     @return math.div($number, $number * 0 + 1);
