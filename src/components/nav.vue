@@ -1,27 +1,37 @@
 <script lang="ts" setup>
-import Button from './button.vue'
+import { computed } from 'vue'
+
+import ButtonNav from './button-nav.vue'
+
+const navData = computed(() => {
+    return [
+        {
+            href: '#home',
+            text: 'Home'
+        },
+        {
+            href: '#work',
+            text: 'Work'
+        },
+        {
+            href: '#kind-words',
+            text: 'Kind words'
+        },
+    ]
+})
 </script>
 
 <template>
     <nav :class="$style.root">
-        <Button
-            href="#home"
+        <ButtonNav
+            v-for="data in navData"
+            :key="data.href"
+            :href="data.href"
+            :is-active="true"
             :class="$style.link"
         >
-            Home
-        </Button>
-        <Button
-            href="#work"
-            :class="$style.link"
-        >
-            Work
-        </Button>
-        <Button
-            href="#kind-words"
-            :class="$style.link"
-        >
-            Kind words
-        </Button>
+            {{ data.text }}
+        </ButtonNav>
     </nav>
 </template>
 
