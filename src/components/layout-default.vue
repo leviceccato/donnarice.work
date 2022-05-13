@@ -30,5 +30,6 @@ import Nav from './nav.vue'
 }
 .nav {
     position: absolute;
+    z-index: 1;
 }
 </style>
