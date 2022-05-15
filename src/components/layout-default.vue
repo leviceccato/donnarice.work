@@ -94,7 +94,8 @@ onMounted(() => {
     }
 }
 .root {
-    background-color: v-bind(color);
+    --dynamic-color: v-bind(color);
+    background-color: var(--dynamic-color);
     transition: v-bind(transition);
     min-height: 100vh;
     @include util.fluid(padding, 20px, 152px);
