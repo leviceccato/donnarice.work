@@ -21,5 +21,9 @@ import Text from './text.vue'
     border: 2px solid currentColor;
     border-radius: 1000px;
     padding: 0.3em 0.8em;
+    &:hover {
+        background-color: var(--col-black-1);
+        color: var(--dynamic-color);
+    }
 }
 </style>
