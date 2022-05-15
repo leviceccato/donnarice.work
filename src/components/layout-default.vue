@@ -25,6 +25,13 @@ function setScroll(): void {
     scroll.value = (window.scrollY / distance)
 }
 
+function fadeToEl(href: string): void {
+    const el = document.querySelector(href)
+    if (!el) return
+
+    el.scrollIntoView()
+}
+
 onMounted(() => {
     window.addEventListener('scroll', setScroll)
 })
@@ -33,7 +40,10 @@ onMounted(() => {
 <template>
     <div :class="$style.root">
         <div :class="$style.container">
-            <Nav :class="$style.nav" />
+            <Nav
+                :class="$style.nav"
+                @navigate="fadeToEl"
+            />
             <main :class="$style.main">
                 <slot />
             </main>
