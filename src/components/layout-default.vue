@@ -10,6 +10,7 @@ const colors = [
     createColor('#E1FAD8'), // Green
     createColor('#CFEEEE'), // Blue
     createColor('#F6E1E1'), // Red
+    createColor('#EDEDED'), // Grey
 ]
 
 const shouldTransitionColor = ref(false)
