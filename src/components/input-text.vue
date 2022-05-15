@@ -3,8 +3,14 @@ import { computed } from 'vue'
 
 const {
     type = 'input',
+    value,
 } = defineProps<{
     type?: 'input' | 'textarea'
+    value?: string
+}>()
+
+const emit = defineEmits<{
+    (event: 'update:value', value: string): void
 }>()
 </script>
 
@@ -12,6 +18,8 @@ const {
     <Component
         :is="type"
         :class="$style.root"
+        :value="value"
+        @input="emit('update:value', $event.target.value)"
         :type="(type === 'input') ? 'text' : null"
     />
 </template>
