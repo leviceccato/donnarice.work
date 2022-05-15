@@ -4,8 +4,9 @@ import { onMounted, ref } from 'vue'
 const WIDTH = 24
 const HEIGHT = 24
 
-const x = ref(0)
-const y = ref(0)
+// Position outside document initially
+const x = ref(-WIDTH)
+const y = ref(-HEIGHT)
 
 function setCursorCoords(event: MouseEvent): void {
     x.value = event.clientX - (WIDTH / 2)
