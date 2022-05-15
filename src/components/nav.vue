@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useScroll } from '../scripts/use-scroll'
 
 import ButtonNav from './button-nav.vue'
+
+const scroll = useScroll()
 
 const navData = computed(() => {
     return [
