@@ -11,7 +11,8 @@ const {
         'body-small' |
         'body-medium' |
         'heading-small' |
-        'heading-large'
+        'heading-large' | 
+        'heading-label'
     color?: string
 }>()
 
@@ -60,6 +61,12 @@ const _variant = computed(() => {
             text-transform: uppercase;
             font-size: 16px;
             letter-spacing: 0.06em;
+        }
+        &.label {
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.08em;
         }
         &.large {
             font-size: 40px;
