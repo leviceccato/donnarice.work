@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import Button from './button.vue'
+import Text from './text.vue'
 </script>
 
 <template>
     <Button>
         <span :class="$style.container">
-            <slot />
+            <Text variant="heading-small">
+                <slot />
+            </Text>
         </span>
     </Button>
 </template>
@@ -15,5 +18,8 @@ import Button from './button.vue'
     display: flex;
     align-items: center;
     gap: 1em;
+    border: 2px solid currentColor;
+    border-radius: 1000px;
+    padding: 0.3em 0.8em;
 }
 </style>
