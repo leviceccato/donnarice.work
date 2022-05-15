@@ -4,6 +4,7 @@ import { provideScroll } from '../scripts/use-scroll'
 import { createColor, mix } from '../scripts/color'
 
 import Nav from './nav.vue'
+import Cursor from './cursor.vue'
 
 const colors = [
     createColor('#EDEDED'), // Grey
@@ -56,6 +57,7 @@ onMounted(() => {
 </script>
 
 <template>
+    <Cursor />
     <div :class="$style.root">
         <Nav
             :class="$style.nav"
