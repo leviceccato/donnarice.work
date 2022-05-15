@@ -61,6 +61,7 @@ const _variant = computed(() => {
             text-transform: uppercase;
             font-size: 16px;
             letter-spacing: 0.06em;
+            line-height: 1.1;
         }
         &.label {
             font-weight: 500;
