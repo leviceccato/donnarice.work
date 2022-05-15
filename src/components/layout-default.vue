@@ -57,11 +57,11 @@ onMounted(() => {
 
 <template>
     <div :class="$style.root">
+        <Nav
+            :class="$style.nav"
+            @navigate="fadeToEl"
+        />
         <div :class="$style.container">
-            <Nav
-                :class="$style.nav"
-                @navigate="fadeToEl"
-            />
             <main :class="$style.main">
                 <slot />
             </main>
@@ -98,7 +98,8 @@ onMounted(() => {
     @include util.fluid(padding, 20px, 152px);
 }
 .nav {
-    position: absolute;
+    position: fixed;
     z-index: 1;
+    @include util.fluid(top left, 20px, 152px);
 }
 </style>
