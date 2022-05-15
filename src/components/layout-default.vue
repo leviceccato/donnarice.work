@@ -82,6 +82,14 @@ onMounted(() => {
             display: none;
         }
     }
+    ::-moz-selection {
+        color: v-bind(color);
+        background-color: var(--col-black-1);
+    } 
+    ::selection {
+        color: v-bind(color);
+        background-color: var(--col-black-1);
+    }
 }
 .root {
     background-color: v-bind(color);
