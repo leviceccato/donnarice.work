@@ -98,7 +98,7 @@ const email = ref('')
 .formField {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
 }
 .formButton {
     align-self: flex-end;
