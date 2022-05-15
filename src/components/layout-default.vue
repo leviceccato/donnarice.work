@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { provideScroll } from '../scripts/use-scroll'
-import { createColor } from '../scripts/color'
+import { createColor, mix } from '../scripts/color'
 
 import Nav from './nav.vue'
 
@@ -12,7 +12,6 @@ const colors = [
     createColor('#F6E1E1'), // Red
 ]
 
-const color = ref(colors[0])
 const shouldTransitionColor = ref(false)
 
 // Number between 0 and 1 to represent vertical scroll progress
@@ -20,8 +19,26 @@ const scroll = ref(0)
 
 provideScroll(scroll)
 
+// Interpolate color based on scroll and colors array
+const color = computed(() => {
+    const position = scroll.value * (colors.length - 1)
+    const index = Math.min(colors.length - 1, Math.ceil(position))
+    const previousIndex = Math.max(0, index - 1)
+    const weight = index - position
+
+    return mix(colors[previousIndex], colors[index], weight)
+})
+
+const transition = computed(() => {
+    if (shouldTransitionColor.value) {
+        return 'background-color 500ms ease-in-out'
+    }
+    return 'none'
+})
+
 function setScroll(): void {
     const distance = document.documentElement.scrollHeight - document.documentElement.clientHeight
+
     scroll.value = (window.scrollY / distance)
 }
 
@@ -61,7 +78,8 @@ onMounted(() => {
     }
 }
 .root {
-    background-color: var(--background-color, var(--col-grey-1));
+    background-color: v-bind(color);
+    transition: v-bind(transition);
     min-height: 100vh;
     @include util.fluid(padding, 20px, 152px);
 }
