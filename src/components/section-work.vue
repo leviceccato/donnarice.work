@@ -1,3 +1,5 @@
 <template>
-    <span />
+    <div id="work">
+        Work
+    </div>
 </template>

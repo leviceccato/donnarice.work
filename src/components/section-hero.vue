@@ -3,7 +3,10 @@ import Text from './text.vue'
 </script>
 
 <template>
-    <div :class="$style.root">
+    <div
+        id="hero"
+        :class="$style.root"
+    >
         <div :class="$style.column" />
         <div :class="[$style.column, $style.main]">
             <Text variant="heading-small">Donna Rice</Text>
