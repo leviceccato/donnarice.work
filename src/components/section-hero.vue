@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Text from './text.vue'
+import InputText from './input-text.vue'
 </script>
 
 <template>
@@ -24,6 +25,35 @@ import Text from './text.vue'
                 I’m passionate about the design of interior spaces and love to surround myself with ____.<br /><br />
                 I’m open to new employment opportunities. Send me a message.
             </Text>
+            <form
+                name="contact"
+                :class="$style.form"
+                method="POST"
+                data-netlify="true"
+            >
+                <label :class="$style.formField">
+                    <Text
+                        :class="$style.formLabel"
+                        variant="heading-label"
+                    >
+                        Message
+                    </Text>
+                    <InputText
+                        name="message"
+                        rows="4"
+                        type="textarea"
+                    />
+                </label>
+                <label :class="$style.formField">
+                    <Text
+                        :class="$style.formLabel"
+                        variant="heading-label"
+                    >
+                        Email
+                    </Text>
+                    <InputText name="email" />
+                </label>
+            </form>
         </div>
         <div :class="$style.column" />
     </div>
@@ -41,5 +71,16 @@ import Text from './text.vue'
 }
 .body {
     margin-top: 72px;
+}
+.form {
+    margin-top: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 </style>
