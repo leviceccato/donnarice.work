@@ -1,6 +1,12 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
+
 import Text from './text.vue'
 import InputText from './input-text.vue'
+import ButtonForm from './button-form.vue'
+
+const message = ref('')
+const email = ref('')
 </script>
 
 <template>
@@ -42,17 +48,26 @@ import InputText from './input-text.vue'
                         name="message"
                         rows="4"
                         type="textarea"
+                        v-model:value="message"
                     />
                 </label>
-                <label :class="$style.formField">
-                    <Text
-                        :class="$style.formLabel"
-                        variant="heading-label"
-                    >
-                        Email
-                    </Text>
-                    <InputText name="email" />
-                </label>
+                <template v-if="message">
+                    <label :class="$style.formField">
+                        <Text
+                            :class="$style.formLabel"
+                            variant="heading-label"
+                        >
+                            Email
+                        </Text>
+                        <InputText
+                            name="email"
+                            v-model:value="email"
+                        />
+                    </label>
+                    <ButtonForm :class="$style.formButton">
+                        Submit
+                    </ButtonForm>
+                </template>
             </form>
         </div>
         <div :class="$style.column" />
@@ -82,5 +97,8 @@ import InputText from './input-text.vue'
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+.formButton {
+    align-self: flex-end;
 }
 </style>
