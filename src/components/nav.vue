@@ -4,6 +4,10 @@ import { useScroll } from '../scripts/use-scroll'
 
 import ButtonNav from './button-nav.vue'
 
+const emit = defineEmits<{
+    (event: 'navigate', href: string): void
+}>()
+
 const scroll = useScroll()
 
 const navData = computed(() => {
@@ -32,6 +36,7 @@ const navData = computed(() => {
             :href="data.href"
             :is-active="true"
             :class="$style.link"
+            @click="emit('navigate', data.href)"
         >
             {{ data.text }}
         </ButtonNav>
