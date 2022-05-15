@@ -48,6 +48,7 @@ const email = ref('')
                         name="message"
                         rows="4"
                         type="textarea"
+                        placeholder="Hi Donna 👋"
                         v-model:value="message"
                     />
                 </label>
@@ -61,6 +62,7 @@ const email = ref('')
                         </Text>
                         <InputText
                             name="email"
+                            placeholder="lorem@ipsum.dolor"
                             v-model:value="email"
                         />
                     </label>
