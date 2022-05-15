@@ -9,15 +9,10 @@ const {
 } = defineProps<{
     isActive: boolean
 }>()
-
-const attrs = useAttrs()
 </script>
 
 <template>
-    <Button
-        v-bind="attrs"
-        :class="[$style.root, { [$style.active]: isActive }]"
-    >
+    <Button :class="[$style.root, { [$style.active]: isActive }]">
         <span :class="$style.container">
             <span :class="$style.indicator" />
             <Text variant="body-medium">
