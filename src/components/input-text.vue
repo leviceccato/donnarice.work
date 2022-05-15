@@ -21,9 +21,14 @@ const {
 
 .root {
     border: none;
+    border-bottom: 2px solid transparent;
     resize: vertical;
+    padding: 4px;
+    font-family: var(--font-interdisplay);
+    letter-spacing: 0.03em;
     &:focus {
         outline: none;
+        border-color: currentColor;
     }
     &::-webkit-resizer {
         background-position: center;
