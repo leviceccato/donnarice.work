@@ -74,7 +74,12 @@ onMounted(() => {
 
 :global {
     html {
+        scrollbar-width: none; // Hide scrollbar in Firefox
         @include util.vars-to-custom-props();
+        // Hide scroll bar in other browsers
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 }
 .root {
