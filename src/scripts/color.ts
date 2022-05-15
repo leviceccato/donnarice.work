@@ -156,7 +156,7 @@ export const mix = (color1: Color, color2: Color, weight = 0.5) => {
     const w1 = (w + 1) / 2.0
     const w2 = 1 - w1
 
-    return validateRgba([
+    return createColor([
         Math.round(rgba1[0] * w1 + rgba2[0] * w2),
         Math.round(rgba1[1] * w1 + rgba2[1] * w2),
         Math.round(rgba1[2] * w1 + rgba2[2] * w2),
