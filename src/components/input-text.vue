@@ -43,5 +43,9 @@ const emit = defineEmits<{
         background-repeat: no-repeat;
         background-image: url(util.svg-encode('<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17"><path d="M11.48 4.75v6.74H4.74" stroke="' + util.var(col-black-1) + '" stroke-width="2" stroke-linecap="square"/><path d="M11.48 11.49 4.74 4.75" stroke="#000" stroke-width="2"/></svg>'));
     }
+    &::placeholder {
+        color: var(--col-black-1);
+        opacity: 0.5;
+    }
 }
 </style>
