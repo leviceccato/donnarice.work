@@ -41,7 +41,6 @@ function scrollToTarget(selector: string): void {
 
 <style lang="scss" module>
 .root {
-    cursor: pointer;
     display: inline-flex;
     color: inherit;
     background: none;
