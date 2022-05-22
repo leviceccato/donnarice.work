@@ -36,10 +36,9 @@ const {
     gap: 1em;
 }
 .indicator {
-    width: 0.6em;
-    height: 0.6em;
+    width: 8px;
+    height: 8px;
     border: 2px solid currentColor;
-    border-radius: 1000px;
     opacity: 0;
 }
 </style>
