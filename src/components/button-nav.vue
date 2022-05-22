@@ -12,7 +12,10 @@ const {
 </script>
 
 <template>
-    <Button :class="[$style.root, { [$style.active]: isActive }]">
+    <Button
+        :class="[$style.root, { [$style.active]: isActive }]"
+        data-cursor="4"
+    >
         <span :class="$style.container">
             <span :class="$style.indicator" />
             <Text variant="body-medium">
