@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, nextTick } from 'vue'
 import { provideScroll } from '../scripts/use-scroll'
 import { createColor, mix } from '../scripts/color'
 
 import Nav from './nav.vue'
 import Cursor from './cursor.vue'
 
-const colors = [
+const COLORS = [
     createColor('#EDEDED'), // Grey
     createColor('#E1FAD8'), // Green
     createColor('#CFEEEE'), // Blue
@@ -14,7 +14,8 @@ const colors = [
     createColor('#EDEDED'), // Grey
 ]
 
-const shouldTransitionColor = ref(false)
+// Animation state for navigation
+const animation = ref<'fade-up' | 'fade-down' | 'none'>('none')
 
 // Number between 0 and 1 to represent vertical scroll progress
 const scroll = ref(0)
@@ -23,16 +24,16 @@ provideScroll(scroll)
 
 // Interpolate color based on scroll and colors array
 const color = computed(() => {
-    const position = scroll.value * (colors.length - 1)
+    const position = scroll.value * (COLORS.length - 1)
     const index = Math.ceil(position)
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
 
-    return mix(colors[previousIndex], colors[index], weight)
+    return mix(COLORS[previousIndex], COLORS[index], weight)
 })
 
 const transition = computed(() => {
-    if (shouldTransitionColor.value) {
+    if (animation.value !== 'none') {
         return 'background-color 500ms ease-in-out'
     }
     return 'none'
@@ -44,9 +45,12 @@ function setScroll(): void {
     scroll.value = (window.scrollY / distance)
 }
 
-function fadeToEl(href: string): void {
+async function fadeToEl(href: string): Promise<void> {
     const el = document.querySelector(href)
     if (!el) return
+
+    animation.value = 'fade-up'
+    await nextTick()
 
     el.scrollIntoView()
 }
@@ -58,7 +62,10 @@ onMounted(() => {
 
 <template>
     <Cursor />
-    <div :class="$style.root">
+    <div
+        :class="$style.root"
+        ref="root"
+    >
         <Nav
             :class="$style.nav"
             @navigate="fadeToEl"
