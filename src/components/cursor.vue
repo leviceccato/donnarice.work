@@ -4,8 +4,8 @@ import { onMounted, ref, watchEffect } from 'vue'
 const CURSOR_WIDTH = 4
 const CURSOR_HEIGHT = 4
 
-const RING_WIDTH = 24
-const RING_HEIGHT = 24
+const RING_WIDTH = 32
+const RING_HEIGHT = 32
 
 const cursorX = ref(0)
 const cursorY = ref(0)
@@ -38,12 +38,18 @@ function drawRing(): void {
 
     ctx.value.beginPath()
 
-    ringX.value += (cursorX.value - ringX.value) * 0.1
-    ringY.value += (cursorY.value - ringY.value) * 0.1
+    ringX.value += (cursorX.value - ringX.value) * 0.15
+    ringY.value += (cursorY.value - ringY.value) * 0.15
 
-    ctx.value.arc(ringX.value, ringY.value, 40, 0, 2 * Math.PI)
-    ctx.value.fillStyle = '#9e356a'
-    ctx.value.fill()
+    ctx.value.rect(
+        ringX.value - (RING_WIDTH / 2) + (CURSOR_WIDTH / 2),
+        ringY.value - (RING_HEIGHT / 2) + (CURSOR_HEIGHT / 2),
+        RING_WIDTH,
+        RING_HEIGHT,
+    )
+    ctx.value.lineWidth = 2
+    ctx.value.strokeStyle = '#000000'
+    ctx.value.stroke()
 }
 
 function animateRing(): void {
