@@ -29,7 +29,7 @@ const emit = defineEmits<{
 
 .root {
     border: none;
-    border-bottom: 2px solid transparent;
+    border-bottom: 2px solid var(--dynamic-color);
     resize: vertical;
     padding: 8px;
     font-family: var(--font-interdisplay);
