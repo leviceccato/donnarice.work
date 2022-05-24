@@ -37,7 +37,10 @@ const email = ref('')
                 method="POST"
                 data-netlify="true"
             >
-                <label :class="$style.formField">
+                <label
+                    :class="$style.formField"
+                    data-cursor="12"
+                >
                     <Text
                         :class="$style.formLabel"
                         variant="heading-label"
@@ -53,7 +56,10 @@ const email = ref('')
                     />
                 </label>
                 <template v-if="message">
-                    <label :class="$style.formField">
+                    <label
+                        :class="$style.formField"
+                        data-cursor
+                    >
                         <Text
                             :class="$style.formLabel"
                             variant="heading-label"
@@ -66,7 +72,10 @@ const email = ref('')
                             v-model:value="email"
                         />
                     </label>
-                    <ButtonForm :class="$style.formButton">
+                    <ButtonForm
+                        data-cursor
+                        :class="$style.formButton"
+                    >
                         Submit
                     </ButtonForm>
                 </template>

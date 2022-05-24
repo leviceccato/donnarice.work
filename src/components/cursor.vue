@@ -11,6 +11,8 @@ const RING_DEFAULT_HEIGHT = 32
 const cursorX = ref(0)
 const cursorY = ref(0)
 
+const ringTargetX = ref<number | null>(cursorX.value - (RING_DEFAULT_WIDTH / 2))
+const ringTargetY = ref<number | null>(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
 const ringX = ref(cursorX.value - (RING_DEFAULT_WIDTH / 2))
 const ringY = ref(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
 const ringTargetWidth = ref(RING_DEFAULT_WIDTH)
@@ -19,7 +21,7 @@ const ringWidth = ref(RING_DEFAULT_WIDTH)
 const ringHeight = ref(RING_DEFAULT_HEIGHT)
 
 const canvas = ref<HTMLCanvasElement | null>(null)
-const ctx = ref<CanvasRenderingContext2D>()
+const ctx = ref<CanvasRenderingContext2D | null>()
 const canvasWidth = ref(1)
 const canvasHeight = ref(1)
 
@@ -35,6 +37,9 @@ function setCanvasSize(): void {
 function resetRingSize(): void {
     ringTargetWidth.value = RING_DEFAULT_WIDTH
     ringTargetHeight.value = RING_DEFAULT_HEIGHT
+
+    ringTargetX.value = null
+    ringTargetY.value = null
 }
 
 function setCursorCoords(event: MouseEvent): void {
@@ -46,16 +51,27 @@ function setCursorCoords(event: MouseEvent): void {
 
 function checkForCursorElement(x: number, y: number): void {
     const element = document.elementFromPoint(x, y)
-    if (!element) return
-
-    const cursorElement = element.closest('[data-cursor]')
-    if (!cursorElement || !(cursorElement instanceof HTMLElement)) {
-        resetRingSize()
-        return
+    if (!element || !(element instanceof HTMLElement)) {
+        return resetRingSize()
+    }
+    
+    const targetElement = element.dataset.cursor
+        ? element
+        : element.closest('[data-cursor]')
+    if (!targetElement || !(targetElement instanceof HTMLElement)) {
+        return resetRingSize()
     }
 
-    ringTargetWidth.value = cursorElement.offsetWidth
-    ringTargetHeight.value = cursorElement.offsetHeight
+    const offset = Number(targetElement.dataset.cursor) || 0
+    const { width, height, top, left } = targetElement.getBoundingClientRect()
+
+    const targetWidth = width + (offset * 2)
+    const targetHeight = height + (offset * 2)
+
+    ringTargetWidth.value = targetWidth
+    ringTargetHeight.value = targetHeight
+    ringTargetX.value = left + (targetWidth / 2) - offset
+    ringTargetY.value = top + (targetHeight / 2) - offset
 }
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
@@ -65,8 +81,11 @@ function drawRing(): void {
 
     ctx.value.beginPath()
 
-    ringX.value += (cursorX.value - ringX.value) * 0.15
-    ringY.value += (cursorY.value - ringY.value) * 0.15
+    const targetX = ringTargetX.value ?? cursorX.value
+    const targetY = ringTargetY.value ?? cursorY.value
+
+    ringX.value += (targetX - ringX.value) * 0.15
+    ringY.value += (targetY - ringY.value) * 0.15
     ringWidth.value += (ringTargetWidth.value - ringWidth.value) * 0.15
     ringHeight.value += (ringTargetHeight.value - ringHeight.value) * 0.15
 
@@ -77,7 +96,7 @@ function drawRing(): void {
         ringHeight.value,
     )
     ctx.value.lineWidth = 2
-    ctx.value.strokeStyle = '#000000'
+    ctx.value.strokeStyle = 'rgba(0, 0, 0, 0.3)'
     ctx.value.stroke()
 }
 
@@ -90,7 +109,7 @@ function animateRing(): void {
 }
 
 onMounted(() => {
-    ctx.value = canvas.value?.getContext('2d') || undefined
+    ctx.value = canvas.value?.getContext('2d')
 
     animateRing()
     setCanvasSize()
