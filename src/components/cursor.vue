@@ -95,6 +95,13 @@ function drawRing(): void {
         ringWidth.value,
         ringHeight.value,
     )
+    // ctx.value.arc(
+    //     ringX.value - (ringWidth.value / 2) + (CURSOR_WIDTH / 2),
+    //     ringY.value - (ringHeight.value / 2) + (CURSOR_HEIGHT / 2),
+    //     ringWidth.value / 2,
+    //     0,
+    //     2 * Math.PI,
+    // )
     ctx.value.lineWidth = 2
     ctx.value.strokeStyle = 'rgba(0, 0, 0, 0.3)'
     ctx.value.stroke()

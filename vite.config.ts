@@ -4,6 +4,10 @@ import ssr from 'vite-plugin-ssr/plugin'
 import { resolve } from 'path'
 
 export default defineConfig({
-    plugins: [vue({ reactivityTransform: true }), ssr()],
     clearScreen: false,
+    publicDir: 'src/static',
+    plugins: [
+        vue({ reactivityTransform: true }),
+        ssr(),
+    ],
 })

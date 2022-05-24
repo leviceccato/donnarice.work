@@ -88,8 +88,7 @@ const email = ref('')
 <style lang="scss" module>
 .root {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
+    grid-template-columns: [sidebar] 300px [main-left] 1fr [main-right] 1fr;
     grid-gap: 20px;
 }
 .intro {

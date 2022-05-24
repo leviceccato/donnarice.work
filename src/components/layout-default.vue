@@ -112,4 +112,9 @@ onMounted(() => {
     z-index: 1;
     @include util.fluid(top left, 20px, 152px);
 }
+.main {
+    display: flex;
+    flex-direction: column;
+    @include util.fluid(gap, 20px, 152px);
+}
 </style>

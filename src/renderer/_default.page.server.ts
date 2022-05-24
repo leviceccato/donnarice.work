@@ -2,7 +2,6 @@ import { renderToString } from '@vue/server-renderer'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 import { createApp } from '../renderer/app'
 import { PageContext } from './types'
-import logoUrl from '../static/logo.svg'
 
 export const passToClient = ['pageProps', 'render', 'effect', 'state', '_']
 
@@ -19,7 +18,7 @@ export const render = async (ctx: PageContext) => {
         <html lang="en">
             <head>
                 <meta charset="utf-8" />
-                <link rel="icon" href="${logoUrl}" />
+                <link rel="icon" href="/logo.svg" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="description" content="${description}" />
                 <title>${title}</title>

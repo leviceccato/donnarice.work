@@ -29,6 +29,7 @@ const emit = defineEmits<{
 
 .root {
     border: none;
+    background-color: var(--col-white);
     border-bottom: 2px solid var(--dynamic-color);
     resize: vertical;
     padding: 8px;
