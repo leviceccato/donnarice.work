@@ -19,11 +19,13 @@ import Image from './image.vue'
                         </Text>
                     </div>
                     <div :class="$style.itemImageContainer">
-                        <Image
-                            src="/images/1-1.png"
-                            alt=""
-                            :class="$style.itemImage"
-                        />
+                        <div :class="$style.itemImageWrapper">
+                            <Image
+                                src="/images/1-1.png"
+                                alt=""
+                                :class="$style.itemImage"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -41,11 +43,7 @@ import Image from './image.vue'
     grid-column-start: sidebar;
 }
 .itemImageContainer {
-    background-color: var(--col-white);
     grid-column-start: main;
-    padding: 100px;
-}
-.itemImage {
-    max-height: calc(100vh - 200px);
+    display: flex;
 }
 </style>

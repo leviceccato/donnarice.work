@@ -1,5 +1,5 @@
 <template>
     <div id="kind-words">
-        Kind words
+        <!-- Kind words -->
     </div>
 </template>
