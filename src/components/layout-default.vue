@@ -25,7 +25,7 @@ provideScroll(scroll)
 // Interpolate color based on scroll and colors array
 const color = computed(() => {
     const position = scroll.value * (COLORS.length - 1)
-    const index = Math.ceil(position)
+    const index = Math.min(Math.ceil(position), COLORS.length - 1)
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
 
