@@ -29,7 +29,14 @@ const color = computed(() => {
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
 
-    return mix(COLORS[previousIndex], COLORS[index], weight)
+    const color1 = COLORS[previousIndex]
+    const color2 = COLORS[index]
+
+    if ((color1 === undefined) || (color2 === undefined)) {
+        return null
+    }
+
+    return mix(color1, color2, weight)
 })
 
 const transition = computed(() => {
