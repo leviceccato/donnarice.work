@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, nextTick } from 'vue'
 import { provideScroll } from '../scripts/use-scroll'
-import { createColor, mix } from '../scripts/color'
+import { createColor, mix, Color } from '../scripts/color'
 
 import Nav from './nav.vue'
 import Cursor from './cursor.vue'
 
-const COLORS = [
-    createColor('#EDEDED'), // Grey
-    createColor('#E1FAD8'), // Green
-    createColor('#CFEEEE'), // Blue
-    createColor('#F6E1E1'), // Red
-    createColor('#EDEDED'), // Grey
-]
+const {
+    colors = [],
+} = defineProps<{
+    colors?: Color[]
+}>()
 
 // Animation state for navigation
 const animation = ref<'fade-up' | 'fade-down' | 'none'>('none')
@@ -24,15 +22,15 @@ provideScroll(scroll)
 
 // Interpolate color based on scroll and colors array
 const color = computed(() => {
-    const position = scroll.value * (COLORS.length - 1)
-    const index = Math.min(Math.ceil(position), COLORS.length - 1)
+    const position = scroll.value * (colors.length - 1)
+    const index = Math.min(Math.ceil(position), colors.length - 1)
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
 
-    const color1 = COLORS[previousIndex]
-    const color2 = COLORS[index]
+    const color1 = colors[previousIndex]
+    const color2 = colors[index]
 
-    if ((color1 === undefined) || (color2 === undefined)) {
+    if (!color1 || !color2) {
         return null
     }
 
