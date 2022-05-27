@@ -185,8 +185,9 @@ onMounted(() => {
     transform: translate(calc(v-bind(cursorX) * 1px), calc(v-bind(cursorY) * 1px));
     pointer-events: none;
     z-index: 2;
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 1000px;
     background-color: currentColor;
 }
 .canvas {
