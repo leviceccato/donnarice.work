@@ -43,5 +43,6 @@ const {
     height: 8px;
     border: 2px solid currentColor;
     opacity: 0;
+    border-radius: 1000px;
 }
 </style>
