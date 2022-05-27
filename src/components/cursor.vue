@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import { onMounted, ref, watchEffect } from 'vue'
+import { onMounted, ref } from 'vue'
 import throttle from 'lodash/throttle'
 
 const CURSOR_WIDTH = 4
 const CURSOR_HEIGHT = 4
-
 const RING_DEFAULT_WIDTH = 32
 const RING_DEFAULT_HEIGHT = 32
+const SMALL_DISTANCE = 0.1
 
 const cursorX = ref(0)
 const cursorY = ref(0)
+const isCursorStopped = ref(true)
 
 const ringTargetX = ref<number | null>(cursorX.value - (RING_DEFAULT_WIDTH / 2))
 const ringTargetY = ref<number | null>(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
@@ -19,6 +20,8 @@ const ringTargetWidth = ref(RING_DEFAULT_WIDTH)
 const ringTargetHeight = ref(RING_DEFAULT_HEIGHT)
 const ringWidth = ref(RING_DEFAULT_WIDTH)
 const ringHeight = ref(RING_DEFAULT_HEIGHT)
+const ringLastDistanceX = ref(0)
+const ringLastDistanceY = ref(0)
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 const ctx = ref<CanvasRenderingContext2D | null>()
@@ -76,53 +79,86 @@ function checkForCursorElement(x: number, y: number): void {
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
 
-function drawRing(): void {
-    if (!ctx.value) return
-
-    ctx.value.beginPath()
+function drawRing(): boolean {
+    if (!ctx.value) {
+        return true
+    }
 
     const targetX = ringTargetX.value ?? cursorX.value
     const targetY = ringTargetY.value ?? cursorY.value
+
+    const distanceX = Math.abs(targetX - ringX.value)
+    const distanceY = Math.abs(targetY - ringY.value)
+
+    const isStoppingX = (distanceX < ringLastDistanceX.value) && (distanceX < SMALL_DISTANCE)
+    const isStoppingY = (distanceY < ringLastDistanceY.value) && (distanceY < SMALL_DISTANCE)
+
+    if (isStoppingX && isStoppingY) {
+        return true
+    }
+
+    ctx.value.clearRect(0, 0, canvasWidth.value, canvasWidth.value)
+
+    ringLastDistanceX.value = distanceX
+    ringLastDistanceY.value = distanceY
 
     ringX.value += (targetX - ringX.value) * 0.15
     ringY.value += (targetY - ringY.value) * 0.15
     ringWidth.value += (ringTargetWidth.value - ringWidth.value) * 0.15
     ringHeight.value += (ringTargetHeight.value - ringHeight.value) * 0.15
 
-    ctx.value.rect(
+    drawRoundedRect(ctx.value,
         ringX.value - (ringWidth.value / 2) + (CURSOR_WIDTH / 2),
         ringY.value - (ringHeight.value / 2) + (CURSOR_HEIGHT / 2),
         ringWidth.value,
         ringHeight.value,
+        RING_DEFAULT_WIDTH / 2
     )
-    // ctx.value.arc(
-    //     ringX.value - (ringWidth.value / 2) + (CURSOR_WIDTH / 2),
-    //     ringY.value - (ringHeight.value / 2) + (CURSOR_HEIGHT / 2),
-    //     ringWidth.value / 2,
-    //     0,
-    //     2 * Math.PI,
-    // )
+
     ctx.value.lineWidth = 2
     ctx.value.strokeStyle = 'rgba(0, 0, 0, 0.3)'
     ctx.value.stroke()
+
+    return false
 }
 
 function animateRing(): void {
     if (!ctx.value) return
 
-    ctx.value.clearRect(0, 0, canvasWidth.value, canvasWidth.value)
-    drawRing()
+    isCursorStopped.value = drawRing()
+    if (isCursorStopped.value) return
+
     requestAnimationFrame(animateRing)
+}
+
+function drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
+    if (width < (2 * radius)) radius = width / 2
+    if (height < (2 * radius)) radius = height / 2
+
+    ctx.beginPath()
+
+    ctx.moveTo(x + radius, y)
+    ctx.arcTo(x + width, y, x + width, y + height, radius)
+    ctx.arcTo(x + width, y + height, x, y + height, radius)
+    ctx.arcTo(x, y + height, x, y, radius)
+    ctx.arcTo(x, y, x + width, y, radius)
+
+    ctx.closePath()
 }
 
 onMounted(() => {
     ctx.value = canvas.value?.getContext('2d')
 
-    animateRing()
     setCanvasSize()
 
-    window.addEventListener('mousemove', setCursorCoords)
     window.addEventListener('resize', setCanvasSize)
+    window.addEventListener('mousemove', event => {
+        setCursorCoords(event)
+
+        if (isCursorStopped.value) {
+            animateRing()
+        }
+    })
 })
 </script>
 
