@@ -128,7 +128,7 @@ function drawRing(): boolean {
     )
 
     ctx.value.lineWidth = 2
-    ctx.value.strokeStyle = 'rgba(0, 0, 0, 0.3)'
+    ctx.value.strokeStyle = 'rgba(0, 0, 0, 1)'
     ctx.value.stroke()
 
     return false
