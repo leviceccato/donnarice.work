@@ -39,8 +39,6 @@ function setCanvasSize(): void {
 }
 
 function resetRingSize(): void {
-    console.count()
-
     ringTargetWidth.value = RING_DEFAULT_WIDTH
     ringTargetHeight.value = RING_DEFAULT_HEIGHT
 
