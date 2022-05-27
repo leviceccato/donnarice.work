@@ -82,7 +82,7 @@ const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
 const debounceResetRingSize = debounce(() => {
     resetRingSize()
     animateRing()
-}, 1000, {
+}, 300, {
     leading: true,
     trailing: false,
 })
