@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 const CURSOR_WIDTH = 4
 const CURSOR_HEIGHT = 4
@@ -20,8 +21,8 @@ const ringTargetWidth = ref(RING_DEFAULT_WIDTH)
 const ringTargetHeight = ref(RING_DEFAULT_HEIGHT)
 const ringWidth = ref(RING_DEFAULT_WIDTH)
 const ringHeight = ref(RING_DEFAULT_HEIGHT)
-const ringLastDistanceX = ref(0)
-const ringLastDistanceY = ref(0)
+const ringLastDeltaX = ref(0)
+const ringLastDeltaY = ref(0)
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 const ctx = ref<CanvasRenderingContext2D | null>()
@@ -38,6 +39,8 @@ function setCanvasSize(): void {
 }
 
 function resetRingSize(): void {
+    console.count()
+
     ringTargetWidth.value = RING_DEFAULT_WIDTH
     ringTargetHeight.value = RING_DEFAULT_HEIGHT
 
@@ -78,6 +81,13 @@ function checkForCursorElement(x: number, y: number): void {
 }
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
+const debounceResetRingSize = debounce(() => {
+    resetRingSize()
+    animateRing()
+}, 1000, {
+    leading: true,
+    trailing: false,
+})
 
 function drawRing(): boolean {
     if (!ctx.value) {
@@ -87,20 +97,24 @@ function drawRing(): boolean {
     const targetX = ringTargetX.value ?? cursorX.value
     const targetY = ringTargetY.value ?? cursorY.value
 
-    const distanceX = Math.abs(targetX - ringX.value)
-    const distanceY = Math.abs(targetY - ringY.value)
+    const deltaX = Math.abs(targetX - ringX.value)
+    const deltaY = Math.abs(targetY - ringY.value)
+    const deltaWidth = Math.abs(ringTargetWidth.value - ringWidth.value)
+    const deltaHeight = Math.abs(ringTargetHeight.value - ringHeight.value)
 
-    const isStoppingX = (distanceX < ringLastDistanceX.value) && (distanceX < SMALL_DISTANCE)
-    const isStoppingY = (distanceY < ringLastDistanceY.value) && (distanceY < SMALL_DISTANCE)
+    const isStoppingX = (deltaX < ringLastDeltaX.value) && (deltaX < SMALL_DISTANCE)
+    const isStoppingY = (deltaY < ringLastDeltaY.value) && (deltaY < SMALL_DISTANCE)
+    const isStoppingWidth = deltaWidth < SMALL_DISTANCE
+    const isStoppingHeight = deltaHeight < SMALL_DISTANCE
 
-    if (isStoppingX && isStoppingY) {
+    if (isStoppingX && isStoppingY && isStoppingWidth && isStoppingHeight) {
         return true
     }
 
     ctx.value.clearRect(0, 0, canvasWidth.value, canvasWidth.value)
 
-    ringLastDistanceX.value = distanceX
-    ringLastDistanceY.value = distanceY
+    ringLastDeltaX.value = deltaX
+    ringLastDeltaY.value = deltaY
 
     ringX.value += (targetX - ringX.value) * 0.15
     ringY.value += (targetY - ringY.value) * 0.15
@@ -152,6 +166,7 @@ onMounted(() => {
     setCanvasSize()
 
     window.addEventListener('resize', setCanvasSize)
+    window.addEventListener('scroll', debounceResetRingSize)
     window.addEventListener('mousemove', event => {
         setCursorCoords(event)
 
