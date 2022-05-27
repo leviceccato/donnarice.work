@@ -10,4 +10,9 @@ export default defineConfig({
         vue({ reactivityTransform: true }),
         ssr(),
     ],
+    css: {
+        modules: {
+            generateScopedName: '[local]_[hash:base64:5]'
+        }
+    },
 })
