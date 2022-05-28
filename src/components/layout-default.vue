@@ -2,14 +2,15 @@
 import { onMounted, ref, computed, nextTick } from 'vue'
 import { provideScroll } from '../scripts/use-scroll'
 import { createColor, mix, Color } from '../scripts/color'
+import { NonEmptyArray } from '../scripts/utilities'
 
 import Nav from './nav.vue'
 import Cursor from './cursor.vue'
 
 const {
-    colors = [],
+    colors = [createColor('#EDEDED')],
 } = defineProps<{
-    colors?: Color[]
+    colors?: NonEmptyArray<Color>
 }>()
 
 // Animation state for navigation
@@ -27,14 +28,7 @@ const color = computed(() => {
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
 
-    const color1 = colors[previousIndex]
-    const color2 = colors[index]
-
-    if (!color1 || !color2) {
-        return null
-    }
-
-    return mix(color1, color2, weight)
+    return mix(colors[previousIndex], colors[index], weight)
 })
 
 const transition = computed(() => {

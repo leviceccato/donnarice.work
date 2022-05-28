@@ -140,7 +140,7 @@ function animateRing(): void {
     isCursorStopped.value = drawRing()
     if (isCursorStopped.value) return
 
-    requestAnimationFrame(animateRing)
+    window.requestAnimationFrame(animateRing)
 }
 
 function drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
