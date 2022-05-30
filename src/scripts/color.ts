@@ -148,7 +148,7 @@ export const createColor = (colour: string | RGBA | { hsl: HSLA }): Color => {
     }
 }
 
-export const mix = (color1: Color, color2: Color, weight = 0.5) => {
+export const mix = (color1: Color, color2: Color, weight = 0.5): Color => {
     const rgba1 = color1.toRgba()
     const rgba2 = color2.toRgba()
 
