@@ -24,11 +24,8 @@ const zoom = ref<null | {
 
 function toggleZoom(): void {
     if (!root.value) return
+    if (zoom.value) return
 
-    if (zoom.value) {
-        return
-    }
-    
     scrollYCache.value = window.scrollY
 
     const rootRect = root.value.getBoundingClientRect()
