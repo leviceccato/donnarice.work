@@ -69,16 +69,17 @@ function checkForCursorElement(x: number, y: number): void {
         return resetRingSize()
     }
 
-    const offset = Number(targetElement.dataset.cursor) || 0
+    const paddingX = Number(targetElement.dataset.cursorPaddingX) || 0
+    const paddingY = Number(targetElement.dataset.cursorPaddingY) || 0
     const { width, height, top, left } = targetElement.getBoundingClientRect()
 
-    const targetWidth = width + (offset * 2)
-    const targetHeight = height + (offset * 2)
+    const targetWidth = width + (paddingX * 2)
+    const targetHeight = height + (paddingY * 2)
 
     ringTargetWidth.value = targetWidth - RING_STROKE_WIDTH
     ringTargetHeight.value = targetHeight - RING_STROKE_WIDTH
-    ringTargetX.value = left + (targetWidth / 2) - offset - RING_STROKE_WIDTH
-    ringTargetY.value = top + (targetHeight / 2) - offset - RING_STROKE_WIDTH
+    ringTargetX.value = left + (targetWidth / 2) - paddingX - RING_STROKE_WIDTH
+    ringTargetY.value = top + (targetHeight / 2) - paddingY - RING_STROKE_WIDTH
 }
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
