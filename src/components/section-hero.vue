@@ -57,6 +57,6 @@ const email = ref('')
     margin-top: 72px;
 }
 .ctaButton {
-    margin-top: 32px;
+    margin-top: 48px;
 }
 </style>
