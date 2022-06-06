@@ -7,6 +7,7 @@ const CURSOR_WIDTH = 4
 const CURSOR_HEIGHT = 4
 const RING_DEFAULT_WIDTH = 32
 const RING_DEFAULT_HEIGHT = 32
+const RING_STROKE_WIDTH = 2
 const SMALL_DISTANCE = 0.1
 
 const cursorX = ref(0)
@@ -72,10 +73,10 @@ function checkForCursorElement(x: number, y: number): void {
     const targetWidth = width + (offset * 2)
     const targetHeight = height + (offset * 2)
 
-    ringTargetWidth.value = targetWidth
-    ringTargetHeight.value = targetHeight
-    ringTargetX.value = left + (targetWidth / 2) - offset
-    ringTargetY.value = top + (targetHeight / 2) - offset
+    ringTargetWidth.value = targetWidth - RING_STROKE_WIDTH
+    ringTargetHeight.value = targetHeight - RING_STROKE_WIDTH
+    ringTargetX.value = left + (targetWidth / 2) - offset - RING_STROKE_WIDTH
+    ringTargetY.value = top + (targetHeight / 2) - offset - RING_STROKE_WIDTH
 }
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
@@ -127,7 +128,7 @@ function drawRing(): boolean {
         RING_DEFAULT_WIDTH / 2
     )
 
-    ctx.value.lineWidth = 2
+    ctx.value.lineWidth = RING_STROKE_WIDTH
     ctx.value.strokeStyle = 'rgba(0, 0, 0, 1)'
     ctx.value.stroke()
 
