@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useScroll } from '../scripts/use-scroll'
 
-import ButtonNav from './button-nav.vue'
+import Text from './text.vue'
+import Button from './button.vue'
 
 const emit = defineEmits<{
     (event: 'navigate', href: string): void
 }>()
 
 const scroll = useScroll()
+
+const activeIndex = ref(0)
 
 const navData = computed(() => {
     return [
@@ -30,16 +33,25 @@ const navData = computed(() => {
 
 <template>
     <nav :class="$style.root">
-        <ButtonNav
-            v-for="data in navData"
-            :key="data.href"
-            :href="data.href"
-            :is-active="true"
-            :class="$style.link"
-            @click="emit('navigate', data.href)"
+        <div
+            v-for="item, index in navData"
+            :key="index"
+            :class="[$style.item, { [$style.active]: index === activeIndex }]"
         >
-            {{ data.text }}
-        </ButtonNav>
+            <div :class="$style.indicator" />
+            <Button
+                :class="$style.button"
+                data-cursor
+                data-cursor-padding-x="12"
+                data-cursor-padding-y="4"
+                :href="item.href"
+                @click="emit('navigate', item.href)"
+            >
+                <Text variant="body-medium">
+                    {{ item.text }}
+                </Text>
+            </Button>
+        </div>
     </nav>
 </template>
 
@@ -47,6 +59,24 @@ const navData = computed(() => {
 .root {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 48px;
+}
+.item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    &.active {
+        .indicator {
+            opacity: 1;
+        }
+    }
+}
+.indicator {
+    width: 8px;
+    height: 8px;
+    border: 2px solid currentColor;
+    opacity: 0;
+    border-radius: 1000px;
 }
 </style>
