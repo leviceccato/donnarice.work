@@ -23,6 +23,7 @@ import Text from './text.vue'
     padding: 0.3em 0.8em;
     &:hover {
         background-color: var(--col-black-1);
+        border-color: var(--col-black-1);
         color: var(--dynamic-color);
     }
 }
