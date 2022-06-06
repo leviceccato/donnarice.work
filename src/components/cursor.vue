@@ -14,14 +14,16 @@ const cursorX = ref(0)
 const cursorY = ref(0)
 const isCursorStopped = ref(true)
 
-const ringTargetX = ref<number | null>(cursorX.value - (RING_DEFAULT_WIDTH / 2))
-const ringTargetY = ref<number | null>(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
 const ringX = ref(cursorX.value - (RING_DEFAULT_WIDTH / 2))
 const ringY = ref(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
-const ringTargetWidth = ref(RING_DEFAULT_WIDTH)
-const ringTargetHeight = ref(RING_DEFAULT_HEIGHT)
+const ringTargetX = ref<number | null>(cursorX.value - (RING_DEFAULT_WIDTH / 2))
+const ringTargetY = ref<number | null>(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
+
 const ringWidth = ref(RING_DEFAULT_WIDTH)
 const ringHeight = ref(RING_DEFAULT_HEIGHT)
+const ringTargetWidth = ref(RING_DEFAULT_WIDTH)
+const ringTargetHeight = ref(RING_DEFAULT_HEIGHT)
+
 const ringLastDeltaX = ref(0)
 const ringLastDeltaY = ref(0)
 
@@ -120,12 +122,14 @@ function drawRing(): boolean {
     ringWidth.value += (ringTargetWidth.value - ringWidth.value) * 0.15
     ringHeight.value += (ringTargetHeight.value - ringHeight.value) * 0.15
 
+    const radius = Math.min(ringWidth.value, ringHeight.value) / 2
+
     drawRoundedRect(ctx.value,
         ringX.value - (ringWidth.value / 2) + (CURSOR_WIDTH / 2),
         ringY.value - (ringHeight.value / 2) + (CURSOR_HEIGHT / 2),
         ringWidth.value,
         ringHeight.value,
-        RING_DEFAULT_WIDTH / 2
+        radius
     )
 
     ctx.value.lineWidth = RING_STROKE_WIDTH
