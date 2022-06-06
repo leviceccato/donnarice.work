@@ -31,55 +31,12 @@ const email = ref('')
                 I’m passionate about the design of interior spaces and love to surround myself with ____.<br /><br />
                 I’m open to new employment opportunities. Send me a message.
             </Text>
-            <form
-                name="contact"
-                :class="$style.form"
-                method="POST"
-                data-netlify="true"
+            <ButtonForm
+                :class="$style.ctaButton"
+                data-cursor
             >
-                <label
-                    :class="$style.formField"
-                    data-cursor="12"
-                >
-                    <Text
-                        :class="$style.formLabel"
-                        variant="heading-label"
-                    >
-                        Message
-                    </Text>
-                    <InputText
-                        name="message"
-                        rows="4"
-                        type="textarea"
-                        placeholder="Hi Donna 👋"
-                        v-model:value="message"
-                    />
-                </label>
-                <template v-if="message">
-                    <label
-                        :class="$style.formField"
-                        data-cursor
-                    >
-                        <Text
-                            :class="$style.formLabel"
-                            variant="heading-label"
-                        >
-                            Email
-                        </Text>
-                        <InputText
-                            name="email"
-                            placeholder="lorem@ipsum.dolor"
-                            v-model:value="email"
-                        />
-                    </label>
-                    <ButtonForm
-                        data-cursor
-                        :class="$style.formButton"
-                    >
-                        Submit
-                    </ButtonForm>
-                </template>
-            </form>
+                Message
+            </ButtonForm>
         </div>
         <div :class="$style.column" />
     </div>
@@ -97,18 +54,7 @@ const email = ref('')
 .body {
     margin-top: 72px;
 }
-.form {
-    margin-top: 72px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-.formField {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.formButton {
-    align-self: flex-end;
+.ctaButton {
+    margin-top: 32px;
 }
 </style>
