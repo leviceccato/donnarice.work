@@ -123,14 +123,12 @@ function drawRing(): boolean {
     ringWidth.value += (ringTargetWidth.value - ringWidth.value) * 0.15
     ringHeight.value += (ringTargetHeight.value - ringHeight.value) * 0.15
 
-    const radius = Math.min(ringWidth.value, ringHeight.value) / 2
-
     drawRoundedRect(ctx.value,
         ringX.value - (ringWidth.value / 2) + (CURSOR_WIDTH / 2),
         ringY.value - (ringHeight.value / 2) + (CURSOR_HEIGHT / 2),
         ringWidth.value,
         ringHeight.value,
-        radius
+        Math.min(ringWidth.value, ringHeight.value) / 2
     )
 
     ctx.value.lineWidth = RING_STROKE_WIDTH
