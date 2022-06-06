@@ -33,7 +33,9 @@ const email = ref('')
             </Text>
             <ButtonForm
                 :class="$style.ctaButton"
-                data-cursor="8"
+                data-cursor
+                data-cursor-padding-x="8"
+                data-cursor-padding-y="8"
             >
                 Contact me
             </ButtonForm>
