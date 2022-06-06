@@ -29,13 +29,13 @@ const email = ref('')
             >
                 I’ve worked as an ___ at ____, as a ____ and have experience doing ____.
                 I’m passionate about the design of interior spaces and love to surround myself with ____.<br /><br />
-                I’m open to new employment opportunities. Send me a message.
+                I’m open to new employment opportunities.
             </Text>
             <ButtonForm
                 :class="$style.ctaButton"
-                data-cursor
+                data-cursor="8"
             >
-                Message
+                Contact me
             </ButtonForm>
         </div>
         <div :class="$style.column" />
