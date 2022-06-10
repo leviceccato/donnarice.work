@@ -6,7 +6,7 @@ import Text from './text.vue'
 <template>
     <Button>
         <span :class="$style.container">
-            <Text variant="heading-small">
+            <Text variant="heading-button">
                 <slot />
             </Text>
         </span>
