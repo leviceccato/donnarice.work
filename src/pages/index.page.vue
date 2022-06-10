@@ -27,5 +27,6 @@ const COLORS: NonEmptyArray<Color> = [
 <style lang="scss" module>
 .hero {
     max-width: 600px;
+    min-height: 100vh;
 }
 </style>
