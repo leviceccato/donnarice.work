@@ -42,11 +42,8 @@ const transition = computed(() => {
     return 'none'
 })
 
-function setScroll(event: Event): void {
-    const el = event.target
-    if (!(el instanceof Element)) return
-
-    scroll.value = el.scrollTop / (el.scrollHeight - el.clientHeight)
+function setScroll(): void {
+    scroll.value = window.scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)
 }
 
 async function fadeToEl(href: string): Promise<void> {
@@ -60,7 +57,7 @@ async function fadeToEl(href: string): Promise<void> {
 }
 
 onMounted(() => {
-    main.value?.addEventListener('scroll', setScroll)
+    window.addEventListener('scroll', setScroll)
 })
 </script>
 
@@ -71,10 +68,7 @@ onMounted(() => {
             :class="$style.nav"
             @navigate="fadeToEl"
         />
-        <main
-            ref="main"
-            :class="$style.main"
-        >
+        <main :class="$style.main">
             <slot />
         </main>
     </div>
@@ -87,6 +81,11 @@ onMounted(() => {
 :global {
     html {
         @include util.vars-to-custom-props();
+        scrollbar-width: none; // Hide scrollbar in Firefox
+        // Hide scroll bar in other browsers
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
     ::-moz-selection {
         color: v-bind(color);
@@ -101,25 +100,16 @@ onMounted(() => {
     --dynamic-color: v-bind(color);
     background-color: var(--dynamic-color);
     transition: v-bind(transition);
-    height: 100vh;
-    display: flex;
+    min-height: 100vh;
 }
 .nav {
     z-index: 1;
-    box-sizing: content-box;
+    position: fixed;
     @include util.fluid(width, 100px, 300px);
-    @include util.fluid(padding-top padding-left, 20px, 152px);
+    @include util.fluid(top left, 20px, 152px);
 }
 .main {
-    display: flex;
-    flex-direction: column;
-    @include util.fluid(gap, 20px, 152px);
     @include util.fluid(padding-top padding-right, 20px, 152px);
-    overflow-y: scroll;
-    scrollbar-width: none; // Hide scrollbar in Firefox
-    // Hide scroll bar in other browsers
-    &::-webkit-scrollbar {
-        display: none;
-    }
+    @include util.fluid(padding-left, 340px, 472px);
 }
 </style>
