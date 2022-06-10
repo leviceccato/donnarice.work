@@ -69,11 +69,9 @@ onMounted(() => {
             :class="$style.nav"
             @navigate="fadeToEl"
         />
-        <div :class="$style.container">
-            <main :class="$style.main">
-                <slot />
-            </main>
-        </div>
+        <main :class="$style.main">
+            <slot />
+        </main>
     </div>
 </template>
 
@@ -83,12 +81,7 @@ onMounted(() => {
 
 :global {
     html {
-        scrollbar-width: none; // Hide scrollbar in Firefox
         @include util.vars-to-custom-props();
-        // Hide scroll bar in other browsers
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
     ::-moz-selection {
         color: v-bind(color);
@@ -103,17 +96,25 @@ onMounted(() => {
     --dynamic-color: v-bind(color);
     background-color: var(--dynamic-color);
     transition: v-bind(transition);
-    min-height: 100vh;
-    @include util.fluid(padding, 20px, 152px);
+    height: 100vh;
+    display: flex;
 }
 .nav {
-    position: fixed;
     z-index: 1;
-    @include util.fluid(top left, 20px, 152px);
+    box-sizing: content-box;
+    @include util.fluid(width, 100px, 300px);
+    @include util.fluid(padding-top padding-left, 20px, 152px);
 }
 .main {
     display: flex;
     flex-direction: column;
     @include util.fluid(gap, 20px, 152px);
+    @include util.fluid(padding-top padding-right, 20px, 152px);
+    overflow-y: scroll;
+    scrollbar-width: none; // Hide scrollbar in Firefox
+    // Hide scroll bar in other browsers
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 </style>

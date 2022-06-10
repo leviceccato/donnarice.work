@@ -18,8 +18,14 @@ const COLORS: NonEmptyArray<Color> = [
 
 <template>
     <LayoutDefault :colors="COLORS">
-        <SectionHero />
+        <SectionHero :class="$style.hero" />
         <SectionWork />
         <SectionKindWords />
     </LayoutDefault>
 </template>
+
+<style lang="scss" module>
+.hero {
+    max-width: 600px;
+}
+</style>

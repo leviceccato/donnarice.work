@@ -35,15 +35,13 @@ import Image from './image.vue'
 
 <style lang="scss" module>
 .item {
-    display: grid;
-    grid-template-columns: [sidebar] 300px [main] 2fr;
-    grid-gap: 20px;
+    display: flex;
+    gap: 20px;
 }
 .itemTextContainer {
-    grid-column-start: sidebar;
+    width: 300px;
 }
 .itemImageContainer {
-    grid-column-start: main;
     display: flex;
 }
 </style>
