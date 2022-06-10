@@ -64,6 +64,7 @@ const navData = computed(() => {
 }
 .item {
     display: flex;
+    position: relative;
     align-items: center;
     gap: 20px;
     &.active {
@@ -78,5 +79,7 @@ const navData = computed(() => {
     border: 2px solid currentColor;
     opacity: 0;
     border-radius: 1000px;
+    position: absolute;
+    right: calc(16px + 100%);
 }
 </style>
