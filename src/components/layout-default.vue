@@ -13,12 +13,11 @@ const {
     colors?: NonEmptyArray<Color>
 }>()
 
-// Animation state for navigation
+const main = ref<HTMLElement | null>(null)
 const animation = ref<'fade-up' | 'fade-down' | 'none'>('none')
 
 // Number between 0 and 1 to represent vertical scroll progress
 const scroll = ref(0)
-
 provideScroll(scroll)
 
 // Interpolate color based on scroll and colors array
@@ -27,6 +26,11 @@ const color = computed(() => {
     const index = Math.min(Math.ceil(position), colors.length - 1)
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
+
+    const color1 = colors[previousIndex]
+    const color2 = colors[index]
+
+    if (!color1 || !color2) return colors[0]
 
     return mix(colors[previousIndex], colors[index], weight)
 })
@@ -38,10 +42,11 @@ const transition = computed(() => {
     return 'none'
 })
 
-function setScroll(): void {
-    const distance = document.documentElement.scrollHeight - document.documentElement.clientHeight
+function setScroll(event: Event): void {
+    const element = event.target
+    if (!(element instanceof Element)) return
 
-    scroll.value = (window.scrollY / distance)
+    scroll.value = element.scrollTop / (element.scrollHeight - element.clientHeight)
 }
 
 async function fadeToEl(href: string): Promise<void> {
@@ -55,21 +60,21 @@ async function fadeToEl(href: string): Promise<void> {
 }
 
 onMounted(() => {
-    window.addEventListener('scroll', setScroll)
+    main.value?.addEventListener('scroll', setScroll)
 })
 </script>
 
 <template>
     <Cursor />
-    <div
-        :class="$style.root"
-        ref="root"
-    >
+    <div :class="$style.root">
         <Nav
             :class="$style.nav"
             @navigate="fadeToEl"
         />
-        <main :class="$style.main">
+        <main
+            ref="main"
+            :class="$style.main"
+        >
             <slot />
         </main>
     </div>
