@@ -43,10 +43,10 @@ const transition = computed(() => {
 })
 
 function setScroll(event: Event): void {
-    const element = event.target
-    if (!(element instanceof Element)) return
+    const el = event.target
+    if (!(el instanceof Element)) return
 
-    scroll.value = element.scrollTop / (element.scrollHeight - element.clientHeight)
+    scroll.value = el.scrollTop / (el.scrollHeight - el.clientHeight)
 }
 
 async function fadeToEl(href: string): Promise<void> {
