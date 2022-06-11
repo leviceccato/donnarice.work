@@ -16,8 +16,8 @@ const activeIndex = ref(0)
 const navData = computed(() => {
     return [
         {
-            href: '#home',
-            text: 'Home'
+            href: '#intro',
+            text: 'Intro'
         },
         {
             href: '#work',

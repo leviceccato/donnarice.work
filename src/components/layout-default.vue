@@ -103,13 +103,12 @@ onMounted(() => {
     min-height: 100vh;
 }
 .nav {
-    z-index: 1;
     position: fixed;
     @include util.fluid(width, 100px, 300px);
     @include util.fluid(top left, 20px, 152px);
 }
 .main {
-    @include util.fluid(padding-top padding-right, 20px, 152px);
+    @include util.fluid(padding-right, 20px, 152px);
     @include util.fluid(padding-left, 340px, 472px);
 }
 </style>

@@ -19,14 +19,19 @@ const COLORS: NonEmptyArray<Color> = [
 <template>
     <LayoutDefault :colors="COLORS">
         <SectionHero :class="$style.hero" />
-        <SectionWork />
+        <SectionWork :class="$style.work" />
         <SectionKindWords />
     </LayoutDefault>
 </template>
 
 <style lang="scss" module>
+@use '../styles/util.scss';
+
 .hero {
-    max-width: 600px;
     min-height: 100vh;
+    @include util.fluid(padding-top padding-bottom, 20px, 152px);
+}
+.work {
+    @include util.fluid(padding-bottom, 20px, 152px);
 }
 </style>
