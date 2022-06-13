@@ -30,6 +30,17 @@ onMounted(() => {
 </template>
 
 <style lang="scss" module>
+:global {
+    .medium-zoom-image.medium-zoom-image {
+        cursor: none;
+    }
+    .medium-zoom-overlay.medium-zoom-overlay {
+        z-index: 1;
+    }
+    .medium-zoom-image--opened.medium-zoom-image--opened {
+        z-index: 1;
+    }
+}
 .root {
     background-color: var(--col-white);
     padding: 30px;
