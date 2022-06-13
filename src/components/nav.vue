@@ -1,45 +1,34 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useScroll } from '../scripts/use-scroll'
 
 import Text from './text.vue'
 import Button from './button.vue'
 
+const {
+    navData = [],
+    activeIndex = 0
+} = defineProps<{
+    activeIndex?: number
+    navData: {
+        href: string
+        text: string
+    }[]
+}>()
+
 const emit = defineEmits<{
     (event: 'navigate', href: string): void
 }>()
-
-const scroll = useScroll()
-
-const activeIndex = ref(0)
-
-const navData = computed(() => {
-    return [
-        {
-            href: '#intro',
-            text: 'Intro'
-        },
-        {
-            href: '#work',
-            text: 'Work'
-        },
-        {
-            href: '#kind-words',
-            text: 'Kind words'
-        },
-    ]
-})
 </script>
 
 <template>
     <nav :class="$style.root">
-        <div
-            v-for="item, index in navData"
-            :key="index"
-            :class="[$style.item, { [$style.active]: index === activeIndex }]"
-        >
+        <div :class="$style.indicatorContainer">
             <div :class="$style.indicator" />
+        </div>
+        <div :class="$style.buttons">
             <Button
+                v-for="item, index in navData"
+                :key="index"
                 :class="$style.button"
                 data-cursor
                 data-cursor-padding-x="12"
@@ -58,28 +47,17 @@ const navData = computed(() => {
 <style lang="scss" module>
 .root {
     display: flex;
+}
+.buttons {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 48px;
-}
-.item {
-    display: flex;
-    position: relative;
-    align-items: center;
-    gap: 20px;
-    &.active {
-        .indicator {
-            opacity: 1;
-        }
-    }
 }
 .indicator {
     width: 8px;
     height: 8px;
     border: 2px solid currentColor;
-    opacity: 0;
     border-radius: 1000px;
-    position: absolute;
-    right: calc(16px + 100%);
 }
 </style>

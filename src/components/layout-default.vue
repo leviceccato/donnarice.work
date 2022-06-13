@@ -1,11 +1,25 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, nextTick } from 'vue'
-import { provideScroll } from '../scripts/use-scroll'
 import { createColor, mix, Color } from '../scripts/color'
 import { NonEmptyArray } from '../scripts/utilities'
 
 import Nav from './nav.vue'
 import Cursor from './cursor.vue'
+
+const NAV = [
+    {
+        href: '#intro',
+        text: 'Intro'
+    },
+    {
+        href: '#work',
+        text: 'Work'
+    },
+    {
+        href: '#kind-words',
+        text: 'Kind words'
+    },
+]
 
 const {
     colors = [createColor('#EDEDED')],
@@ -15,10 +29,10 @@ const {
 
 const main = ref<HTMLElement | null>(null)
 const animation = ref<'fade-up' | 'fade-down' | 'none'>('none')
+const activeIndex = ref(0)
 
 // Number between 0 and 1 to represent vertical scroll progress
 const scroll = ref(0)
-provideScroll(scroll)
 
 // Interpolate color based on scroll and colors array
 const color = computed(() => {
@@ -65,6 +79,8 @@ onMounted(() => {
     <Cursor />
     <div :class="$style.root">
         <Nav
+            :nav-data="NAV"
+            :active-index="activeIndex"
             :class="$style.nav"
             @navigate="fadeToEl"
         />
