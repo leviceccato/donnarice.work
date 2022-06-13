@@ -19,7 +19,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <div :class="$style.root">
+    <div
+        :class="$style.root"
+        data-cursor
+        data-cursor-free
+        data-cursor-padding-x="16"
+        data-cursor-padding-y="16"
+    >
         <img
             ref="image"
             :class="$style.image"
@@ -44,9 +50,11 @@ onMounted(() => {
 .root {
     background-color: var(--col-white);
     padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .image.image {
-    cursor: none;
     display: block;
     max-width: 100%;
     max-height: calc(100vh - 400px);

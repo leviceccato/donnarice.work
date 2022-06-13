@@ -71,6 +71,17 @@ function checkForCursorElement(x: number, y: number): void {
 
     const paddingX = Number(targetElement.dataset.cursorPaddingX) || 0
     const paddingY = Number(targetElement.dataset.cursorPaddingY) || 0
+
+    if (targetElement.dataset.cursorFree === '') {
+         const targetWidth = RING_DEFAULT_WIDTH + (paddingX * 2)
+        const targetHeight = RING_DEFAULT_HEIGHT + (paddingY * 2)
+
+        ringTargetWidth.value = targetWidth - RING_STROKE_WIDTH
+        ringTargetHeight.value = targetHeight - RING_STROKE_WIDTH
+
+        return
+    }
+
     const { width, height, top, left } = targetElement.getBoundingClientRect()
 
     const targetWidth = width + (paddingX * 2)
