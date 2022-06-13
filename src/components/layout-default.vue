@@ -104,6 +104,7 @@ onMounted(() => {
 }
 .nav {
     position: fixed;
+    z-index: 1;
     @include util.fluid(width, 100px, 300px);
     @include util.fluid(top left, 20px, 152px);
 }
