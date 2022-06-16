@@ -75,10 +75,7 @@ const items = computed(() => {
 </script>
 
 <template>
-    <div
-        id="work"
-        :class="$style.root"
-    >
+    <div :class="$style.root">
         <div
             :class="$style.item"
             v-for="item, itemIndex in items"
