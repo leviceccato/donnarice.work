@@ -14,7 +14,9 @@ const zoom = ref<Zoom>()
 const image = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-    zoom.value = createZoom(image.value!)
+    zoom.value = createZoom(image.value!, {
+        margin: 20
+    })
 })
 </script>
 
