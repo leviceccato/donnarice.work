@@ -18,9 +18,24 @@ const COLORS: NonEmptyArray<Color> = [
 
 <template>
     <LayoutDefault :colors="COLORS">
-        <SectionHero :class="$style.hero" />
-        <SectionWork :class="$style.work" />
-        <SectionKindWords />
+        <template #head="{ trackSectionMount }">
+            <SectionHero
+                :class="$style.hero"
+                aria-hidden
+            />
+        </template>
+        <template #tail="{ trackSectionMount }">
+            <SectionWork
+                id="work"
+                :class="$style.work"
+                @vnode-mounted="trackSectionMount"
+            />
+            <SectionKindWords
+                id="kind-words"
+                :class="$style.kindWords"
+                @vnode-mounted="trackSectionMount"
+            />
+        </template>
     </LayoutDefault>
 </template>
 
