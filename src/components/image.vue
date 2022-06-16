@@ -25,6 +25,7 @@ onMounted(() => {
         data-cursor-free
         data-cursor-padding-x="16"
         data-cursor-padding-y="16"
+        @click="zoom?.open()"
     >
         <img
             ref="image"
