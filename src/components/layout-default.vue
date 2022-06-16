@@ -129,8 +129,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Cursor />
     <div :class="$style.root">
+        <Cursor />
         <Nav
             :nav-data="NAV"
             :active-index="activeIndex"
