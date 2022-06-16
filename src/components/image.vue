@@ -11,18 +11,21 @@ const {
 }>()
 
 const zoom = ref<Zoom>()
+const isZoomed = ref(false)
 const image = ref<HTMLElement | null>(null)
 
 onMounted(() => {
     zoom.value = createZoom(image.value!, {
-        margin: 20
+        margin: 20,
     })
+    zoom.value.on('open', () => isZoomed.value = true)
+    zoom.value.on('close', () => isZoomed.value = false)
 })
 </script>
 
 <template>
     <div
-        :class="$style.root"
+        :class="[$style.root, { [$style.zoomed]: isZoomed }]"
         data-cursor
         data-cursor-free
         data-cursor-padding-x="16"
@@ -35,6 +38,10 @@ onMounted(() => {
             :alt="alt"
             :src="src"
         />
+        <div
+            :class="$style.overlay"
+            @click="zoom?.close()"
+        />
     </div>
 </template>
 
@@ -46,6 +53,11 @@ onMounted(() => {
     .medium-zoom-overlay.medium-zoom-overlay {
         z-index: 1;
     }
+    .medium-zoom--opened {
+        .medium-zoom-overlay.medium-zoom-overlay {
+            cursor: none;
+        }
+    }
     .medium-zoom-image--opened.medium-zoom-image--opened {
         z-index: 1;
     }
@@ -56,10 +68,21 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+    &.zoomed {
+        .overlay {
+            pointer-events: all;
+        }
+    }
 }
 .image.image {
     display: block;
     max-width: 100%;
     max-height: calc(100vh - 400px);
+}
+.overlay {
+    z-index: 2;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
 }
 </style>
