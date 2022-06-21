@@ -7,10 +7,7 @@ import ButtonForm from './button-form.vue'
 </script>
 
 <template>
-    <div
-        id="hero"
-        :class="$style.root"
-    >
+    <div :class="$style.root">
         <div :class="$style.container">
             <Text variant="heading-small">
                 Donna Rice
