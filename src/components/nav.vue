@@ -33,7 +33,7 @@ const emit = defineEmits<{
                 data-cursor
                 data-cursor-padding-x="12"
                 data-cursor-padding-y="4"
-                :href="item.href"
+                :href="`#${item.href}`"
                 @click="emit('navigate', item.href)"
             >
                 <Text variant="body-medium">

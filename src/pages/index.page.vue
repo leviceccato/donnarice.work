@@ -3,7 +3,7 @@ import { createColor, Color } from '../scripts/color'
 import { NonEmptyArray } from '../scripts/utilities'
 
 import LayoutDefault from '../components/layout-default.vue'
-import SectionHero from '../components/section-hero.vue'
+import SectionIntro from '../components/section-intro.vue'
 import SectionWork from '../components/section-work.vue'
 import SectionKindWords from '../components/section-kind-words.vue'
 
@@ -17,21 +17,27 @@ const COLORS: NonEmptyArray<Color> = [
 </script>
 
 <template>
-    <LayoutDefault :colors="COLORS">
+    <LayoutDefault
+        :colors="COLORS"
+        head-id="intro"
+    >
         <template #head="{ trackSectionMount }">
-            <SectionHero
-                :class="$style.hero"
-                aria-hidden
+            <SectionIntro
+                :class="$style.intro"
+                data-section-id="intro"
+                @vnode-mounted="trackSectionMount"
             />
         </template>
         <template #tail="{ trackSectionMount }">
             <SectionWork
                 id="work"
+                data-section-id="work"
                 :class="$style.work"
                 @vnode-mounted="trackSectionMount"
             />
             <SectionKindWords
                 id="kind-words"
+                data-section-id="kind-words"
                 :class="$style.kindWords"
                 @vnode-mounted="trackSectionMount"
             />
@@ -42,7 +48,7 @@ const COLORS: NonEmptyArray<Color> = [
 <style lang="scss" module>
 @use '../styles/util.scss';
 
-.hero {
+.intro {
     min-height: 100vh;
     @include util.fluid(padding-top padding-bottom, 20px, 152px);
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, nextTick, watch, onBeforeUnmount } from 'vue'
 import { createColor, mix, Color } from '../scripts/color'
-import { NonEmptyArray } from '../scripts/utilities'
+import { NonEmptyArray, clamp } from '../scripts/utilities'
 
 import Nav from './nav.vue'
 import Cursor from './cursor.vue'
@@ -9,23 +9,25 @@ import Cursor from './cursor.vue'
 const SCROLL_TOP_PADDING = 100
 const NAV = [
     {
-        href: '#intro',
+        href: 'intro',
         text: 'Intro'
     },
     {
-        href: '#work',
+        href: 'work',
         text: 'Work'
     },
     {
-        href: '#kind-words',
+        href: 'kind-words',
         text: 'Kind words'
     },
 ]
 
 const {
     colors = [createColor('#EDEDED')],
+    headId,
 } = defineProps<{
     colors?: NonEmptyArray<Color>
+    headId?: string
 }>()
 
 const main = ref<HTMLElement | null>(null)
@@ -61,15 +63,17 @@ const transition = computed(() => {
 })
 
 watch(mountedSectionCount, to => {
-    if (to < NAV.length) return
-
-    initObservers()
+    // Include duplicated head section
+    if (to >= NAV.length + 1) {
+        initObservers()
+    }
 })
 
 watch(scroll, to => {
     
 })
 
+// Allow looping scroll from top or bottom of document
 function setScroll(): void {
     const root = document.documentElement
     const maxScroll = root.scrollHeight - root.clientHeight
@@ -93,21 +97,26 @@ async function fadeToEl(href: string): Promise<void> {
     el.scrollIntoView()
 }
 
+// Detect active section
 function initObservers(): void {
     NAV.forEach((item, index) => {
         if (!item.href) return
 
-        const el = document.querySelector(item.href)
-        if (!el) return
+        const el = document.querySelector(`[data-section-id=${item.href}]`)
+        if (!el) return console.log(item.href)
+
+        // Ensure visibility detection is independant of section height
+        const threshold = clamp(0, (window.innerHeight / el.clientHeight) / 2, 1)
 
         const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
-                console.log('intersecting', index)
+            if (entries[0].isIntersecting) {                
+                console.log(index)
                 activeIndex.value = index
             }
-        }, { threshold: 0 })
+        }, { threshold })
 
         observer.observe(el)
+        observers.value.push(observer)
     })
 }
 
@@ -119,12 +128,15 @@ onMounted(() => {
     isMounted.value = true
     window.scroll({ top: SCROLL_TOP_PADDING })
     window.addEventListener('scroll', setScroll)
+    window.addEventListener('resize', initObservers)
 })
 
 onBeforeUnmount(() => {
     observers.value.forEach(observer => {
         observer.disconnect()
     })
+    window.removeEventListener('scroll', setScroll)
+    window.removeEventListener('resize', initObservers)
 })
 </script>
 
@@ -139,7 +151,9 @@ onBeforeUnmount(() => {
         />
         <main :class="$style.main">
             <div :class="$style.scrollPadder" />
-            <slot name="head" v-bind="{ trackSectionMount }" />
+            <div :id="headId">
+                <slot name="head" v-bind="{ trackSectionMount }" />
+            </div>
             <slot name="tail" v-bind="{ trackSectionMount }" />
             <div :class="$style.scrollPadder" />
             <slot name="head" v-bind="{ trackSectionMount }" />
