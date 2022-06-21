@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000
 const start = async (): Promise<void> => {
     const app = express()
 
-    let viteDevServer: ViteDevServer
+    let viteDevServer: ViteDevServer | undefined
 
     if (isProduction) {
         app.use(express.static(`${root}/dist/client`))
