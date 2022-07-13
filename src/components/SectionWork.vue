@@ -76,6 +76,7 @@ const items = computed(() => {
 
 <template>
     <div :class="$style.root">
+        <Txt variant="heading-small">Work</Txt>
         <div
             :class="$style.item"
             v-for="(item, itemIndex) in items"

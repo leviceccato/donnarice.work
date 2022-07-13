@@ -1,5 +1,11 @@
+<script lang="ts" setup>
+import Txt from './Txt.vue'
+</script>
+
 <template>
-    <div :class="$style.root">Kind words</div>
+    <div :class="$style.root">
+        <Txt variant="heading-small">Kind words</Txt>
+    </div>
 </template>
 
 <style lang="scss" module>
