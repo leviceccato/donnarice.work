@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, computed, nextTick, watch, onMounted } from 'vue'
 import { createColor, mix } from '../scripts/color'
 import { clamp } from '../scripts/util'
 import type { Color } from '../scripts/color'
@@ -57,6 +57,11 @@ const transition = computed(() => {
 
 watch(scroll, (to) => {})
 
+function setScroll(): void {
+    const root = document.documentElement
+    scroll.value = window.scrollY / (root.scrollHeight - root.clientHeight)
+}
+
 async function fadeToEl(href: string): Promise<void> {
     const el = document.querySelector(href)
     if (!el) return
@@ -66,6 +71,10 @@ async function fadeToEl(href: string): Promise<void> {
 
     el.scrollIntoView()
 }
+
+onMounted(() => {
+    window.addEventListener('scroll', setScroll)
+})
 </script>
 
 <template>
