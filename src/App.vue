@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { createColor } from './scripts/color'
 
-const colors = [
+const COLORS = [
     createColor('#EDEDED'), // Grey
     createColor('#E1FAD8'), // Green
     createColor('#CFEEEE'), // Blue
@@ -11,7 +11,7 @@ const colors = [
 </script>
 
 <template>
-    <LayoutDefault :colors="colors">
+    <LayoutDefault :colors="COLORS">
         <SectionIntro :class="$style.intro" />
         <SectionWork
             id="work"
