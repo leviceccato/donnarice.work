@@ -70,7 +70,7 @@ const emit = defineEmits<{
     height: 8px;
     border: 2px solid currentColor;
     border-radius: 1000px;
-    transition: top 250ms var(--ease-out-quint);
+    transition: top 300ms var(--ease-out-quint);
     top: calc((v-bind(activeIndex) * 100%) + 50%);
 }
 </style>
