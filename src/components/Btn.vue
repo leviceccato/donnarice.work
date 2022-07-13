@@ -7,7 +7,7 @@ const tag = computed(() => {
     if (href) {
         return 'a'
     }
-    return 'div'
+    return 'button'
 })
 
 function handleClick(event: MouseEvent): void {
