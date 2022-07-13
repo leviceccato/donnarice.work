@@ -9,28 +9,12 @@ const tag = computed(() => {
     }
     return 'button'
 })
-
-function handleClick(event: MouseEvent): void {
-    // Safely access unknown attribute
-    if (typeof href !== 'string') return
-
-    // Handle non-hash links normally
-    if (href[0] !== '#') return
-
-    event.preventDefault()
-    scrollToTarget(href)
-}
-
-function scrollToTarget(selector: string): void {
-    document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
-}
 </script>
 
 <template>
     <Component
         :is="tag"
         :class="$style.root"
-        @click="handleClick"
     >
         <slot />
     </Component>

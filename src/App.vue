@@ -33,22 +33,19 @@ const SECTIONS: NonEmptyArray<{ href: string; text: string }> = [
 ]
 
 const root = ref<InstanceType<typeof LayoutDefault> | null>(null)
-const isMounted = ref(false)
 
 onMounted(() => {
-    isMounted.value = true
     root.value?.initObservers()
 })
 </script>
 
 <template>
     <LayoutDefault
-        :class="[$style.root, { [$style.mounted]: isMounted }]"
+        :class="$style.root"
         :colors="COLORS"
         :sections="SECTIONS"
         ref="root"
     >
-        <div :class="$style.overlay" />
         <SectionIntro
             id="intro"
             :class="$style.intro"
@@ -67,22 +64,6 @@ onMounted(() => {
 <style lang="scss" module>
 @use './styles/util.scss';
 
-.root {
-    position: relative;
-    &.mounted {
-        .overlay {
-            opacity: 0;
-        }
-    }
-}
-.overlay {
-    z-index: 1;
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    transition: opacity 1000ms ease 200ms;
-    background-color: var(--dynamic-color);
-}
 .intro {
     min-height: 100vh;
     @include util.fluid(padding-top padding-bottom, 20px, 152px);

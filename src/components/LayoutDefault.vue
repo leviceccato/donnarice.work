@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { ref, computed, nextTick, watch, onMounted } from 'vue'
 import { createColor, mix } from '../scripts/color'
-import { clamp } from '../scripts/util'
+import { clamp, sleep } from '../scripts/util'
 import type { Color } from '../scripts/color'
 import type { NonEmptyArray } from '../scripts/util'
 
 import Cursor from './Cursor.vue'
 import Nav from './Nav.vue'
+
+const FADE_TO_EL_DURATION = 300
 
 const { colors = [createColor('#EDEDED')], sections } = defineProps<{
     colors?: NonEmptyArray<Color>
@@ -18,8 +20,9 @@ const { colors = [createColor('#EDEDED')], sections } = defineProps<{
 
 const main = ref<HTMLElement | null>(null)
 const observers = ref<IntersectionObserver[]>([])
-const animation = ref<'fade-up' | 'fade-down' | 'none'>('none')
+const animation = ref<'fadeUp' | 'fadeDown' | 'none'>('none')
 const activeSection = ref(sections[0].href)
+const isMounted = ref(false)
 
 // Number between 0 and 1 to represent vertical scroll progress
 const scroll = ref(0)
@@ -39,28 +42,26 @@ const color = computed(() => {
     return mix(colors[previousIndex], colors[index], weight)
 })
 
-const transition = computed(() => {
-    if (animation.value !== 'none') {
-        return 'background-color 500ms ease-in-out'
-    }
-    return 'none'
-})
-
-watch(scroll, (to) => {})
-
 function setScroll(): void {
     const root = document.documentElement
     scroll.value = window.scrollY / (root.scrollHeight - root.clientHeight)
 }
 
-async function fadeToEl(href: string): Promise<void> {
-    const el = document.querySelector(href)
+async function fadeToEl(data: {
+    href: string
+    from: number
+    to: number
+}): Promise<void> {
+    const el = document.querySelector(`#${data.href}`)
     if (!el) return
 
-    animation.value = 'fade-up'
-    await nextTick()
+    const isDown = data.to > data.from
+
+    animation.value = isDown ? 'fadeUp' : 'fadeDown'
+    await sleep(FADE_TO_EL_DURATION)
 
     el.scrollIntoView()
+    animation.value = 'none'
 }
 
 function initObservers() {
@@ -86,6 +87,7 @@ function initObservers() {
 }
 
 onMounted(() => {
+    isMounted.value = true
     window.addEventListener('scroll', setScroll)
     window.addEventListener('resize', initObservers)
 })
@@ -94,7 +96,14 @@ defineExpose({ initObservers })
 </script>
 
 <template>
-    <div :class="$style.root">
+    <div
+        :class="[
+            $style.root,
+            $style[animation],
+            { [$style.mounted]: isMounted },
+        ]"
+    >
+        <div :class="$style.overlay" />
         <Cursor />
         <Nav
             :sections="sections"
@@ -132,9 +141,34 @@ defineExpose({ initObservers })
 }
 .root {
     --dynamic-color: v-bind(color);
+    position: relative;
     background-color: var(--dynamic-color);
-    transition: v-bind(transition);
     min-height: 100vh;
+    &.mounted {
+        .overlay {
+            opacity: 0;
+        }
+    }
+    &.fadeDown {
+        .main {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+    &.fadeUp {
+        .main {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+}
+.overlay {
+    z-index: 2;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 1000ms ease 200ms;
+    background-color: var(--dynamic-color);
 }
 .nav {
     position: fixed;
@@ -143,6 +177,8 @@ defineExpose({ initObservers })
     @include util.fluid(top left, 20px, 152px);
 }
 .main {
+    transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms),
+        transform calc(v-bind(FADE_TO_EL_DURATION) * 1ms);
     @include util.fluid(padding-right, 20px, 152px);
     @include util.fluid(padding-left, 340px, 472px);
 }

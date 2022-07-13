@@ -13,12 +13,26 @@ const { sections = [], activeSection } = defineProps<{
 }>()
 
 const activeIndex = computed(() => {
-    return sections.findIndex((section) => section.href === activeSection)
+    if (!activeSection) {
+        return 0
+    }
+    return getIndex(activeSection)
 })
 
 const emit = defineEmits<{
-    (event: 'navigate', href: string): void
+    (
+        event: 'navigate',
+        data: {
+            href: string
+            from: number
+            to: number
+        },
+    ): void
 }>()
+
+function getIndex(href: string): number {
+    return sections.findIndex((section) => href === section.href)
+}
 </script>
 
 <template>
@@ -39,7 +53,13 @@ const emit = defineEmits<{
                     data-cursor-padding-x="12"
                     data-cursor-padding-y="4"
                     :href="`#${section.href}`"
-                    @click="emit('navigate', section.href)"
+                    @click.prevent="
+                        emit('navigate', {
+                            href: section.href,
+                            from: activeIndex,
+                            to: getIndex(section.href),
+                        })
+                    "
                 >
                     <Txt variant="body-medium">
                         {{ section.text }}
