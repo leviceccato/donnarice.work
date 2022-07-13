@@ -69,16 +69,20 @@ function initObservers() {
         const el = document.querySelector(`#${section.href}`)
         if (!el) return
 
-        // Ensure visibility detection is independant of section height
-        const threshold = clamp(0, window.innerHeight / 2 / el.clientHeight, 1)
-
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
                     activeSection.value = section.href
                 }
             },
-            { threshold },
+            {
+                // Ensure visibility detection is independant of section height
+                threshold: clamp(
+                    0,
+                    window.innerHeight / 2 / el.clientHeight,
+                    1,
+                ),
+            },
         )
 
         observer.observe(el)
