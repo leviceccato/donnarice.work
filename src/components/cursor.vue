@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import throttle from 'lodash/throttle'
-import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle.js'
+import debounce from 'lodash/debounce.js'
 
 const CURSOR_WIDTH = 4
 const CURSOR_HEIGHT = 4
