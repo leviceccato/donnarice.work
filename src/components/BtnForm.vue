@@ -1,16 +1,11 @@
-<script lang="ts" setup>
-import Button from './button.vue'
-import Text from './text.vue'
-</script>
-
 <template>
-    <Button>
+    <Btn>
         <span :class="$style.container">
-            <Text variant="heading-button">
+            <Txt variant="heading-button">
                 <slot />
-            </Text>
+            </Txt>
         </span>
-    </Button>
+    </Btn>
 </template>
 
 <style lang="scss" module>

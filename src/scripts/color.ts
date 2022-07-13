@@ -1,24 +1,23 @@
-const colourFormatErr = Error('colour is incorrectly formatted')
+const colorFormatErr = Error('colour is incorrectly formatted')
 
 export type RGBA = Array<number>
 
 export type HSLA = Array<number>
 
 export type Color = {
-    toRgba(): RGBA,
-    toHsla(): HSLA,
-    toHex(): string,
-    toString(): string,
-    toJSON(): RGBA,
+    toRgba(): RGBA
+    toHsla(): HSLA
+    toHex(): string
+    toString(): string
+    toJSON(): RGBA
 }
 
 export const validateHex = (hex: string): string => {
     hex = hex.replace('#', '')
     if (hex.length === 3) {
         hex = [...hex].reduce((result, char) => `${result}${char}${char}`, '')
-    }
-    else if (hex.length !== 6) {
-        throw colourFormatErr
+    } else if (hex.length !== 6) {
+        throw colorFormatErr
     }
     return hex
 }
@@ -26,9 +25,8 @@ export const validateHex = (hex: string): string => {
 export const validateRgba = (rgba: RGBA): RGBA => {
     if (rgba.length === 3) {
         rgba.push(1)
-    }
-    else if (rgba.length !== 4) {
-        throw colourFormatErr
+    } else if (rgba.length !== 4) {
+        throw colorFormatErr
     }
     return rgba
 }
@@ -36,21 +34,26 @@ export const validateRgba = (rgba: RGBA): RGBA => {
 export const validateHsla = (hsla: HSLA): HSLA => {
     if (hsla.length === 3) {
         hsla.push(1)
-    }
-    else if (hsla.length !== 4) {
-        throw colourFormatErr
+    } else if (hsla.length !== 4) {
+        throw colorFormatErr
     }
     return hsla
 }
 
 export const hexToRgba = (hex: string): RGBA => {
     hex = validateHex(hex)
-    return validateRgba((hex.match(/.{2}/g) || []).map(x => parseInt(x, 16)))
+    return validateRgba((hex.match(/.{2}/g) || []).map((x) => parseInt(x, 16)))
 }
 
 export const rgbaToHex = (rgba: RGBA): string => {
     const [r, g, b] = validateRgba(rgba)
-    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
+    return (
+        '#' +
+        ((1 << 24) + (r << 16) + (g << 8) + b)
+            .toString(16)
+            .slice(1)
+            .toUpperCase()
+    )
 }
 
 export const rgbaToHsla = (rgba: RGBA): HSLA => {
@@ -59,20 +62,20 @@ export const rgbaToHsla = (rgba: RGBA): HSLA => {
     g /= 255
     b /= 255
 
-    let h = 0, s = 0, l = 0
-    let cmin = Math.min(r, g, b), cmax = Math.max(r, g, b)
+    let h = 0,
+        s = 0,
+        l = 0
+    let cmin = Math.min(r, g, b),
+        cmax = Math.max(r, g, b)
     const delta = cmax - cmin
 
     if (delta === 0) {
         h = 0
-    }
-    else if (cmax === r) {
+    } else if (cmax === r) {
         h = ((g - b) / delta) % 6
-    }
-    else if (cmax === g) {
+    } else if (cmax === g) {
         h = (b - r) / delta + 2
-    }
-    else {
+    } else {
         h = (r - g) / delta + 4
     }
 
@@ -131,12 +134,10 @@ export const createColor = (colour: string | RGBA | { hsl: HSLA }): Color => {
     // colour is rgb or rgba
     else if (Array.isArray(colour)) {
         rgba = validateRgba(colour)
-    }
-    else if (colour.hsl) {
+    } else if (colour.hsl) {
         rgba = hslaToRgba(colour.hsl)
-    }
-    else {
-        throw colourFormatErr
+    } else {
+        throw colorFormatErr
     }
 
     return {

@@ -1,11 +1,5 @@
-<script lang="ts" setup>
-import { usePageContext } from '../scripts/use-page-context'
-
-const ctx = usePageContext()
-</script>
-
 <template>
-    <a :class="[$style.link, { [$style.active]: ctx?.urlPathname === $attrs.href }]">
+    <a :class="$style.link">
         <slot />
     </a>
 </template>

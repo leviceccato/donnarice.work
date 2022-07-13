@@ -1,7 +1,5 @@
 <template>
-    <div :class="$style.root">
-        Kind words
-    </div>
+    <div :class="$style.root">Kind words</div>
 </template>
 
 <style lang="scss" module>

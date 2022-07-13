@@ -1,21 +1,19 @@
 <script lang="ts" setup>
 import { useAttrs, computed } from 'vue'
 
-import Text from './text.vue'
-
 const { href } = useAttrs()
 
 const tag = computed(() => {
     if (href) {
         return 'a'
     }
-    return 'button'
+    return 'div'
 })
 
 function handleClick(event: MouseEvent): void {
     // Safely access unknown attribute
     if (typeof href !== 'string') return
-    
+
     // Handle non-hash links normally
     if (href[0] !== '#') return
 
@@ -24,8 +22,7 @@ function handleClick(event: MouseEvent): void {
 }
 
 function scrollToTarget(selector: string): void {
-    document.querySelector(selector)
-        ?.scrollIntoView({ behavior: 'smooth' })
+    document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -53,7 +50,11 @@ function scrollToTarget(selector: string): void {
     padding: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
-    &:focus { outline: none; }
-    &:focus-visible { box-shadow: 0px 0px 0px 2px currentColor; }
+    &:focus {
+        outline: none;
+    }
+    &:focus-visible {
+        box-shadow: 0px 0px 0px 2px currentColor;
+    }
 }
 </style>

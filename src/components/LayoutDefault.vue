@@ -1,31 +1,27 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, nextTick, watch, onBeforeUnmount } from 'vue'
-import { createColor, mix, Color } from '../scripts/color'
-import { NonEmptyArray, clamp } from '../scripts/utilities'
-
-import Nav from './nav.vue'
-import Cursor from './cursor.vue'
+import { createColor, mix } from '../scripts/color'
+import { clamp } from '../scripts/util'
+import type { Color } from '../scripts/color'
+import type { NonEmptyArray } from '../scripts/util'
 
 const SCROLL_TOP_PADDING = 100
 const NAV = [
     {
         href: 'intro',
-        text: 'Intro'
+        text: 'Intro',
     },
     {
         href: 'work',
-        text: 'Work'
+        text: 'Work',
     },
     {
         href: 'kind-words',
-        text: 'Kind words'
+        text: 'Kind words',
     },
 ]
 
-const {
-    colors = [createColor('#EDEDED')],
-    headId,
-} = defineProps<{
+const { colors = [createColor('#EDEDED')], headId } = defineProps<{
     colors?: NonEmptyArray<Color>
     headId?: string
 }>()
@@ -62,16 +58,14 @@ const transition = computed(() => {
     return 'none'
 })
 
-watch(mountedSectionCount, to => {
+watch(mountedSectionCount, (to) => {
     // Include duplicated head section
     if (to >= NAV.length + 1) {
         initObservers()
     }
 })
 
-watch(scroll, to => {
-    
-})
+watch(scroll, (to) => {})
 
 // Allow looping scroll from top or bottom of document
 function setScroll(): void {
@@ -106,14 +100,17 @@ function initObservers(): void {
         if (!el) return console.log(item.href)
 
         // Ensure visibility detection is independant of section height
-        const threshold = clamp(0, (window.innerHeight / el.clientHeight) / 2, 1)
+        const threshold = clamp(0, window.innerHeight / el.clientHeight / 2, 1)
 
-        const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {                
-                console.log(index)
-                activeIndex.value = index
-            }
-        }, { threshold })
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    console.log(index)
+                    activeIndex.value = index
+                }
+            },
+            { threshold },
+        )
 
         observer.observe(el)
         observers.value.push(observer)
@@ -132,7 +129,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-    observers.value.forEach(observer => {
+    observers.value.forEach((observer) => {
         observer.disconnect()
     })
     window.removeEventListener('scroll', setScroll)
@@ -152,11 +149,20 @@ onBeforeUnmount(() => {
         <main :class="$style.main">
             <div :class="$style.scrollPadder" />
             <div :id="headId">
-                <slot name="head" v-bind="{ trackSectionMount }" />
+                <slot
+                    name="head"
+                    v-bind="{ trackSectionMount }"
+                />
             </div>
-            <slot name="tail" v-bind="{ trackSectionMount }" />
+            <slot
+                name="tail"
+                v-bind="{ trackSectionMount }"
+            />
             <div :class="$style.scrollPadder" />
-            <slot name="head" v-bind="{ trackSectionMount }" />
+            <slot
+                name="head"
+                v-bind="{ trackSectionMount }"
+            />
         </main>
     </div>
 </template>
@@ -177,7 +183,7 @@ onBeforeUnmount(() => {
     ::-moz-selection {
         color: v-bind(color);
         background-color: var(--col-black-1);
-    } 
+    }
     ::selection {
         color: v-bind(color);
         background-color: var(--col-black-1);

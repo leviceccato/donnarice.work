@@ -3,6 +3,12 @@ Icon
 [Tt]humbs.db
 .DS_Store
 
-# Astro
-node_modules/
-dist
+# Vendor
+/node_modules/
+
+# Built files
+/dist/
+
+# Temp
+/src/.vite-ssg-temp
+/vite.config.ts.js

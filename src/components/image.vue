@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import createZoom, { Zoom } from 'medium-zoom'
+import createZoom from 'medium-zoom'
+import type { Zoom } from 'medium-zoom'
 
-const {
-    src,
-    alt = '',
-} = defineProps<{
+const { src, alt = '' } = defineProps<{
     src: string
     alt?: string
 }>()
@@ -18,8 +16,8 @@ onMounted(() => {
     zoom.value = createZoom(image.value!, {
         margin: 20,
     })
-    zoom.value.on('open', () => isZoomed.value = true)
-    zoom.value.on('close', () => isZoomed.value = false)
+    zoom.value.on('open', () => (isZoomed.value = true))
+    zoom.value.on('close', () => (isZoomed.value = false))
 })
 </script>
 

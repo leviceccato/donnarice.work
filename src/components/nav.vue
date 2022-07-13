@@ -1,13 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
-import Text from './text.vue'
-import Button from './button.vue'
-
-const {
-    navData = [],
-    activeIndex = 0
-} = defineProps<{
+const { navData = [], activeIndex = 0 } = defineProps<{
     activeIndex?: number
     navData: {
         href: string
@@ -26,8 +20,8 @@ const emit = defineEmits<{
             <div :class="$style.indicator" />
         </div>
         <div :class="$style.buttons">
-            <Button
-                v-for="item, index in navData"
+            <Btn
+                v-for="(item, index) in navData"
                 :key="index"
                 :class="$style.button"
                 data-cursor
@@ -36,10 +30,10 @@ const emit = defineEmits<{
                 :href="`#${item.href}`"
                 @click="emit('navigate', item.href)"
             >
-                <Text variant="body-medium">
+                <Txt variant="body-medium">
                     {{ item.text }}
-                </Text>
-            </Button>
+                </Txt>
+            </Btn>
         </div>
     </nav>
 </template>

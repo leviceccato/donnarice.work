@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import Text from './text.vue'
-import Image from './image.vue'
-
 const items = computed(() => {
     return [
         {
@@ -78,25 +75,25 @@ const items = computed(() => {
     <div :class="$style.root">
         <div
             :class="$style.item"
-            v-for="item, itemIndex in items"
+            v-for="(item, itemIndex) in items"
             :key="itemIndex"
         >
             <div :class="$style.images">
                 <Image
                     :class="$style.image"
-                    v-for="image, imageIndex in item.images"
+                    v-for="(image, imageIndex) in item.images"
                     :key="imageIndex"
                     :src="image.url"
                     :alt="image.alt"
                 />
             </div>
-            <Text
-                :class="$style.text"
+            <Txt
+                :class="$style.Txt"
                 v-if="item.text"
                 variant="body-xsmall"
             >
                 {{ item.text }}
-            </Text>
+            </Txt>
         </div>
     </div>
 </template>

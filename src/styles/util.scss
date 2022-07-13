@@ -28,7 +28,12 @@ $vars: meta.module-variables(v);
 @function string-replace($string, $search, $replace: '') {
     $index: string.index($string, $search);
     @if $index {
-        @return string.slice($string, 1, $index - 1) + $replace + string-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+        @return string.slice($string, 1, $index - 1) + $replace +
+            string-replace(
+                string.slice($string, $index + string.length($search)),
+                $search,
+                $replace
+            );
     }
     @return $string;
 }
@@ -37,9 +42,9 @@ $vars: meta.module-variables(v);
 $encoding-reference: (
     ('<', '%3C'),
     ('>', '%3E'),
-    ('"', '\''),
+    ('"', "'"),
     ('#', '%23'),
-    ('&', '%26'),
+    ('&', '%26')
 );
 @function svg-encode($svg) {
     @each $char, $encoded in $encoding-reference {
@@ -78,7 +83,7 @@ $breakpoints: (
 @mixin spec($selector, $count: 1) {
     $new-selector: '';
     @for $i from 1 through $count {
-        $new-selector: $new-selector + $selector
+        $new-selector: $new-selector + $selector;
     }
     #{$new-selector} {
         @content;
@@ -87,15 +92,28 @@ $breakpoints: (
 
 // Generate a fluid value that will clamp between a min and max at the given breakpoints
 @mixin fluid($props, $min-value, $max-value, $min-bp: 'xs', $max-bp: 'xl') {
-
     // Allow passing breakpoint key or a custom value
-    $min-vw: if(map.has-key($breakpoints, $min-bp), map.get($breakpoints, $min-bp), $min-bp);
-    $max-vw: if(map.has-key($breakpoints, $max-bp), map.get($breakpoints, $max-bp), $max-bp);
+    $min-vw: if(
+        map.has-key($breakpoints, $min-bp),
+        map.get($breakpoints, $min-bp),
+        $min-bp
+    );
+    $max-vw: if(
+        map.has-key($breakpoints, $max-bp),
+        map.get($breakpoints, $max-bp),
+        $max-bp
+    );
 
     // Calculate the clamped fluid value
-    $slope: math.div(strip-unit($min-value) - strip-unit($max-value), strip-unit($min-vw) - strip-unit($max-vw));
+    $slope: math.div(
+        strip-unit($min-value) - strip-unit($max-value),
+        strip-unit($min-vw) - strip-unit($max-vw)
+    );
     $base: strip-unit($max-value) - $slope * strip-unit($max-vw);
-    $calc-value: calc(#{$base + math.unit($min-value)} + #{(100 * $slope) + string.unquote('vw')});
+    $calc-value: calc(
+        #{$base + math.unit($min-value)} + #{(100 * $slope) +
+            string.unquote('vw')}
+    );
 
     // Assuming mobile first, set min value
     @include props($props, $min-value);
@@ -122,15 +140,38 @@ $breakpoints: (
 
 // Create a gradient that has its stops eased to appear smoother
 @function eased-gradient($options) {
-
     // Set default parameters
-    $easing: if(map.has-key($options, 'easing'), map.get($options, 'easing'), ease-in-out-quad);
-    $resolution: if(map.has-key($options, 'resolution'), map.get($options, 'resolution'), 10);
-    $type: if(map.has-key($options, 'type'), map.get($options, 'type'), 'linear');
-    $start-offset: if(map.has-key($options, 'start-offset'), map.get($options, 'start-offset'), 0);
-    $end-offset: if(map.has-key($options, 'end-offset'), map.get($options, 'end-offset'), 0);
+    $easing: if(
+        map.has-key($options, 'easing'),
+        map.get($options, 'easing'),
+        ease-in-out-quad
+    );
+    $resolution: if(
+        map.has-key($options, 'resolution'),
+        map.get($options, 'resolution'),
+        10
+    );
+    $type: if(
+        map.has-key($options, 'type'),
+        map.get($options, 'type'),
+        'linear'
+    );
+    $start-offset: if(
+        map.has-key($options, 'start-offset'),
+        map.get($options, 'start-offset'),
+        0
+    );
+    $end-offset: if(
+        map.has-key($options, 'end-offset'),
+        map.get($options, 'end-offset'),
+        0
+    );
     // angle acts as position if type is 'radial'
-    $angle: if(map.has-key($options, 'angle'), map.get($options, 'angle'), 'to right');
+    $angle: if(
+        map.has-key($options, 'angle'),
+        map.get($options, 'angle'),
+        'to right'
+    );
 
     $ramp: (1 - $end-offset) - $start-offset;
     $stops: ();
@@ -138,9 +179,19 @@ $breakpoints: (
     // Create a list of interpolated stops
     @for $i from 0 through $resolution {
         $decimal: math.div($i, $resolution);
-        $position: ($decimal * $ramp) + $start-offset; 
-        $stop: color.mix(map.get($options, 'end-colour'), map.get($options, 'start-colour'), math.percentage(meta.call(meta.get-function(string.unquote($easing)), $decimal))) math.percentage($position);
-        $stops: list.append($stops, $stop, comma); 
+        $position: ($decimal * $ramp) + $start-offset;
+        $stop: color.mix(
+                map.get($options, 'end-colour'),
+                map.get($options, 'start-colour'),
+                math.percentage(
+                    meta.call(
+                        meta.get-function(string.unquote($easing)),
+                        $decimal
+                    )
+                )
+            )
+            math.percentage($position);
+        $stops: list.append($stops, $stop, comma);
     }
 
     // Return the constructed gradient

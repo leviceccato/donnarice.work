@@ -14,10 +14,10 @@ const cursorX = ref(0)
 const cursorY = ref(0)
 const isCursorStopped = ref(true)
 
-const ringX = ref(cursorX.value - (RING_DEFAULT_WIDTH / 2))
-const ringY = ref(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
-const ringTargetX = ref<number | null>(cursorX.value - (RING_DEFAULT_WIDTH / 2))
-const ringTargetY = ref<number | null>(cursorY.value - (RING_DEFAULT_HEIGHT / 2))
+const ringX = ref(cursorX.value - RING_DEFAULT_WIDTH / 2)
+const ringY = ref(cursorY.value - RING_DEFAULT_HEIGHT / 2)
+const ringTargetX = ref<number | null>(cursorX.value - RING_DEFAULT_WIDTH / 2)
+const ringTargetY = ref<number | null>(cursorY.value - RING_DEFAULT_HEIGHT / 2)
 
 const ringWidth = ref(RING_DEFAULT_WIDTH)
 const ringHeight = ref(RING_DEFAULT_HEIGHT)
@@ -61,7 +61,7 @@ function checkForCursorElement(x: number, y: number): void {
     if (!element || !(element instanceof HTMLElement)) {
         return resetRingSize()
     }
-    
+
     const targetElement = element.dataset.cursor
         ? element
         : element.closest('[data-cursor]')
@@ -73,8 +73,8 @@ function checkForCursorElement(x: number, y: number): void {
     const paddingY = Number(targetElement.dataset.cursorPaddingY) || 0
 
     if (targetElement.dataset.cursorFree === '') {
-         const targetWidth = RING_DEFAULT_WIDTH + (paddingX * 2)
-        const targetHeight = RING_DEFAULT_HEIGHT + (paddingY * 2)
+        const targetWidth = RING_DEFAULT_WIDTH + paddingX * 2
+        const targetHeight = RING_DEFAULT_HEIGHT + paddingY * 2
 
         ringTargetWidth.value = targetWidth - RING_STROKE_WIDTH
         ringTargetHeight.value = targetHeight - RING_STROKE_WIDTH
@@ -84,23 +84,27 @@ function checkForCursorElement(x: number, y: number): void {
 
     const { width, height, top, left } = targetElement.getBoundingClientRect()
 
-    const targetWidth = width + (paddingX * 2)
-    const targetHeight = height + (paddingY * 2)
+    const targetWidth = width + paddingX * 2
+    const targetHeight = height + paddingY * 2
 
     ringTargetWidth.value = targetWidth - RING_STROKE_WIDTH
     ringTargetHeight.value = targetHeight - RING_STROKE_WIDTH
-    ringTargetX.value = left + (targetWidth / 2) - paddingX - RING_STROKE_WIDTH
-    ringTargetY.value = top + (targetHeight / 2) - paddingY - RING_STROKE_WIDTH
+    ringTargetX.value = left + targetWidth / 2 - paddingX - RING_STROKE_WIDTH
+    ringTargetY.value = top + targetHeight / 2 - paddingY - RING_STROKE_WIDTH
 }
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
-const debounceResetRingSize = debounce(() => {
-    resetRingSize()
-    animateRing()
-}, 300, {
-    leading: true,
-    trailing: false,
-})
+const debounceResetRingSize = debounce(
+    () => {
+        resetRingSize()
+        animateRing()
+    },
+    300,
+    {
+        leading: true,
+        trailing: false,
+    },
+)
 
 function drawRing(): boolean {
     if (!ctx.value) {
@@ -115,8 +119,8 @@ function drawRing(): boolean {
     const deltaWidth = Math.abs(ringTargetWidth.value - ringWidth.value)
     const deltaHeight = Math.abs(ringTargetHeight.value - ringHeight.value)
 
-    const isStoppingX = (deltaX < ringLastDeltaX.value) && (deltaX < SMALL_DISTANCE)
-    const isStoppingY = (deltaY < ringLastDeltaY.value) && (deltaY < SMALL_DISTANCE)
+    const isStoppingX = deltaX < ringLastDeltaX.value && deltaX < SMALL_DISTANCE
+    const isStoppingY = deltaY < ringLastDeltaY.value && deltaY < SMALL_DISTANCE
     const isStoppingWidth = deltaWidth < SMALL_DISTANCE
     const isStoppingHeight = deltaHeight < SMALL_DISTANCE
 
@@ -134,12 +138,13 @@ function drawRing(): boolean {
     ringWidth.value += (ringTargetWidth.value - ringWidth.value) * 0.15
     ringHeight.value += (ringTargetHeight.value - ringHeight.value) * 0.15
 
-    drawRoundedRect(ctx.value,
-        ringX.value - (ringWidth.value / 2) + (CURSOR_WIDTH / 2),
-        ringY.value - (ringHeight.value / 2) + (CURSOR_HEIGHT / 2),
+    drawRoundedRect(
+        ctx.value,
+        ringX.value - ringWidth.value / 2 + CURSOR_WIDTH / 2,
+        ringY.value - ringHeight.value / 2 + CURSOR_HEIGHT / 2,
         ringWidth.value,
         ringHeight.value,
-        Math.min(ringWidth.value, ringHeight.value) / 2
+        Math.min(ringWidth.value, ringHeight.value) / 2,
     )
 
     ctx.value.lineWidth = RING_STROKE_WIDTH
@@ -158,9 +163,16 @@ function animateRing(): void {
     window.requestAnimationFrame(animateRing)
 }
 
-function drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void {
-    if (width < (2 * radius)) radius = width / 2
-    if (height < (2 * radius)) radius = height / 2
+function drawRoundedRect(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number,
+): void {
+    if (width < 2 * radius) radius = width / 2
+    if (height < 2 * radius) radius = height / 2
 
     ctx.beginPath()
 
@@ -180,7 +192,7 @@ onMounted(() => {
 
     window.addEventListener('resize', setCanvasSize)
     window.addEventListener('scroll', debounceResetRingSize)
-    window.addEventListener('mousemove', event => {
+    window.addEventListener('mousemove', (event) => {
         setCursorCoords(event)
 
         if (isCursorStopped.value) {
@@ -210,7 +222,10 @@ onMounted(() => {
     position: fixed;
     filter: invert(1);
     mix-blend-mode: difference;
-    transform: translate(calc(v-bind(cursorX) * 1px), calc(v-bind(cursorY) * 1px));
+    transform: translate(
+        calc(v-bind(cursorX) * 1px),
+        calc(v-bind(cursorY) * 1px)
+    );
     pointer-events: none;
     z-index: 2;
     width: 5px;
