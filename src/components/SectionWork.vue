@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import Image from './Image.vue'
+import Txt from './Txt.vue'
+
 const items = computed(() => {
     return [
         {

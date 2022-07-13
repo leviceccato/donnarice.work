@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import BtnForm from './BtnForm.vue'
+import Txt from './Txt.vue'
+</script>
+
 <template>
     <div :class="$style.root">
         <div :class="$style.container">

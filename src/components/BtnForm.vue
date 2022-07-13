@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import Btn from './Btn.vue'
+import Txt from './Txt.vue'
+</script>
+
 <template>
     <Btn>
         <span :class="$style.container">

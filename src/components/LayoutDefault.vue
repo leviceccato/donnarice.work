@@ -5,30 +5,21 @@ import { clamp } from '../scripts/util'
 import type { Color } from '../scripts/color'
 import type { NonEmptyArray } from '../scripts/util'
 
-const NAV = [
-    {
-        href: 'intro',
-        text: 'Intro',
-    },
-    {
-        href: 'work',
-        text: 'Work',
-    },
-    {
-        href: 'kind-words',
-        text: 'Kind words',
-    },
-]
+import Cursor from './Cursor.vue'
+import Nav from './Nav.vue'
 
-const { colors = [createColor('#EDEDED')], headId } = defineProps<{
+const { colors = [createColor('#EDEDED')], sections } = defineProps<{
     colors?: NonEmptyArray<Color>
-    headId?: string
+    sections: NonEmptyArray<{
+        href: string
+        text: string
+    }>
 }>()
 
 const main = ref<HTMLElement | null>(null)
 const observers = ref<IntersectionObserver[]>([])
 const animation = ref<'fade-up' | 'fade-down' | 'none'>('none')
-const activeIndex = ref(0)
+const activeSection = ref(sections[0].href)
 
 // Number between 0 and 1 to represent vertical scroll progress
 const scroll = ref(0)
@@ -72,17 +63,42 @@ async function fadeToEl(href: string): Promise<void> {
     el.scrollIntoView()
 }
 
+function initObservers() {
+    sections.forEach((section) => {
+        const el = document.querySelector(`#${section.href}`)
+        if (!el) return
+
+        // Ensure visibility detection is independant of section height
+        const threshold = clamp(0, window.innerHeight / 2 / el.clientHeight, 1)
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    activeSection.value = section.href
+                }
+            },
+            { threshold },
+        )
+
+        observer.observe(el)
+        observers.value.push(observer)
+    })
+}
+
 onMounted(() => {
     window.addEventListener('scroll', setScroll)
+    window.addEventListener('resize', initObservers)
 })
+
+defineExpose({ initObservers })
 </script>
 
 <template>
     <div :class="$style.root">
         <Cursor />
         <Nav
-            :nav-data="NAV"
-            :active-index="activeIndex"
+            :sections="sections"
+            :active-section="activeSection"
             :class="$style.nav"
             @navigate="fadeToEl"
         />

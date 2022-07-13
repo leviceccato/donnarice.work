@@ -1,13 +1,20 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
-const { navData = [], activeIndex = 0 } = defineProps<{
-    activeIndex?: number
-    navData: {
+import Btn from './Btn.vue'
+import Txt from './Txt.vue'
+
+const { sections = [], activeSection } = defineProps<{
+    activeSection?: string
+    sections: {
         href: string
         text: string
     }[]
 }>()
+
+const activeIndex = computed(() => {
+    return sections.findIndex((section) => section.href === activeSection)
+})
 
 const emit = defineEmits<{
     (event: 'navigate', href: string): void
@@ -16,42 +23,54 @@ const emit = defineEmits<{
 
 <template>
     <nav :class="$style.root">
-        <div :class="$style.indicatorContainer">
-            <div :class="$style.indicator" />
-        </div>
-        <div :class="$style.buttons">
-            <Btn
-                v-for="(item, index) in navData"
+        <ul :class="$style.container">
+            <li
+                v-for="(section, index) in sections"
                 :key="index"
-                :class="$style.button"
-                data-cursor
-                data-cursor-padding-x="12"
-                data-cursor-padding-y="4"
-                :href="`#${item.href}`"
-                @click="emit('navigate', item.href)"
+                :class="$style.item"
             >
-                <Txt variant="body-medium">
-                    {{ item.text }}
-                </Txt>
-            </Btn>
-        </div>
+                <div
+                    :class="$style.indicator"
+                    v-if="index === 0"
+                />
+                <Btn
+                    :class="$style.button"
+                    data-cursor
+                    data-cursor-padding-x="12"
+                    data-cursor-padding-y="4"
+                    :href="`#${section.href}`"
+                    @click="emit('navigate', section.href)"
+                >
+                    <Txt variant="body-medium">
+                        {{ section.text }}
+                    </Txt>
+                </Btn>
+            </li>
+        </ul>
     </nav>
 </template>
 
 <style lang="scss" module>
 .root {
     display: flex;
-}
-.buttons {
-    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 48px;
+}
+.container {
+    margin: -24px 0;
+}
+.item {
+    padding: 24px 0 24px 28px;
+    position: relative;
 }
 .indicator {
+    position: absolute;
+    left: 0;
+    margin-top: -4px;
     width: 8px;
     height: 8px;
     border: 2px solid currentColor;
     border-radius: 1000px;
+    transition: top 250ms var(--ease-out-quint);
+    top: calc((v-bind(activeIndex) * 100%) + 50%);
 }
 </style>
