@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { createColor } from './scripts/color'
-import type { Color } from './scripts/color'
-import type { NonEmptyArray } from './scripts/util'
 
-const COLORS: NonEmptyArray<Color> = [
+const colors = [
     createColor('#EDEDED'), // Grey
     createColor('#E1FAD8'), // Green
     createColor('#CFEEEE'), // Blue
@@ -13,31 +11,16 @@ const COLORS: NonEmptyArray<Color> = [
 </script>
 
 <template>
-    <LayoutDefault
-        :colors="COLORS"
-        head-id="intro"
-    >
-        <template #head="{ trackSectionMount }">
-            <SectionIntro
-                :class="$style.intro"
-                data-section-id="intro"
-                @vnode-mounted="trackSectionMount"
-            />
-        </template>
-        <template #tail="{ trackSectionMount }">
-            <SectionWork
-                id="work"
-                data-section-id="work"
-                :class="$style.work"
-                @vnode-mounted="trackSectionMount"
-            />
-            <SectionKindWords
-                id="kind-words"
-                data-section-id="kind-words"
-                :class="$style.kindWords"
-                @vnode-mounted="trackSectionMount"
-            />
-        </template>
+    <LayoutDefault :colors="colors">
+        <SectionIntro :class="$style.intro" />
+        <SectionWork
+            id="work"
+            :class="$style.work"
+        />
+        <SectionKindWords
+            id="kind-words"
+            :class="$style.kindWords"
+        />
     </LayoutDefault>
 </template>
 
