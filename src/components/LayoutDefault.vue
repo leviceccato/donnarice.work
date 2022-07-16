@@ -45,6 +45,18 @@ const color = computed(() => {
     return mix(colors[previousIndex], colors[index], weight)
 })
 
+watch(
+    color,
+    (to) => {
+        // Set on root so medium zoon can access
+        document.documentElement.style.setProperty(
+            '--dynamic-color',
+            to.toString(),
+        )
+    },
+    { immediate: true },
+)
+
 function setScroll(): void {
     const root = document.documentElement
     scroll.value = window.scrollY / (root.scrollHeight - root.clientHeight)
@@ -157,7 +169,6 @@ defineExpose({ initObservers })
     }
 }
 .root {
-    --dynamic-color: v-bind(color);
     position: relative;
     background-color: var(--dynamic-color);
     min-height: 100vh;

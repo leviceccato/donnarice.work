@@ -15,6 +15,7 @@ const image = ref<HTMLElement | null>(null)
 onMounted(() => {
     zoom.value = createZoom(image.value!, {
         margin: 20,
+        background: 'var(--dynamic-color)',
     })
     zoom.value.on('open', () => (isZoomed.value = true))
     zoom.value.on('close', () => (isZoomed.value = false))
@@ -61,7 +62,6 @@ onMounted(() => {
     }
 }
 .root {
-    background-color: var(--col-white);
     padding: 30px;
     display: flex;
     align-items: center;
