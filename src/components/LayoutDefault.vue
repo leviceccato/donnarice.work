@@ -20,7 +20,9 @@ const { colors = [createColor('#EDEDED')], sections } = defineProps<{
 
 const main = ref<HTMLElement | null>(null)
 const observers = ref<IntersectionObserver[]>([])
-const animation = ref<'fadeUp' | 'fadeDown' | 'none'>('none')
+const animation = ref<
+    'fadeUp' | 'fadeUpInstant' | 'fadeDown' | 'fadeDownInstant' | 'none'
+>('none')
 const activeSection = ref(sections[0].href)
 const isMounted = ref(false)
 
@@ -58,10 +60,13 @@ async function fadeToEl(data: {
     const isDown = data.to > data.from
 
     animation.value = isDown ? 'fadeUp' : 'fadeDown'
-    await sleep(FADE_TO_EL_DURATION)
+    await sleep(FADE_TO_EL_DURATION / 2)
 
-    el.scrollIntoView()
+    animation.value = isDown ? 'fadeDownInstant' : 'fadeUpInstant'
+    await sleep(FADE_TO_EL_DURATION / 2)
+
     animation.value = 'none'
+    el.scrollIntoView()
 }
 
 function initObservers() {
@@ -159,10 +164,26 @@ defineExpose({ initObservers })
             transform: translateY(20px);
         }
     }
+    &.fadeDownInstant {
+        .main {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms / 2),
+                transform 0s;
+        }
+    }
     &.fadeUp {
         .main {
             opacity: 0;
             transform: translateY(-20px);
+        }
+    }
+    &.fadeUpInstant {
+        .main {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms / 2),
+                transform 0s;
         }
     }
 }
@@ -181,7 +202,7 @@ defineExpose({ initObservers })
     @include util.fluid(top left, 20px, 152px);
 }
 .main {
-    transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms),
+    transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms / 2),
         transform calc(v-bind(FADE_TO_EL_DURATION) * 1ms);
     @include util.fluid(padding-right, 20px, 152px);
     @include util.fluid(padding-left, 340px, 472px);
