@@ -23,6 +23,7 @@ const observers = ref<IntersectionObserver[]>([])
 const animation = ref<
     'fadeUp' | 'fadeUpInstant' | 'fadeDown' | 'fadeDownInstant' | 'none'
 >('none')
+const isAnimating = ref(false)
 const activeSection = ref(sections[0].href)
 const isMounted = ref(false)
 
@@ -59,6 +60,7 @@ async function fadeToEl(data: {
 
     const isDown = data.to > data.from
 
+    isAnimating.value = true
     animation.value = isDown ? 'fadeUp' : 'fadeDown'
     await sleep(FADE_TO_EL_DURATION / 2)
 
@@ -67,6 +69,9 @@ async function fadeToEl(data: {
 
     animation.value = 'none'
     el.scrollIntoView()
+    await sleep(FADE_TO_EL_DURATION / 2)
+
+    isAnimating.value = false
 }
 
 function initObservers() {
@@ -109,7 +114,10 @@ defineExpose({ initObservers })
         :class="[
             $style.root,
             $style[animation],
-            { [$style.mounted]: isMounted },
+            {
+                [$style.mounted]: isMounted,
+                [$style.animating]: isAnimating,
+            },
         ]"
     >
         <div :class="$style.overlay" />
@@ -157,6 +165,9 @@ defineExpose({ initObservers })
         .overlay {
             opacity: 0;
         }
+    }
+    &.animating {
+        transition: background-color calc(v-bind(FADE_TO_EL_DURATION) * 1ms / 2);
     }
     &.fadeDown {
         .main {
