@@ -18,7 +18,7 @@ const { colors = [createColor('#EDEDED')], sections } = defineProps<{
     }>
 }>()
 
-const main = ref<HTMLElement | null>(null)
+const real = ref<HTMLElement | null>(null)
 const observers = ref<IntersectionObserver[]>([])
 const animation = ref<
     'fadeUp' | 'fadeUpInstant' | 'fadeDown' | 'fadeDownInstant' | 'none'
@@ -30,19 +30,31 @@ const isMounted = ref(false)
 // Number between 0 and 1 to represent vertical scroll progress
 const scroll = ref(0)
 
-// Interpolate color based on scroll and colors array
+// Account for fake slots at beginning and end
+const duplicatedColors = computed(() => {
+    return [...colors, ...colors, ...colors]
+})
+
+// Interpolate colour based on scroll and colors array
 const color = computed(() => {
-    const position = scroll.value * (colors.length - 1)
-    const index = Math.min(Math.ceil(position), colors.length - 1)
+    const position = scroll.value * (duplicatedColors.value.length - 1)
+    const index = Math.min(
+        Math.ceil(position),
+        duplicatedColors.value.length - 1,
+    )
     const previousIndex = Math.max(0, index - 1)
     const weight = index - position
 
-    const color1 = colors[previousIndex]
-    const color2 = colors[index]
+    const color1 = duplicatedColors.value[previousIndex]
+    const color2 = duplicatedColors.value[index]
 
-    if (!color1 || !color2) return colors[0]
+    if (!color1 || !color2) return duplicatedColors.value[0]
 
-    return mix(colors[previousIndex], colors[index], weight)
+    return mix(
+        duplicatedColors.value[previousIndex],
+        duplicatedColors.value[index],
+        weight,
+    )
 })
 
 watch(
@@ -67,7 +79,9 @@ async function fadeToEl(data: {
     from: number
     to: number
 }): Promise<void> {
-    const el = document.querySelector(`[data-section="${data.href}"]`)
+    const el = document.querySelector(
+        `[data-real] [data-section="${data.href}"]`,
+    )
     if (!el) return
 
     const isDown = data.to > data.from
@@ -88,7 +102,9 @@ async function fadeToEl(data: {
 
 function initObservers() {
     sections.forEach((section) => {
-        const el = document.querySelector(`[data-section="${section.href}"]`)
+        const el = document.querySelector(
+            `[data-real] [data-section="${section.href}"]`,
+        )
         if (!el) return
 
         const observer = new IntersectionObserver(
@@ -116,6 +132,7 @@ onMounted(() => {
     isMounted.value = true
     window.addEventListener('scroll', setScroll)
     window.addEventListener('resize', initObservers)
+    real.value?.scrollIntoView()
 })
 
 defineExpose({ initObservers })
@@ -141,11 +158,18 @@ defineExpose({ initObservers })
             @navigate="fadeToEl"
         />
         <main :class="$style.main">
-            <slot />
-            <div>
+            <div aria-hidden>
                 <slot />
             </div>
-            <slot />
+            <div
+                data-real
+                ref="real"
+            >
+                <slot />
+            </div>
+            <div aria-hidden>
+                <slot />
+            </div>
         </main>
     </div>
 </template>
