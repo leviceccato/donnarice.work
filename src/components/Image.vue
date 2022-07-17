@@ -62,6 +62,7 @@ onMounted(() => {
     }
 }
 .root {
+    background-color: rgba(0 0 0 / 0.05);
     padding: 30px;
     display: flex;
     align-items: center;
