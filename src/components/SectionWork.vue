@@ -92,7 +92,7 @@ const items = computed(() => {
                 />
             </div>
             <Txt
-                :class="$style.Txt"
+                :class="$style.text"
                 v-if="item.text"
                 variant="body-xsmall"
             >
