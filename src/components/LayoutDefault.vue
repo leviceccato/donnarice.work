@@ -69,6 +69,20 @@ watch(
     { immediate: true },
 )
 
+watch(scroll, (to) => {
+    if (!real.value) return
+
+    const offsetBottom = real.value.offsetTop + real.value.offsetHeight
+
+    if (window.scrollY < real.value.offsetTop) {
+        const distanceLess = real.value.offsetTop - window.scrollY
+        window.scrollTo({ top: offsetBottom - distanceLess })
+    } else if (window.scrollY > offsetBottom) {
+        const distanceMore = window.scrollY - offsetBottom
+        window.scrollTo({ top: real.value.offsetTop + distanceMore })
+    }
+})
+
 function setScroll(): void {
     const root = document.documentElement
     scroll.value = window.scrollY / (root.scrollHeight - root.clientHeight)
