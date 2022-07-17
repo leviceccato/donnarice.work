@@ -67,7 +67,7 @@ async function fadeToEl(data: {
     from: number
     to: number
 }): Promise<void> {
-    const el = document.querySelector(`#${data.href}`)
+    const el = document.querySelector(`[data-section="${data.href}"]`)
     if (!el) return
 
     const isDown = data.to > data.from
@@ -88,7 +88,7 @@ async function fadeToEl(data: {
 
 function initObservers() {
     sections.forEach((section) => {
-        const el = document.querySelector(`#${section.href}`)
+        const el = document.querySelector(`[data-section="${section.href}"]`)
         if (!el) return
 
         const observer = new IntersectionObserver(
@@ -141,6 +141,10 @@ defineExpose({ initObservers })
             @navigate="fadeToEl"
         />
         <main :class="$style.main">
+            <slot />
+            <div>
+                <slot />
+            </div>
             <slot />
         </main>
     </div>

@@ -47,15 +47,15 @@ onMounted(() => {
         ref="root"
     >
         <SectionIntro
-            id="intro"
+            data-section="intro"
             :class="$style.intro"
         />
         <SectionWork
-            id="work"
+            data-section="work"
             :class="$style.work"
         />
         <SectionKindWords
-            id="kind-words"
+            data-section="kind-words"
             :class="$style.kindWords"
         />
     </LayoutDefault>

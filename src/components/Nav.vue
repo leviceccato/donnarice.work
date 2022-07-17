@@ -52,7 +52,6 @@ function getIndex(href: string): number {
                     data-cursor
                     data-cursor-padding-x="12"
                     data-cursor-padding-y="4"
-                    :href="`#${section.href}`"
                     @click.prevent="
                         emit('navigate', {
                             href: section.href,
