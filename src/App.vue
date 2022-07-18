@@ -64,7 +64,6 @@ onMounted(() => {
 <style lang="scss" module>
 @use './styles/util.scss';
 
-
 @font-face {
     font-family: 'Inter Display';
     font-weight: 400;
