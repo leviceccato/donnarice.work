@@ -64,6 +64,24 @@ onMounted(() => {
 <style lang="scss" module>
 @use './styles/util.scss';
 
+
+@font-face {
+    font-family: 'Inter Display';
+    font-weight: 400;
+    font-style: normal;
+    src:
+        url('/fonts/interdisplay-regular.woff2') format('woff2'),
+        url('/fonts/interdisplay-regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Inter Display';
+    font-weight: 500;
+    font-style: normal;
+    src:
+        url('/fonts/interdisplay-medium.woff2') format('woff2'),
+        url('/fonts/interdisplay-medium.woff') format('woff');
+}
+
 .intro {
     min-height: 100vh;
     @include util.fluid(padding-top padding-bottom, 20px, 152px);
