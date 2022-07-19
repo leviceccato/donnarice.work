@@ -94,17 +94,12 @@ function checkForCursorElement(x: number, y: number): void {
 }
 
 const throttledCheckForCursorElement = throttle(checkForCursorElement, 100)
-const debounceResetRingSize = debounce(
-    () => {
-        resetRingSize()
+const debounceResetRingSize = debounce(() => {
+    checkForCursorElement(cursorX.value, cursorY.value)
+    if (isCursorStopped.value) {
         animateRing()
-    },
-    300,
-    {
-        leading: true,
-        trailing: false,
-    },
-)
+    }
+}, 300)
 
 function drawRing(): boolean {
     if (!ctx.value) {
