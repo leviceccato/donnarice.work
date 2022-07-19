@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue'
 import createZoom from 'medium-zoom'
 import type { Zoom } from 'medium-zoom'
 
+import RatioContainer from './RatioContainer.vue'
+
 const { src, alt = '' } = defineProps<{
     src: string
     alt?: string
@@ -23,25 +25,28 @@ onMounted(() => {
 </script>
 
 <template>
-    <div
+    <RatioContainer
         :class="[$style.root, { [$style.zoomed]: isZoomed }]"
+        :ratio="4 / 3"
         data-cursor
         data-cursor-free
         data-cursor-padding-x="16"
         data-cursor-padding-y="16"
         @click="zoom?.open()"
     >
-        <img
-            ref="image"
-            :class="$style.image"
-            :alt="alt"
-            :src="src"
-        />
+        <div :class="$style.container">
+            <img
+                ref="image"
+                :class="$style.image"
+                :alt="alt"
+                :src="src"
+            />
+        </div>
         <div
             :class="$style.overlay"
             @click="zoom?.close()"
         />
-    </div>
+    </RatioContainer>
 </template>
 
 <style lang="scss" module>
@@ -63,20 +68,22 @@ onMounted(() => {
 }
 .root {
     background-color: rgba(0 0 0 / 0.05);
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
     &.zoomed {
         .overlay {
             pointer-events: all;
         }
     }
 }
+.container {
+    position: absolute;
+    inset: 30px;
+}
 .image.image {
-    display: block;
-    max-width: 100%;
-    max-height: calc(100vh - 400px);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .overlay {
     z-index: 2;
