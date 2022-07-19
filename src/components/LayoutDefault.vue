@@ -116,11 +116,10 @@ async function fadeToEl(data: {
 
 function initObservers() {
     sections.forEach((section) => {
-        const el = document.querySelector(
-            `[data-real] [data-section="${section.href}"]`,
+        const els = document.querySelectorAll(
+            `[data-section="${section.href}"]`,
         )
-        if (!el) return
-
+        if (!els.length) return
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -131,13 +130,13 @@ function initObservers() {
                 // Ensure visibility detection is independant of section height
                 threshold: clamp(
                     0,
-                    window.innerHeight / 2 / el.clientHeight,
+                    window.innerHeight / 2 / els[0].clientHeight,
                     1,
                 ),
             },
         )
 
-        observer.observe(el)
+        els.forEach((el) => observer.observe(el))
         observers.value.push(observer)
     })
 }
@@ -146,7 +145,7 @@ onMounted(() => {
     isMounted.value = true
     window.addEventListener('scroll', setScroll)
     window.addEventListener('resize', initObservers)
-    real.value?.scrollIntoView()
+    window.scrollTo({ top: real.value?.offsetTop })
 })
 
 defineExpose({ initObservers })
