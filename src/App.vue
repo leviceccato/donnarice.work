@@ -66,10 +66,10 @@ onMounted(() => {
 
 @font-face {
     font-family: 'Inter Display';
-    font-weight: 500;
+    font-weight: 600;
     font-style: normal;
-    src: url('/fonts/interdisplay-medium.woff2') format('woff2'),
-        url('/fonts/interdisplay-medium.woff') format('woff');
+    src: url('/fonts/interdisplay-semibold.woff2') format('woff2'),
+        url('/fonts/interdisplay-semibold.woff') format('woff');
 }
 @font-face {
     font-family: 'Inter Display';

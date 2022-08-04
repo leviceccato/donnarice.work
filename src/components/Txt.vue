@@ -62,21 +62,21 @@ const _variant = computed(() => {
     }
     &.heading {
         &.button {
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 16px;
             letter-spacing: 0.06em;
             line-height: 1;
         }
         &.small {
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 16px;
             letter-spacing: 0.06em;
             line-height: 1.1;
         }
         &.label {
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 0.08em;
