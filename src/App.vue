@@ -73,10 +73,10 @@ onMounted(() => {
 }
 @font-face {
     font-family: 'Inter Display';
-    font-weight: 600;
+    font-weight: 400;
     font-style: normal;
-    src: url('/fonts/interdisplay-semibold.woff2') format('woff2'),
-        url('/fonts/interdisplay-semibold.woff') format('woff');
+    src: url('/fonts/interdisplay-regular.woff2') format('woff2'),
+        url('/fonts/interdisplay-regular.woff') format('woff');
 }
 
 .intro {
