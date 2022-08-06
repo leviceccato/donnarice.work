@@ -262,7 +262,8 @@ defineExpose({ initObservers })
     position: fixed;
     z-index: 1;
     @include util.fluid(width, 100px, 300px);
-    @include util.fluid(top left, 20px, 152px);
+    @include util.fluid(top, 40px, 172px, m, xl);
+    @include util.fluid(left, 20px, 152px, m, xl);
 }
 .main {
     transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms / 2),
