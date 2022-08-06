@@ -29,16 +29,12 @@ const ringLastDeltaY = ref(0)
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 const ctx = ref<CanvasRenderingContext2D | null>()
-const canvasWidth = ref(1)
-const canvasHeight = ref(1)
 
 function setCanvasSize(): void {
     if (!canvas.value) return
 
     canvas.value.width = window.innerWidth
-    canvasWidth.value = window.innerWidth
     canvas.value.height = window.innerHeight
-    canvasHeight.value = window.innerHeight
 }
 
 function resetRingSize(): void {
@@ -102,7 +98,7 @@ const debounceResetRingSize = debounce(() => {
 }, 300)
 
 function drawRing(): boolean {
-    if (!ctx.value) {
+    if (!ctx.value || !canvas.value) {
         return true
     }
 
@@ -123,7 +119,7 @@ function drawRing(): boolean {
         return true
     }
 
-    ctx.value.clearRect(0, 0, canvasWidth.value, canvasWidth.value)
+    ctx.value.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
     ringLastDeltaX.value = deltaX
     ringLastDeltaY.value = deltaY
