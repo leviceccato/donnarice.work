@@ -268,7 +268,15 @@ defineExpose({ initObservers })
 .main {
     transition: opacity calc(v-bind(FADE_TO_EL_DURATION) * 1ms / 2),
         transform calc(v-bind(FADE_TO_EL_DURATION) * 1ms);
-    @include util.fluid(padding-right, 20px, 152px);
-    @include util.fluid(padding-left, 340px, 472px);
+    padding-left: 20px;
+    padding-right: 20px;
+    @include util.media(s) {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    @include util.media(l) {
+        @include util.fluid(padding-right, 20px, 152px, m, xl);
+        @include util.fluid(padding-left, 200px, 472px, m, xl);
+    }
 }
 </style>

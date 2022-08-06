@@ -35,16 +35,18 @@ import Txt from './Txt.vue'
 </template>
 
 <style lang="scss" module>
+@use '../styles/util';
+
 .container {
     max-width: 600px;
 }
 .intro {
-    margin-top: 72px;
+    @include util.fluid(margin-top, 35px, 72px);
 }
 .body {
-    margin-top: 72px;
+    @include util.fluid(margin-top, 35px, 72px);
 }
 .ctaButton {
-    margin-top: 48px;
+    @include util.fluid(margin-top, 25px, 48px);
 }
 </style>

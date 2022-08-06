@@ -38,6 +38,8 @@ const _variant = computed(() => {
 </template>
 
 <style lang="scss" module>
+@use '../styles/util';
+
 .root {
     display: block;
     font-size: inherit;
@@ -46,44 +48,44 @@ const _variant = computed(() => {
     font-family: var(--font-interdisplay);
     &.body {
         &.xsmall {
-            font-size: 16px;
             line-height: 1.5;
+            @include util.fluid(font-size, 14px, 16px);
         }
         &.small {
-            font-size: 18px;
             line-height: 1.5;
             letter-spacing: 0.01em;
+            @include util.fluid(font-size, 16px, 18px);
         }
         &.medium {
-            font-size: 20px;
             line-height: 1.4;
             letter-spacing: 0.01em;
+            @include util.fluid(font-size, 17px, 20px);
         }
     }
     &.heading {
         &.button {
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 16px;
             letter-spacing: 0.06em;
             line-height: 1;
+            @include util.fluid(font-size, 13px, 16px);
         }
         &.small {
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 16px;
             letter-spacing: 0.06em;
             line-height: 1.1;
+            @include util.fluid(font-size, 13px, 16px);
         }
         &.label {
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 12px;
             letter-spacing: 0.08em;
+            @include util.fluid(font-size, 8px, 12px);
         }
         &.large {
-            font-size: 40px;
             line-height: 1.3;
+            @include util.fluid(font-size, 28px, 40px);
         }
     }
 }

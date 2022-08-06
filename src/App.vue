@@ -81,9 +81,12 @@ onMounted(() => {
 
 .intro {
     min-height: 100vh;
-    @include util.fluid(padding-top padding-bottom, 20px, 152px);
+    @include util.fluid(padding-top, 72px, 152px);
 }
 .work {
-    @include util.fluid(padding-bottom, 20px, 152px);
+    @include util.fluid(padding-top, 72px, 152px);
+}
+.kindWords {
+    @include util.fluid(padding-top, 72px, 152px);
 }
 </style>

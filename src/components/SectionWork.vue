@@ -112,8 +112,12 @@ const items = computed(() => {
 }
 .images {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    @include util.media(s) {
+        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 .text {
     margin-top: 48px;
