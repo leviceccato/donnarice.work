@@ -61,7 +61,7 @@ watch(
     color,
     (to) => {
         // Set on root so medium zoon can access
-        document.documentElement.style.setProperty(
+        document?.documentElement.style.setProperty(
             '--dynamic-color',
             to.toString(),
         )
