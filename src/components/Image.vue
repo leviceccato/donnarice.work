@@ -50,6 +50,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss" module>
+@use '../styles/util';
+
 :global {
     .medium-zoom-image.medium-zoom-image {
         cursor: none;
@@ -77,7 +79,10 @@ onMounted(() => {
 }
 .container {
     position: absolute;
-    inset: 30px;
+    inset: 40px;
+    @include util.media(s) {
+        @include util.fluid(inset, 15px, 30px);
+    }
 }
 .image.image {
     position: absolute;
