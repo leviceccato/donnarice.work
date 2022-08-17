@@ -60,11 +60,13 @@ const color = computed(() => {
 watch(
     color,
     (to) => {
-        // Set on root so medium zoon can access
-        document?.documentElement.style.setProperty(
-            '--dynamic-color',
-            to.toString(),
-        )
+        if (!import.meta.env.SSR) {
+            // Set on root so medium zoon can access
+            document.documentElement.style.setProperty(
+                '--dynamic-color',
+                to.toString(),
+            )
+        }
     },
     { immediate: true },
 )
