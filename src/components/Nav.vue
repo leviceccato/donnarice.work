@@ -70,12 +70,15 @@ function getIndex(href: string): number {
 </template>
 
 <style lang="scss" module>
-.root {
-    display: flex;
-    flex-direction: column;
-}
+@use '../styles/util';
+
 .container {
     margin: -24px 0;
+    display: flex;
+    flex-direction: row;
+    @include util.media(l) {
+        flex-direction: column;
+    }
 }
 .item {
     padding: 24px 0 24px 28px;
