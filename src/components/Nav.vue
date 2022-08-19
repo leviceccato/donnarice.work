@@ -73,19 +73,24 @@ function getIndex(href: string): number {
 @use '../styles/util';
 
 .container {
-    margin: -24px 0;
     display: flex;
     flex-direction: row;
+    gap: 24px;
     @include util.media(l) {
+        gap: 0;
         flex-direction: column;
+        margin: -24px 0;
     }
 }
 .item {
-    padding: 24px 0 24px 28px;
     position: relative;
+    @include util.media(l) {
+        padding: 24px 0 24px 28px;
+    }
 }
 .indicator {
     position: absolute;
+    display: none;
     left: 0;
     margin-top: -4px;
     width: 8px;
@@ -94,5 +99,8 @@ function getIndex(href: string): number {
     border-radius: 1000px;
     transition: top 300ms var(--ease-out-quint);
     top: calc((v-bind(activeIndex) * 100%) + 50%);
+    @include util.media(l) {
+        display: block;
+    }
 }
 </style>
